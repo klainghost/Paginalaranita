@@ -1,0 +1,1292 @@
+{
+    "productos": [
+        {
+            "id": 2,
+            "titulo": "Escenografía 3D para Campañas",
+            "descripcion": "Terrenos, castillos, mazmorras y estructuras completas impresas en 3D. Crea ambientes inmersivos para tus sesiones de juego. Modular y fácil de pintar.",
+            "precio": 2500,
+            "imagen": "productos/escenografia/ruina.webp",
+            "categoria": "escenografia"
+        },
+        {
+            "id": 3,
+            "titulo": "Dados y Accesorios 3D",
+            "descripcion": "Dados personalizados, torres de dados, bandejas de organización y accesorios temáticos impresos en 3D. Diseños únicos y funcionales para organizar tu mesa de juego.",
+            "precio": 800,
+            "imagen": "productos/dados/caja.webp",
+            "categoria": "dados"
+        },
+        {
+            "id": 4,
+            "titulo": "Llaveros Personalizados 3D",
+            "descripcion": "Llaveros impresos en 3D con tu logo o diseño. Perfectos como regalo corporativo o para promocionar tu marca. Durable, ligero y completamente personalizable.",
+            "precio": 500,
+            "imagen": "productos/miscelaneas/llavero.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 5,
+            "titulo": "Accesorios Corporativos 3D",
+            "descripcion": "Soportes para teléfono, organizadores de escritorio, marcapáginas y accesorios de oficina impresos en 3D. Diseñados para reflejar la identidad de tu empresa con profesionalismo.",
+            "precio": 1500,
+            "imagen": "productos/miscelaneas/celu.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 6,
+            "titulo": "Artículos Promocionales 3D",
+            "descripcion": "Productos promocionales personalizados impresos en 3D. Desde juguetes hasta regalos corporativos. Destaca tu marca con merchandising único y memorable.",
+            "precio": 900,
+            "imagen": "productos/miscelaneas/portavaso.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 7,
+            "titulo": "Pack Sorpresa 3D",
+            "descripcion": "Edición limitada con una selección de piezas exclusivas impresas en 3D. Ideal para coleccionistas que buscan algo distinto cada mes.",
+            "precio": 1800,
+            "imagen": "productos/miscelaneas/Novedades.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 8,
+            "titulo": "Figuras de Edición Limitada",
+            "descripcion": "Figuras coleccionables de tiempo limitado, diseñadas en colaboración con artistas invitados. Stock reducido y numerado.",
+            "precio": 2200,
+            "imagen": "productos/miniaturas/Rol.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 9,
+            "titulo": "Kit de Personalización 3D",
+            "descripcion": "Set de piezas intercambiables para personalizar tus impresiones favoritas. Incluye accesorios, bases y complementos modulares.",
+            "precio": 1300,
+            "imagen": "productos/miscelaneas/Merch.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 10,
+            "titulo": "Compañía Heroica 3D",
+            "descripcion": "Seis héroes que incluyen mago, druida con tocado de ciervo, paladín de escudo sagrado y bardo con laúd. Cada figura está lista para pintar.",
+            "precio": 2900,
+            "imagen": "productos/miniaturas/compania-heroica.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 11,
+            "titulo": "Banda de Goblins 3D",
+            "descripcion": "Cinco goblins armados con dagas, lanzas y artefactos mágicos. Una horda perfecta para emboscar a los aventureros.",
+            "precio": 2400,
+            "imagen": "productos/miniaturas/banda-goblins.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 12,
+            "titulo": "Paladín Encapuchado 3D",
+            "descripcion": "Miniatura de un paladín con armadura pesada, capa larga y brazos cruzados. Pose imponente, ideal como jefe o aliado poderoso.",
+            "precio": 950,
+            "imagen": "productos/miniaturas/paladin-encapuchado.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 13,
+            "titulo": "Mago Rana Errante 3D",
+            "descripcion": "El mago rana, mascota de La Ranita 3D, en versión miniatura, con bastón y capa. Compañero ideal para tus aventuras de mesa.",
+            "precio": 850,
+            "imagen": "productos/miniaturas/mago-rana.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 14,
+            "titulo": "Explorador Rana 3D",
+            "descripcion": "Una rana aventurera encapuchada con arma al hombro y mochila de viaje. La compañera perfecta del Mago Rana.",
+            "precio": 850,
+            "imagen": "productos/miniaturas/explorador-rana.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 15,
+            "titulo": "Set de Llaveros Criaturas Coleccionables 3D",
+            "descripcion": "Set de llaveros de criaturas coleccionables, cada una en su color original y en versión especial, impresos en 3D y pintados a mano. Ideal para combinar y coleccionar en distintas variantes.",
+            "precio": 2400,
+            "imagen": "productos/miscelaneas/set-llaveros-criaturas.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 16,
+            "titulo": "Llavero Chanchito 3D",
+            "descripcion": "Llavero con forma de chanchito tierno, ideal como detalle de regalo.",
+            "precio": 500,
+            "imagen": "productos/miscelaneas/llavero-chanchito.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 17,
+            "titulo": "Grupo de Mercenarios Heroicos",
+            "descripcion": "Set de 5 miniaturas de aventureros de fantasía impresas en 3D: pícaro, guerrero, paladín, sacerdotisa y enano guerrero. Ideal para representar un grupo mercenario completo en tu campaña de rol. Detalles nítidos, listas para pintar.",
+            "precio": 2800,
+            "imagen": "productos/miniaturas/grupo-mercenarios-heroicos.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 18,
+            "titulo": "Guardia Real con Escudos",
+            "descripcion": "Escuadrón de 5 caballeros con armadura pesada y escudos heráldicos, impresos en 3D con gran detalle. Perfectos para representar la guardia de honor de un reino o una orden de caballería en tu mesa de juego.",
+            "precio": 2900,
+            "imagen": "productos/miniaturas/guardia-real-escudos.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 19,
+            "titulo": "Caballero Cruzado",
+            "descripcion": "Miniatura de caballero con armadura completa, espada larga y capa, impresa en 3D con gran nivel de detalle. Perfecta como protagonista, jefe de una orden de caballeros o aliado poderoso.",
+            "precio": 1300,
+            "imagen": "productos/miniaturas/caballero-cruzado.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 20,
+            "titulo": "Rana Peregrina Viajera",
+            "descripcion": "Miniatura de una rana peregrina con capucha, bastón de viaje y mochila, impresa en 3D con un acabado cálido tipo resina natural. Un personaje entrañable para sumar a tu grupo de aventureros o como PNJ viajero.",
+            "precio": 950,
+            "imagen": "productos/miniaturas/rana-peregrina-viajera.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 21,
+            "titulo": "Dragón Azul sobre Ruinas",
+            "descripcion": "Miniatura de dragón azulado de grandes alas, posado sobre las ruinas de una construcción gótica, impresa en 3D como pieza de exhibición. Un set espectacular para representar al guardián de una torre o catedral en ruinas.",
+            "precio": 2600,
+            "imagen": "productos/miniaturas/dragon-azul-ruinas.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 22,
+            "titulo": "Dragón Negro Rugiente",
+            "descripcion": "Miniatura de dragón negro rugiendo con las alas extendidas, impresa en 3D en un acabado oscuro de gran impacto visual. Ideal como jefe final o presagio de mal agüero para tu campaña de rol.",
+            "precio": 2200,
+            "imagen": "productos/miniaturas/dragon-negro-rugiente.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 23,
+            "titulo": "Dragón Blanco de Alas Abiertas",
+            "descripcion": "Miniatura de dragón blanco con las alas completamente abiertas sobre una base rocosa, impresa en 3D con un acabado claro y muy detallado. Perfecta como guardián de hielo o criatura legendaria de tu mesa de juego.",
+            "precio": 1900,
+            "imagen": "productos/miniaturas/dragon-blanco-alas-abiertas.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 24,
+            "titulo": "Casa Hongo de Jardín",
+            "descripcion": "Casa con techo de hongo, buzón y enredaderas, impresa en 3D como pieza de escenografía para tu mesa de juego. Ideal para representar la vivienda de un personaje mágico o un pueblo de fantasía.",
+            "precio": 1800,
+            "imagen": "productos/escenografia/casa-hongo-jardin.webp",
+            "categoria": "escenografia"
+        },
+        {
+            "id": 25,
+            "titulo": "Granero con Corral",
+            "descripcion": "Granero de madera con techo a dos aguas y doble cerco perimetral, impreso en 3D con gran detalle en las vetas. Ideal para recrear granjas, establos o zonas de almacenamiento en tus pueblos de fantasía.",
+            "precio": 2000,
+            "imagen": "productos/escenografia/granero-con-corral.webp",
+            "categoria": "escenografia"
+        },
+        {
+            "id": 26,
+            "titulo": "Casa de Piedra con Techo de Tejas",
+            "descripcion": "Casa medieval con base de piedra y entramado de madera, techo de tejas y chimenea, impresa en 3D con gran nivel de detalle. Una pieza versátil para ambientar aldeas rústicas o granjas en tu campaña de rol.",
+            "precio": 2100,
+            "imagen": "productos/escenografia/casa-piedra-techo-paja.webp",
+            "categoria": "escenografia"
+        },
+        {
+            "id": 27,
+            "titulo": "Campamento con Fogata y Tiendas",
+            "descripcion": "Set de tres carpas de viaje junto a una fogata central con leña, impreso en 3D con texturas de tela muy realistas. Perfecto para recrear el campamento nocturno de tu grupo de aventureros.",
+            "precio": 1900,
+            "imagen": "productos/escenografia/campamento-fogata-tiendas.webp",
+            "categoria": "escenografia"
+        },
+        {
+            "id": 28,
+            "titulo": "Torre Circular con Mirador",
+            "descripcion": "Torre de piedra almenada con escalinata exterior que conduce a una plataforma circular con baranda, impresa en 3D. Ideal como puesto de vigilancia, entrada a una fortaleza o punto de encuentro estratégico.",
+            "precio": 2400,
+            "imagen": "productos/escenografia/torre-circular-mirador.webp",
+            "categoria": "escenografia"
+        },
+        {
+            "id": 29,
+            "titulo": "Set de Mobiliario de Taberna",
+            "descripcion": "Set de mesa, dos bancos, dos sillas y un banquito en madera natural, impreso en 3D a escala de miniatura. Perfecto para amueblar tabernas, posadas o campamentos en tu mesa de juego.",
+            "precio": 1400,
+            "imagen": "productos/escenografia/set-mobiliario-taberna-madera.webp",
+            "categoria": "escenografia"
+        },
+        {
+            "id": 30,
+            "titulo": "Set de Dados Ámbar con Bandeja",
+            "descripcion": "Bandeja organizadora para dados impresa en 3D, incluye un set de 7 dados de rol en tono ámbar con numeración dorada (D4 a D100). Cada dado tiene su compartimento rotulado para mantener tu colección ordenada y a mano.",
+            "precio": 1600,
+            "imagen": "productos/dados/set-dados-ambar-bandeja.webp",
+            "categoria": "dados"
+        },
+        {
+            "id": 31,
+            "titulo": "Estuche Dados con Compartimento para Miniatura",
+            "descripcion": "Estuche plegable de doble cuerpo impreso en 3D, con compartimentos para tu set de 7 dados de rol y un espacio extra para guardar una miniatura pintada. Ideal para llevar todo lo necesario a tu próxima sesión.",
+            "precio": 1650,
+            "imagen": "productos/dados/estuche-dados-miniatura.webp",
+            "categoria": "dados"
+        },
+        {
+            "id": 32,
+            "titulo": "Organizador de Dados para Múltiples Sets",
+            "descripcion": "Organizador de madera con siete divisiones y base deslizable, impreso en 3D, con espacio para guardar varios sets de dados completos a la vez. Perfecto para jugadores que coleccionan distintos juegos de dados.",
+            "precio": 1700,
+            "imagen": "productos/dados/organizador-dados-multiples-sets.webp",
+            "categoria": "dados"
+        },
+        {
+            "id": 33,
+            "titulo": "Cofre Fauces Rojas Guarda-Dados",
+            "descripcion": "Cofre con tapa en forma de fauces y colmillos blancos, interior rojo, impreso en 3D para guardar tu set de dados metálicos. Una pieza llamativa para sumar un toque de fantasía a tu mesa de juego.",
+            "precio": 1600,
+            "imagen": "productos/dados/cofre-fauces-dados-rojo.webp",
+            "categoria": "dados"
+        },
+        {
+            "id": 34,
+            "titulo": "Espada Vitrina de Dados",
+            "descripcion": "Estuche con forma de espada y empuñadura desmontable, con grabados de poliedros y una vitrina transversal para exhibir tu set de dados metálicos. Impreso en 3D, combina función y estética en tu mesa de juego.",
+            "precio": 1200,
+            "imagen": "productos/dados/espada-vitrina-dados.webp",
+            "categoria": "dados"
+        },
+        {
+            "id": 35,
+            "titulo": "Llavero con Nombre Personalizado (Rosa)",
+            "descripcion": "Llavero con el nombre que elijas en relieve, en combinación de rosa y blanco, impreso en 3D. Ideal como regalo personalizado o detalle para sumar a mochilas y cartucheras.",
+            "precio": 650,
+            "imagen": "productos/miscelaneas/llavero-nombre-rosa.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 36,
+            "titulo": "Set de Llaveros Cámara Instantánea",
+            "descripcion": "Par de llaveros con forma de cámara instantánea, en negro y rosa con detalle de corazón, impresos en 3D. Ideales para compartir entre amigos o como regalo a juego.",
+            "precio": 750,
+            "imagen": "productos/miscelaneas/set-llaveros-camara-instantanea.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 37,
+            "titulo": "Llavero Mancuerna Negra",
+            "descripcion": "Llavero con forma de mancuerna de gimnasio en negro y gris, impreso en 3D con acabado realista. Un detalle ideal para los fanáticos del fitness y el entrenamiento.",
+            "precio": 550,
+            "imagen": "productos/miscelaneas/llavero-mancuerna-negra.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 38,
+            "titulo": "Llavero Perro Globo",
+            "descripcion": "Llavero con forma de perro globo en amarillo vibrante, impreso en 3D con un diseño simpático y minimalista. Un accesorio divertido para sumar a tus llaves o mochila.",
+            "precio": 550,
+            "imagen": "productos/miscelaneas/llavero-perro-globo.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 39,
+            "titulo": "Llavero Hollow Knight Encapuchado",
+            "descripcion": "Llavero con la figura de un personaje encapuchado de cuernos blancos y capa azul, inspirado en Hollow Knight. Impreso en 3D y pintado a mano, pieza de colección para fans del juego.",
+            "precio": 650,
+            "imagen": "productos/miscelaneas/llavero-hollow-knight-capa.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 40,
+            "titulo": "Llavero Martillo de Thor",
+            "descripcion": "Llavero con forma del martillo de Thor, con grabado de nudo celta y empuñadura de cuero simulado. Impreso en 3D con acabado metalizado, ideal para fans de la mitología nórdica y Marvel.",
+            "precio": 650,
+            "imagen": "productos/miscelaneas/llavero-martillo-thor.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 41,
+            "titulo": "Set de Llaveros Pokébola",
+            "descripcion": "Set de llaveros con forma de Pokébola en rojo y blanco, impresos en 3D. Perfectos para fans de Pokémon, ideales para combinar entre amigos o coleccionar.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/set-llaveros-pokebola.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 42,
+            "titulo": "Set de Llaveros Flor con Inicial",
+            "descripcion": "Par de llaveros con forma de flor y la inicial que elijas en relieve, impresos en 3D en distintos colores. Un detalle tierno y personalizado para regalar o combinar.",
+            "precio": 650,
+            "imagen": "productos/miscelaneas/set-llaveros-flor-inicial.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 43,
+            "titulo": "Llavero Porción de Pizza",
+            "descripcion": "Llavero con forma de porción de pizza con pepperoni, impreso en 3D con colores vibrantes. Un detalle divertido y colorido para sumar a tus llaves o mochila.",
+            "precio": 500,
+            "imagen": "productos/miscelaneas/llavero-porcion-pizza.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 44,
+            "titulo": "Set de Llaveros Multiherramienta x5",
+            "descripcion": "Set de cinco llaveros multiherramienta en distintos colores, impresos en 3D con piezas funcionales tipo destornillador y abrebotellas. Prácticos, resistentes y listos para regalar o combinar.",
+            "precio": 1200,
+            "imagen": "productos/miscelaneas/set-llaveros-multiherramienta.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 45,
+            "titulo": "Llavero Torre Reloj Malargüe",
+            "descripcion": "Llavero souvenir con la torre del reloj de Malargüe, impreso en 3D en color naranja con detalles en blanco. Un recuerdo ideal para visitantes y amantes de su ciudad.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/llavero-torre-malargue.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 46,
+            "titulo": "Set de Mariposas Decorativas para Pared",
+            "descripcion": "Set de cuatro mariposas monarca en naranja y negro, impresas en 3D con relieve para decorar paredes, espejos o muebles. Suma un toque de color y movimiento a cualquier ambiente.",
+            "precio": 1300,
+            "imagen": "productos/miscelaneas/set-mariposas-pared.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 47,
+            "titulo": "Pack de Pines Hojas Tropicales",
+            "descripcion": "Set de once pines con diseños de hojas tropicales (monstera, ave del paraíso, palmera y más), impresos en 3D en distintos tonos de verde. Perfectos para decorar mochilas, gorras o tableros de corcho.",
+            "precio": 1000,
+            "imagen": "productos/miscelaneas/set-pines-hojas-tropicales.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 48,
+            "titulo": "Hongo Decorativo Azul",
+            "descripcion": "Hongo decorativo con sombrero acanalado en azul y tallo blanco, impreso en 3D con gran detalle de textura. Una pieza versátil para sumar un toque de fantasía a estanterías, terrarios o dioramas.",
+            "precio": 500,
+            "imagen": "productos/miscelaneas/hongo-decorativo-azul.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 49,
+            "titulo": "Pulpo Articulado Rosa",
+            "descripcion": "Pulpo fidget articulado en rosa con detalles violeta, impreso en 3D con tentáculos móviles segmentados. Un juguete sensorial divertido para grandes y chicos.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/pulpo-articulado-rosa.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 50,
+            "titulo": "Placa Personalizada con Nombre",
+            "descripcion": "Placa estilo distintivo con el nombre que elijas en relieve dorado sobre fondo negro, impresa en 3D. Ideal para mochilas, delantales o como identificador personalizado.",
+            "precio": 550,
+            "imagen": "productos/miscelaneas/placa-nombre-personalizada.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 51,
+            "titulo": "Pizza de Madera para Jugar",
+            "descripcion": "Set de pizza de juguete con ocho porciones desmontables y pepperoni de colores, impreso en 3D en tonos madera. Ideal para juego simbólico o como pieza decorativa de cocina.",
+            "precio": 1300,
+            "imagen": "productos/miscelaneas/pizza-madera-juguete.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 52,
+            "titulo": "Dije Hollow Knight",
+            "descripcion": "Dije decorativo de un personaje encapuchado de cuernos blancos y capa azul, inspirado en Hollow Knight, impreso en 3D y pintado a mano. Ideal para colgar en mochilas, estuches o como pieza de colección.",
+            "precio": 500,
+            "imagen": "productos/miscelaneas/dije-hollow-knight.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 53,
+            "titulo": "Figura Pepinillo Rick",
+            "descripcion": "Figura de un pepinillo con cara expresiva y cinta adhesiva cruzada, inspirada en el clásico meme de la serie animada. Impresa en 3D y pintada a mano, ideal como pieza de humor para tu escritorio.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/figura-pepinillo-rick.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 54,
+            "titulo": "Set de Criaturas Fantásticas Miniatura",
+            "descripcion": "Set de pequeñas criaturas de un solo ojo en tonos violeta y negro, impresas en 3D. Ideales como monstruos menores, familiares o marcadores de iniciativa en tu campaña de rol.",
+            "precio": 1100,
+            "imagen": "productos/miniaturas/set-criaturas-fantasticas-mini.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 55,
+            "titulo": "Set de Soportes Helado Derretido",
+            "descripcion": "Set de cinco soportes con forma de helado derretido en colores pastel, impresos en 3D. Perfectos para apoyar el celular, anillos o pequeños accesorios de escritorio.",
+            "precio": 900,
+            "imagen": "productos/miscelaneas/set-soportes-helado-derretido.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 56,
+            "titulo": "Set de Ganchos Bob Esponja",
+            "descripcion": "Set de ganchos porta lápices con los personajes de Bob Esponja, Patricio, Calamardo, Plancton y Gary, impresos en 3D. Ideales para organizar lápices, pinceles o colgar objetos livianos.",
+            "precio": 1400,
+            "imagen": "productos/miscelaneas/set-ganchos-bob-esponja.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 57,
+            "titulo": "Marco de Fotos Ondulado Amarillo",
+            "descripcion": "Marco de fotos con borde ondulado en amarillo vibrante, impreso en 3D, ideal para fotos tipo polaroid. Un toque retro y colorido para tu escritorio o repisa.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/marco-fotos-ondulado-amarillo.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 58,
+            "titulo": "Dinosaurio Articulado Verde",
+            "descripcion": "Dinosaurio de cuerpo segmentado en verde con ojos pintados a mano, impreso en 3D como figura articulada. Un juguete resistente y divertido para grandes y chicos.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/dinosaurio-articulado-verde.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 59,
+            "titulo": "Cartel WiFi con Código QR Personalizado",
+            "descripcion": "Cartel decorativo impreso en 3D con código QR de tu red WiFi, nombre y contraseña personalizables en relieve. Ideal para recibir a tus visitas en casa, oficina o local comercial de forma práctica y moderna.",
+            "precio": 750,
+            "imagen": "productos/miscelaneas/cartel-wifi-qr.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 60,
+            "titulo": "Esqueleto de T-Rex Articulado 3D",
+            "descripcion": "Figura coleccionable de un esqueleto de Tiranosaurio Rex con articulaciones móviles en cada vértebra, impresa en 3D en una sola pieza. Ideal como decoración de escritorio o pieza temática prehistórica para tus partidas de rol.",
+            "precio": 1400,
+            "imagen": "productos/miniaturas/esqueleto-trex-articulado-blanco.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 61,
+            "titulo": "Esqueleto de Anquilosaurio 3D",
+            "descripcion": "Réplica de un esqueleto de anquilosaurio con su característica maza en la cola, impresa en 3D con gran nivel de detalle en costillas y placas óseas. Incluye cabeza desmontable, ideal para coleccionistas de dinosaurios.",
+            "precio": 1500,
+            "imagen": "productos/miniaturas/esqueleto-anquilosaurio.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 62,
+            "titulo": "Esqueleto de Triceratops 3D",
+            "descripcion": "Esqueleto de triceratops impreso en 3D, con cráneo de gran tamaño, cuernos y escudo óseo perfectamente detallados. Una pieza imponente para vitrinas, escritorios o como escenografía prehistórica en tus partidas.",
+            "precio": 1600,
+            "imagen": "productos/miniaturas/esqueleto-triceratops.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 63,
+            "titulo": "Esqueleto de Criatura Articulada 3D",
+            "descripcion": "Figura de un esqueleto de criatura cuadrúpeda con cola larga curvada y cráneo de fauces filosas, impresa en 3D con múltiples articulaciones móviles. Perfecta para ambientar escenarios de fantasía o como curiosidad decorativa.",
+            "precio": 1300,
+            "imagen": "productos/miniaturas/esqueleto-criatura-cola-larga.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 64,
+            "titulo": "Esqueleto de T-Rex Rugiente 3D",
+            "descripcion": "Esqueleto de Tiranosaurio Rex en pose de ataque, con la boca abierta mostrando sus afilados dientes y una garra en alto. Impreso en 3D en tono hueso con cola articulada y gran nivel de detalle, ideal para coleccionistas.",
+            "precio": 1500,
+            "imagen": "productos/miniaturas/esqueleto-trex-rugiente.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 65,
+            "titulo": "Kit de Esqueleto de Triceratops para Armar 3D",
+            "descripcion": "Kit articulado de esqueleto de triceratops impreso en 3D, con todas las piezas en su marco listas para ensamblar sin pegamento. Una actividad entretenida para armar y exhibir, ideal para amantes de los dinosaurios.",
+            "precio": 1200,
+            "imagen": "productos/miniaturas/kit-esqueleto-triceratops-armar.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 66,
+            "titulo": "Kit de Esqueleto de T-Rex para Armar 3D",
+            "descripcion": "Kit articulado de esqueleto de Tiranosaurio Rex impreso en 3D, con piezas desmontables del marco para ensamblar sin pegamento. Perfecto como actividad manual o pieza decorativa una vez armado.",
+            "precio": 1200,
+            "imagen": "productos/miniaturas/kit-esqueleto-trex-armar.webp",
+            "categoria": "miniaturas"
+        },
+        {
+            "id": 67,
+            "titulo": "Kit de Excavadora de Juguete para Armar",
+            "descripcion": "Mini excavadora estilo CAT con pala articulada, impresa en 3D en piezas desmontables para armar sin pegamento. Un juguete resistente y entretenido para los más chicos.",
+            "precio": 900,
+            "imagen": "productos/miscelaneas/kit-excavadora-juguete.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 68,
+            "titulo": "Cubo Infinito Antiestrés 3D",
+            "descripcion": "Cubo plegable con textura geométrica, impreso en 3D en una sola pieza con articulaciones funcionales. Ideal como juguete antiestrés o para mantener las manos ocupadas mientras estudiás o trabajás.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/cubo-infinito-antiestres.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 69,
+            "titulo": "Set de Dinosaurios Equilibristas 3D",
+            "descripcion": "Set de figuras de dinosaurios en distintos colores que se apilan sobre una base curva en equilibrio, impresas en 3D. Un juego de destreza y diversión para toda la familia.",
+            "precio": 1500,
+            "imagen": "productos/miscelaneas/set-dinosaurios-equilibristas.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 70,
+            "titulo": "Caja de Música Piano Vertical 3D",
+            "descripcion": "Réplica de un piano vertical impresa en 3D que funciona como caja de música con manivela giratoria. Una pieza decorativa con encanto vintage, ideal para regalar o coleccionar.",
+            "precio": 1400,
+            "imagen": "productos/miscelaneas/caja-musica-piano.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 71,
+            "titulo": "Set de Soldados de Juguete Verdes",
+            "descripcion": "Set de 9 soldados de juguete en color verde militar, impresos en 3D en distintas poses de combate. Un clásico atemporal para revivir las batallas de siempre, ideal para jugar o decorar.",
+            "precio": 1200,
+            "imagen": "productos/miscelaneas/set-soldados-juguete-verdes.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 72,
+            "titulo": "Figura Decorativa de Gato Moderno",
+            "descripcion": "Escultura de gato con líneas curvas y acabado ondulado, impresa en 3D en blanco mate. Una pieza de diseño minimalista perfecta para decorar repisas, escritorios o como regalo para amantes de los gatos.",
+            "precio": 1300,
+            "imagen": "productos/miscelaneas/figura-gato-moderno-blanco.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 73,
+            "titulo": "Estuche de Dados con Miniatura de Mago",
+            "descripcion": "Estuche rígido color azul con compartimentos para cada tipo de dado y un espacio especial para guardar una miniatura de mago. Impreso en 3D con textura de panal, combina funcionalidad y estilo para tu set de rol.",
+            "precio": 1650,
+            "imagen": "productos/dados/estuche-dados-mago-azul.webp",
+            "categoria": "dados"
+        },
+        {
+            "id": 74,
+            "titulo": "Combo Aventurero: Estuche + Sets de Dados",
+            "descripcion": "Pack completo que incluye el estuche organizador con compartimento para miniatura más varios sets de dados de regalo en distintos colores. La opción ideal para empezar a jugar sin preocuparte por nada más.",
+            "precio": 2200,
+            "imagen": "productos/miscelaneas/combo-aventurero-dados-mago.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 75,
+            "titulo": "Combo Hello Kitty: Rompecabezas y Accesorios",
+            "descripcion": "Pack temático de Hello Kitty que incluye rompecabezas con forma de cabeza, mini cómoda de cajones, separador de libros, cubos sensoriales, llavero y bandeja para anteojos, todo impreso en 3D. Un combo ideal para fans de la franquicia.",
+            "precio": 2400,
+            "imagen": "productos/miscelaneas/combo-hello-kitty.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 76,
+            "titulo": "Kit de Conejo Decorativo para Armar 3D",
+            "descripcion": "Kit articulado con forma de conejo, impreso en 3D en piezas desmontables del marco para ensamblar sin pegamento. Disponible en distintos colores, ideal como decoración o actividad entretenida.",
+            "precio": 900,
+            "imagen": "productos/miscelaneas/kit-conejo-decorativo-armar.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 77,
+            "titulo": "Organizador de Baño Modular 3D",
+            "descripcion": "Organizador de baño de dos niveles con textura acanalada, impreso en 3D, ideal para guardar dispensadores de jabón, cremas y toallas. Diseño moderno en negro mate que se adapta a cualquier estilo de baño.",
+            "precio": 1800,
+            "imagen": "productos/miscelaneas/organizador-bano-modular.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 78,
+            "titulo": "Set de Floreros Acanalados 3D",
+            "descripcion": "Set de tres floreros con textura acanalada en distintos tamaños, impresos en 3D en tono arena. Combinan perfecto entre sí o por separado, ideales para plantas, flores secas o como elemento decorativo minimalista.",
+            "precio": 1600,
+            "imagen": "productos/miscelaneas/set-floreros-acanalados.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 79,
+            "titulo": "Figura de Jesús Estilo Geométrico 3D",
+            "descripcion": "Escultura de Jesús con los brazos abiertos en un estilo geométrico low-poly, impresa en 3D en blanco mate. Una pieza de gran impacto visual para la decoración del hogar o como regalo religioso.",
+            "precio": 1800,
+            "imagen": "productos/miscelaneas/figura-religiosa-geometrica.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 80,
+            "titulo": "Florero Espiral Negro con Base 3D",
+            "descripcion": "Florero de diseño espiral en negro mate, con base circular tipo bandeja a juego. Una pieza escultórica impresa en 3D, ideal para una sola flor o como elemento decorativo de autor.",
+            "precio": 1300,
+            "imagen": "productos/miscelaneas/florero-espiral-negro.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 81,
+            "titulo": "Bowl Decorativo Espiral con Divisiones 3D",
+            "descripcion": "Bowl con textura acanalada y divisiones internas en espiral, impreso en 3D en tono violeta oscuro. Perfecto para servir snacks, frutos secos o como vaciabolsillos decorativo.",
+            "precio": 900,
+            "imagen": "productos/miscelaneas/bowl-decorativo-espiral.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 82,
+            "titulo": "Maceta Acanalada Decorativa 3D",
+            "descripcion": "Maceta cilíndrica con textura acanalada en relieve, impresa en 3D en tono arena. Ideal para suculentas y plantas pequeñas, le da un toque moderno a cualquier rincón de tu hogar.",
+            "precio": 800,
+            "imagen": "productos/miscelaneas/maceta-acanalada-beige.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 83,
+            "titulo": "Placa de Hueso para Mascota Personalizada",
+            "descripcion": "Placa con forma de hueso para collar de mascota, personalizable con el nombre que elijas y combinación de colores. Incluye detalles de huellitas y siluetas de perro grabadas, impresa en 3D y resistente para el uso diario.",
+            "precio": 550,
+            "imagen": "productos/miscelaneas/placa-mascota-hueso-rocky.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 84,
+            "titulo": "Placa para Mascota Huella con Nombre",
+            "descripcion": "Placa doble para collar: huella de perro combinada con plaquita de hueso donde grabamos el nombre de tu mascota. Impresa en 3D en los colores que prefieras, ideal para identificar a tu compañero peludo.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/placa-mascota-huella-hueso.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 85,
+            "titulo": "Placa de Hueso Personalizada para Mascota",
+            "descripcion": "Placa clásica con forma de hueso, personalizable con el nombre de tu mascota en relieve. Disponible en varios tamaños y combinaciones de color, impresa en 3D y con orificio para el collar.",
+            "precio": 500,
+            "imagen": "productos/miscelaneas/placa-mascota-hueso-clasica.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 86,
+            "titulo": "Placa para Mascota Huella Personalizada",
+            "descripcion": "Placa con forma de huella de perro, personalizable con el nombre de tu mascota grabado en el centro. Impresa en 3D en negro con detalles en blanco, lista para colgar del collar.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/placa-mascota-huella-negra.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 87,
+            "titulo": "Llavero Hueso con Nombre de Mascota",
+            "descripcion": "Llavero con forma de hueso y el nombre de tu mascota personalizado, impreso en 3D con argolla metálica incluida. Un detalle ideal para los amantes de los perros.",
+            "precio": 550,
+            "imagen": "productos/miscelaneas/llavero-hueso-nombre-mascota.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 88,
+            "titulo": "Caja Stranger Things 3D",
+            "descripcion": "Cajita cilíndrica con tapa y el logo de Stranger Things en relieve, impresa en 3D en verde militar. Ideal para guardar pequeños objetos, perfecta para fans de la serie.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/caja-stranger-things.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 89,
+            "titulo": "Set de Cortantes de Personajes Anime",
+            "descripcion": "Set de 6 cortantes y selladores con diseños de personajes anime tipo chibi, en versión grande y chica para cada diseño. Impresos en 3D, ideales para darle un toque temático a tus galletas y postres.",
+            "precio": 1400,
+            "imagen": "productos/miscelaneas/set-cortantes-personajes-anime.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 90,
+            "titulo": "Set de Cortantes de Pascua",
+            "descripcion": "Set de 4 cortantes con sello: canasta con huevos, huevo decorado, conejito y zanahoria. Impresos en 3D en rosa, perfectos para preparar galletas temáticas en Semana Santa o Pascua.",
+            "precio": 1000,
+            "imagen": "productos/miscelaneas/set-cortantes-pascua.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 91,
+            "titulo": "Cortante y Sello de Oso Te Amo",
+            "descripcion": "Cortante con forma de oso que incluye un sello interno con la frase \"Te amo\" dentro de un corazón. Impreso en 3D, ideal para sorprender con galletas personalizadas en San Valentín o cualquier ocasión especial.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/cortante-sello-oso-te-amo.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 92,
+            "titulo": "Set de Cortantes Argentinos (Mate, Bandera, Sol y Crack)",
+            "descripcion": "Set de 6 cortantes con sello de diseños argentinos: mate, bandera, sol, medalla, mapa del país y la silueta de un ídolo del fútbol. Impresos en 3D en celeste, perfectos para celebrar con galletas bien argentas.",
+            "precio": 1500,
+            "imagen": "productos/miscelaneas/set-cortantes-argentina.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 93,
+            "titulo": "Set de Cortantes de Corazones con Sello",
+            "descripcion": "Set de 4 cortantes con sello de corazones en distintos diseños: liso, anidado, geométrico y con efecto trazo. Impresos en 3D en amarillo, ideales para galletas románticas o decorativas.",
+            "precio": 1000,
+            "imagen": "productos/miscelaneas/set-cortantes-corazones.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 94,
+            "titulo": "Cortante y Sello de Hombre de Jengibre",
+            "descripcion": "Cortante con forma de gingerbread man, con sello interno de cara sonriente, botones y detalles de ropa. Impreso en 3D, un clásico para tus galletas navideñas.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/cortante-sello-hombre-jengibre.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 95,
+            "titulo": "Set de Cortantes de Granja",
+            "descripcion": "Set de 4 cortantes con sello de animales de granja: vaca y oveja en distintas poses. Impresos en 3D, ideales para galletas decoradas con glasé en cumpleaños temáticos.",
+            "precio": 1200,
+            "imagen": "productos/miscelaneas/set-cortantes-granja.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 96,
+            "titulo": "Set de Cortantes de Fútbol Argentino",
+            "descripcion": "Set de 6 cortantes con motivos futboleros: escudo nacional, copa, cancha, pelota, botín y pelota con red. Impresos en 3D en rosa, perfectos para festejar al equipo en cualquier celebración.",
+            "precio": 1700,
+            "imagen": "productos/miscelaneas/set-cortantes-futbol-argentino.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 97,
+            "titulo": "Set de Marcadores de Libro Cierre",
+            "descripcion": "Set de 3 marcadores de libro con forma de cierre/cremallera en amarillo, naranja y rojo. Se deslizan sobre las páginas dando el efecto de un cierre real. Impresos en 3D, un regalo divertido para los amantes de la lectura.",
+            "precio": 750,
+            "imagen": "productos/miscelaneas/set-marcadores-cierre-cremallera.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 98,
+            "titulo": "Sujetalibros Mago Aventurero",
+            "descripcion": "Sujetalibros con la figura de un joven mago en plena acción, listo para sostener tus libros favoritos sobre su base. Impreso en 3D y pintado a mano, un detalle ideal para fans de la fantasía y la lectura.",
+            "precio": 1900,
+            "imagen": "productos/miscelaneas/sujetalibros-mago-aventurero.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 99,
+            "titulo": "Marcador de Libro Mano de Esqueleto",
+            "descripcion": "Marcador de libro con forma de mano esquelética en color negro, que se posa sobre las páginas como si emergiera del libro. Un detalle tétrico y original para los amantes del terror.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/marcador-libro-mano-esqueleto.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 100,
+            "titulo": "Marcador de Libro Gato",
+            "descripcion": "Marcador de libro con forma de gato estilizado en color celeste, con una abertura para sujetar las páginas abiertas. Diseño minimalista impreso en 3D, ideal para regalar a los amantes de los gatos y los libros.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/marcador-libro-gato.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 101,
+            "titulo": "Marcador de Libro Flecha",
+            "descripcion": "Marcador de libro con diseño geométrico de flecha, impreso en 3D con efecto bicolor degradado. Se sujeta firmemente entre las páginas, marcando tu lugar con un estilo minimalista y moderno.",
+            "precio": 650,
+            "imagen": "productos/miscelaneas/marcador-libro-flecha.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 102,
+            "titulo": "Set de Marcadores de Libro Gatos",
+            "descripcion": "Set de 4 marcadores de libro con siluetas de gatos en distintas poses, en color negro. Se deslizan sobre la página para señalar el lugar exacto donde dejaste la lectura. Un regalo ideal para los amantes de los felinos.",
+            "precio": 850,
+            "imagen": "productos/miscelaneas/set-marcadores-gatos-negros.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 103,
+            "titulo": "Sujetalibros Guerrero Anime",
+            "descripcion": "Sujetalibros con la silueta de un joven guerrero en plena acción de combate, estilo anime clásico. Impreso en 3D y montado sobre base plana, perfecto para sostener tu colección de mangas o libros favoritos.",
+            "precio": 1800,
+            "imagen": "productos/miscelaneas/sujetalibros-guerrero-anime.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 104,
+            "titulo": "Llavero Doble Copa del Mundo",
+            "descripcion": "Set de dos llaveros con placas en celeste y dorado, cada una con una réplica en miniatura de la copa más codiciada del fútbol. Ideal para los fanáticos que quieren llevar la pasión a todas partes.",
+            "precio": 1400,
+            "imagen": "productos/miscelaneas/llavero-numero-10-copa.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 105,
+            "titulo": "Trofeo Copa del Mundo Decorativo",
+            "descripcion": "Réplica decorativa de la copa más codiciada del fútbol, impresa en 3D y pintada en dorado con detalles en verde. Una pieza de colección para lucir en cualquier escritorio o estantería.",
+            "precio": 1800,
+            "imagen": "productos/miscelaneas/trofeo-copa-mundo-decorativo.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 106,
+            "titulo": "Llavero Pelota de Fútbol",
+            "descripcion": "Llavero con forma de pelota de fútbol clásica en blanco y negro. Resistente, liviano y con argolla metálica, ideal para los fanáticos del deporte de todas las edades.",
+            "precio": 550,
+            "imagen": "productos/miscelaneas/llavero-pelota-futbol.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 107,
+            "titulo": "Figura Pelota de Fútbol Sentada",
+            "descripcion": "Figura decorativa con forma de pelota de fútbol y piernas articuladas, en pose sentada sobre el borde de cualquier superficie. Un detalle divertido y original para escritorios, repisas o como regalo para los fanáticos del deporte.",
+            "precio": 1300,
+            "imagen": "productos/miscelaneas/figura-pelota-futbol-sentada.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 108,
+            "titulo": "Llavero Personalizado Fútbol con Nombre",
+            "descripcion": "Llavero con pelota de fútbol y placa personalizable con el nombre que elijas. Impreso en 3D en verde y blanco, ideal para el equipo, la familia o como regalo para jugadores y fanáticos.",
+            "precio": 650,
+            "imagen": "productos/miscelaneas/llavero-personalizado-futbol-nombre.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 109,
+            "titulo": "Llavero Camiseta Albiceleste N°10",
+            "descripcion": "Llavero con forma de camiseta de la selección, en celeste y blanco con el número 10 estampado. Un accesorio infaltable para los fanáticos del equipo nacional.",
+            "precio": 650,
+            "imagen": "productos/miscelaneas/llavero-camiseta-argentina-10.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 110,
+            "titulo": "Llavero Medalla Pelota de Fútbol",
+            "descripcion": "Llavero circular con el diseño clásico de una pelota de fútbol en blanco y negro. Liviano, resistente y con argolla metálica para llevarlo a todas partes.",
+            "precio": 550,
+            "imagen": "productos/miscelaneas/llavero-medalla-pelota-futbol.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 111,
+            "titulo": "Llavero Bandera Argentina",
+            "descripcion": "Llavero circular con la bandera argentina y el sol en el centro. Impreso en 3D, ideal para mostrar tus colores en cualquier ocasión.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/llavero-bandera-argentina.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 112,
+            "titulo": "Set de Llaveros Argentina",
+            "descripcion": "Set de 6 llaveros con diseños patrios: corazón \"ARG\", flor con sol, mapas del país en celeste y blanco, medalla \"Made in Argentina\" y cartel \"Argentina\". Perfectos para regalar o coleccionar, cada uno con su propia argolla.",
+            "precio": 2000,
+            "imagen": "productos/miscelaneas/set-llaveros-argentina.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 113,
+            "titulo": "Llavero Escudo AFA",
+            "descripcion": "Llavero con el escudo de la selección argentina de fútbol, en amarillo y celeste con detalle de estrellas doradas. Impreso en 3D, resistente y liviano, ideal para hinchas de todas las edades.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/llavero-escudo-afa.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 114,
+            "titulo": "Set de Llaveros Malvinas Argentinas",
+            "descripcion": "Set de 2 llaveros con la silueta de las Islas Malvinas: uno con la bandera argentina y el año \"1982\", y otro con la flor nomeolvides y el sol patrio. Un homenaje conmemorativo impreso en 3D.",
+            "precio": 1200,
+            "imagen": "productos/miscelaneas/set-llaveros-malvinas.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 115,
+            "titulo": "Cuadro Decorativo Jugador N°10",
+            "descripcion": "Cuadro de pared con la silueta de un futbolista festejando con la camiseta N°10, en estilo minimalista y acabado oscuro. Una pieza decorativa ideal para fanáticos del fútbol que buscan darle personalidad a sus espacios.",
+            "precio": 1500,
+            "imagen": "productos/miscelaneas/cuadro-jugador-futbol-10.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 116,
+            "titulo": "Llavero Bandera Islas Malvinas",
+            "descripcion": "Llavero con forma de bandera argentina y la silueta de las Islas Malvinas en su interior. Impreso en 3D, un símbolo patrio para llevar siempre con vos.",
+            "precio": 650,
+            "imagen": "productos/miscelaneas/llavero-bandera-islas-malvinas.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 117,
+            "titulo": "Placa de Hueso Bicolor para Mascota",
+            "descripcion": "Placa con forma de hueso en diseño bicolor con recorte de huellitas, personalizable con el nombre y los datos de contacto de tu mascota. Impresa en 3D, resistente al uso diario.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/placa-mascota-hueso-bicolor.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 118,
+            "titulo": "Placa Redonda Personalizada para Mascota",
+            "descripcion": "Placa circular personalizable con el nombre de tu mascota y un detalle de hueso grabado. Impresa en 3D en acabado mate, ideal para identificar a tu compañero en sus paseos.",
+            "precio": 550,
+            "imagen": "productos/miscelaneas/placa-mascota-redonda.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 119,
+            "titulo": "Placa Personalizada para Mascota (Colores)",
+            "descripcion": "Placa circular para collar de mascota, personalizable con el nombre que elijas y disponible en distintos colores. Impresa en 3D, liviana y resistente para el uso diario.",
+            "precio": 550,
+            "imagen": "productos/miscelaneas/placa-mascota-colores.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 120,
+            "titulo": "Varita Mágica Estrella",
+            "descripcion": "Varita mágica con forma de estrella en color rosa y textura de brillos en relieve. Un accesorio ideal para disfraces, juegos de fantasía o como regalo para los más chicos.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/varita-magica-estrella.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 121,
+            "titulo": "Guardadientes Caja Diente",
+            "descripcion": "Cajita con forma de diente que se abre en dos partes, ideal para guardar los dientes de leche o pequeños tesoros. Impresa en 3D en blanco, un detalle tierno para el Ratón Pérez.",
+            "precio": 800,
+            "imagen": "productos/miscelaneas/guardadientes-caja-diente.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 122,
+            "titulo": "Corona de Hojas Élfica",
+            "descripcion": "Corona con diseño de hojas entrelazadas en acabado verde metalizado. Perfecta para disfraces de fantasía, sesiones de fotos o como pieza decorativa.",
+            "precio": 1500,
+            "imagen": "productos/miscelaneas/corona-hojas-elfica.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 123,
+            "titulo": "Figura Rana Pixel",
+            "descripcion": "Figura decorativa de una rana con estética pixelada/voxel en tono verde. Un guiño geek para los amantes de los videojuegos retro y la decoración temática.",
+            "precio": 900,
+            "imagen": "productos/miscelaneas/figura-rana-pixel.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 124,
+            "titulo": "Figura Rana Tierna",
+            "descripcion": "Figura decorativa de una rana de ojos grandes y diseño tierno, en verde. Ideal para acompañar tu escritorio o como regalo para los amantes de los anfibios.",
+            "precio": 800,
+            "imagen": "productos/miscelaneas/figura-rana-tierna.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 125,
+            "titulo": "Figura Rana Realista",
+            "descripcion": "Figura decorativa de una rana arborícola con pintura realista en tonos verdes y amarillos. Capturada en una pose natural, ideal para los amantes de los anfibios y la decoración con onda naturalista.",
+            "precio": 900,
+            "imagen": "productos/miscelaneas/figura-rana-realista.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 126,
+            "titulo": "Set de Ranas Articuladas",
+            "descripcion": "Set de 3 ranitas articuladas con cuerpo flexible tipo fidget toy, en celeste con lunares violeta, verde con corazones y rosa con lunares amarillos. Ideales para jugar, decorar o como antiestrés.",
+            "precio": 1800,
+            "imagen": "productos/miscelaneas/set-ranas-articuladas.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 127,
+            "titulo": "Juego de Ta-Te-Ti Ranas y Flores",
+            "descripcion": "Juego de tres en línea con tablero en forma de hoja de nenúfar y fichas de ranitas y flores de loto. Impreso en 3D y pintado a mano, una manera tierna y original de jugar en familia.",
+            "precio": 2000,
+            "imagen": "productos/miscelaneas/juego-tateti-ranas-flores.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 128,
+            "titulo": "Maceta Rana Decorativa",
+            "descripcion": "Maceta con forma de rana en acabado mate verde, ideal para plantas pequeñas o suculentas. Un detalle tierno y original para sumarle vida a cualquier rincón.",
+            "precio": 1400,
+            "imagen": "productos/miscelaneas/maceta-rana-decorativa.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 129,
+            "titulo": "Organizador Rana Boca Roja",
+            "descripcion": "Organizador de escritorio con forma de rana de boca abierta en verde brillante con interior rojo. Perfecto para guardar clips, gomas y accesorios de oficina con un toque divertido.",
+            "precio": 1300,
+            "imagen": "productos/miscelaneas/organizador-rana-boca-roja.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 130,
+            "titulo": "Set de Gatos Articulados",
+            "descripcion": "Set de 4 gatitos articulados tipo fidget toy, con cuerpo flexible en violeta, marrón, celeste y naranja. Ideales para jugar, decorar el escritorio o como detalle antiestrés.",
+            "precio": 2200,
+            "imagen": "productos/miscelaneas/set-gatos-articulados.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 131,
+            "titulo": "Figura Dinosaurio Verde en Huevo",
+            "descripcion": "Tierna figura de dinosaurio verde emergiendo de un huevo moteado, inspirada en los personajes clásicos de videojuegos. Impresa en 3D con gran detalle y acabado en colores vibrantes. Ideal como pieza decorativa de escritorio o regalo para gamers.",
+            "precio": 1400,
+            "imagen": "productos/miscelaneas/figura-dinosaurio-huevo.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 132,
+            "titulo": "Dúo de Pulpitos Tiernos",
+            "descripcion": "Pareja de pulpos decorativos con ojos grandes y expresivos, impresos en 3D en colores rojo y turquesa. Perfectos para decorar un escritorio o repisa, o como regalo original. Vienen en pack de dos unidades.",
+            "precio": 1100,
+            "imagen": "productos/miscelaneas/duo-pulpos-tiernos.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 133,
+            "titulo": "Figura Rana Agachada",
+            "descripcion": "Figura de rana en pose agachada y dinámica, con grandes ojos amarillos que le dan personalidad. Impresa en 3D en verde militar con acabado mate. Una pieza decorativa divertida para sumar a tu colección.",
+            "precio": 950,
+            "imagen": "productos/miscelaneas/figura-rana-agachada.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 134,
+            "titulo": "Set de Criaturas Fidget Multicolor",
+            "descripcion": "Set de seis criaturas articuladas impresas en 3D, con cuerpos flexibles tipo cadena y cabezas con orejas puntiagudas. Disponibles en una gama de colores que va del rojo al verde. Ideales como juguete antiestrés o para coleccionar.",
+            "precio": 1900,
+            "imagen": "productos/miscelaneas/set-criaturas-fidget-arcoiris.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 135,
+            "titulo": "Llavero Chanchito Articulado",
+            "descripcion": "Llavero con forma de chanchito de cuerpo segmentado y flexible, impreso en 3D en color rosa. Incluye argolla metálica para colgar de mochilas o llaves. Un accesorio tierno y resistente para el día a día.",
+            "precio": 600,
+            "imagen": "productos/miscelaneas/llavero-chanchito-articulado.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 136,
+            "titulo": "Gusano Articulado con Sombrero",
+            "descripcion": "Gusano flexible impreso en 3D, con cuerpo articulado en verde y un pequeño sombrero marrón. Se puede enroscar alrededor de dedos, lápices o asas. Un juguete antiestrés divertido y original.",
+            "precio": 900,
+            "imagen": "productos/miscelaneas/gusano-articulado-sombrero.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 137,
+            "titulo": "Jarrón Decorativo Hada y Flores",
+            "descripcion": "Jarrón ornamental impreso en 3D con relieve de un hada sentada entre flores y enredaderas talladas. Acabado en blanco mate que simula porcelana, ideal como pieza central de decoración. Un detalle elegante para sumar magia a cualquier ambiente.",
+            "precio": 2200,
+            "imagen": "productos/miscelaneas/jarron-hada-floral.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 138,
+            "titulo": "Llavero Trofeo Mundial Dorado",
+            "descripcion": "Llavero con forma de copa de campeón en acabado dorado y detalles verdes en la base. Impreso en 3D con gran nivel de detalle, incluye argolla y cadena metálica. Ideal para los fanáticos del fútbol que quieren llevar la copa a todos lados.",
+            "precio": 650,
+            "imagen": "productos/miscelaneas/llavero-trofeo-mundial-dorado.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 139,
+            "titulo": "Decoración de Pared Ratón Eléctrico Acostado",
+            "descripcion": "Decoración de pared con efecto de impacto, con un simpático personaje amarillo de mejillas eléctricas en pose relajada. Impresa en 3D en una sola pieza, lista para colgar. Un guiño divertido a los clásicos personajes de videojuegos.",
+            "precio": 1100,
+            "imagen": "productos/miscelaneas/decoracion-pared-raton-electrico-acostado.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 140,
+            "titulo": "Cubre Caja de Pañuelos Texturizada",
+            "descripcion": "Cubre caja de pañuelos impreso en 3D con paredes texturizadas en verde militar y tapa superior en verde claro. Le da un toque moderno a cualquier escritorio o mesa de living, ocultando la caja original. Diseño resistente y fácil de rellenar.",
+            "precio": 1900,
+            "imagen": "productos/miscelaneas/cubre-caja-panuelos-texturizada.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 141,
+            "titulo": "Soporte para Auriculares 3D",
+            "descripcion": "Soporte de escritorio para auriculares, impreso en 3D en blanco con base circular antideslizante. Mantiene tus auriculares organizados y a la vista, liberando espacio en tu escritorio. Diseño minimalista que combina con cualquier setup.",
+            "precio": 1500,
+            "imagen": "productos/miscelaneas/soporte-auriculares.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 142,
+            "titulo": "Soporte para Celular Minimalista",
+            "descripcion": "Soporte de celular impreso en 3D en negro, con diseño compacto y ganchos integrados para organizar cables. Ideal para escritorio o mesa de luz, mantiene tu teléfono en ángulo perfecto para mirar contenido o videollamadas.",
+            "precio": 1200,
+            "imagen": "productos/miscelaneas/soporte-celular-minimalista.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 143,
+            "titulo": "Soporte Robot para Visor VR y Controles",
+            "descripcion": "Soporte con forma de pequeño robot que sostiene tu visor de realidad virtual sobre la cabeza y los controles en cada mano. Impreso en 3D en blanco con textura granulada tipo piedra. Una manera divertida y funcional de guardar tu equipo de VR.",
+            "precio": 2200,
+            "imagen": "productos/miscelaneas/soporte-robot-vr.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 144,
+            "titulo": "Soporte para Auriculares Curvo",
+            "descripcion": "Soporte de escritorio para auriculares con diseño curvo y elegante, impreso en 3D en negro mate. Base amplia que brinda estabilidad y un perfil minimalista que se adapta a cualquier setup. Ideal para mantener tus auriculares siempre a mano.",
+            "precio": 1600,
+            "imagen": "productos/miscelaneas/soporte-auriculares-negro.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 145,
+            "titulo": "Soporte de Celular Gato Estirándose",
+            "descripcion": "Soporte para celular con forma de gato en pose de estiramiento, impreso en 3D en blanco con acabado mate. Sostiene tu teléfono en ángulo cómodo para mirar videos o videollamadas. Un detalle tierno que combina función y decoración.",
+            "precio": 1400,
+            "imagen": "productos/miscelaneas/soporte-celular-gato.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 146,
+            "titulo": "Set de Soportes Exhibidores Universales",
+            "descripcion": "Par de soportes exhibidores impresos en 3D en negro, ideales para mostrar tarjetas, figuras, placas o el celular en posición vertical. Diseño compacto y resistente, perfecto para escritorio, vidriera o estantería.",
+            "precio": 1100,
+            "imagen": "productos/miscelaneas/set-soportes-exhibidores.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 147,
+            "titulo": "Soporte para Controles y Auriculares Gaming",
+            "descripcion": "Soporte doble impreso en 3D en negro, pensado para organizar dos controles y un par de auriculares gamer en un solo lugar. Base circular estable y diseño robusto que libera espacio en tu escritorio. Ideal para setups de consola.",
+            "precio": 2400,
+            "imagen": "productos/miscelaneas/soporte-controles-auriculares-gaming.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 148,
+            "titulo": "Soporte de Celular Acanalado",
+            "descripcion": "Soporte de celular impreso en 3D con diseño acanalado tipo madera curvada, disponible en verde oliva o terracota. Sostiene el teléfono en ángulo ideal para mirar contenido o hacer videollamadas. Un accesorio de escritorio con estilo.",
+            "precio": 1300,
+            "imagen": "productos/miscelaneas/soporte-celular-acanalado.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 149,
+            "titulo": "Dispensador de Huevos 3D",
+            "descripcion": "Organizador de huevos impreso en 3D con sistema de carga por gravedad: los huevos se deslizan automáticamente hacia el frente a medida que los usás. Capacidad para varias docenas, ideal para heladera o mesada. Diseño moderno en gris azulado.",
+            "precio": 2300,
+            "imagen": "productos/miscelaneas/dispensador-huevos.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 150,
+            "titulo": "Huevo Decorativo Espiral Azul",
+            "descripcion": "Huevo decorativo impreso en 3D con un patrón espiral en degradé de azul a verde sobre fondo negro. Su efecto multicolor se logra con una sola pasada de impresión. Ideal como pisapapeles o adorno de escritorio.",
+            "precio": 750,
+            "imagen": "productos/miscelaneas/huevo-decorativo-espiral-azul.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 151,
+            "titulo": "Cono Decorativo Espiral Rojo y Azul",
+            "descripcion": "Pieza decorativa con forma de cono y patrón espiral bicolor en rojo y azul, impresa en 3D en una sola pieza. Un detalle llamativo para repisas o escritorios. Tamaño compacto, ideal para coleccionar en distintos colores.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/cono-decorativo-espiral.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 152,
+            "titulo": "Set de Cajas Mandarina",
+            "descripcion": "Set de cajas con forma de mandarina, impresas en 3D en naranja con detalle de hojita verde. Al abrirlas revelan el interior segmentado como una mandarina real. Perfectas para guardar caramelos, anillos o pequeños objetos.",
+            "precio": 1800,
+            "imagen": "productos/miscelaneas/set-cajas-mandarina.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 153,
+            "titulo": "Mini Contenedor Doble Esférico Neón",
+            "descripcion": "Mini contenedor de dos compartimentos esféricos con textura acanalada, impreso en 3D en verde neón. Ideal para guardar pastillas, hilo dental, ganchitos o pequeños accesorios. Tamaño de bolsillo, fácil de abrir y cerrar.",
+            "precio": 800,
+            "imagen": "productos/miscelaneas/contenedor-doble-esferico-neon.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 154,
+            "titulo": "Rompecabezas de Pizza 3D",
+            "descripcion": "Divertido rompecabezas con forma de pizza, compuesto por piezas triangulares con textura de muzzarella y pepperoni. Viene en una bandeja tipo madera para armar y guardar las piezas. Ideal para estimular la concentración de chicos y grandes.",
+            "precio": 1900,
+            "imagen": "productos/miscelaneas/rompecabezas-pizza.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 155,
+            "titulo": "Set de Fidgets Engranaje Multicolor",
+            "descripcion": "Set de cinco fidget toys con forma de eslabón y engranajes dentados, impresos en 3D en distintas combinaciones de colores. Ideales para mantener las manos ocupadas, aliviar el estrés o coleccionar. Apilables entre sí.",
+            "precio": 1800,
+            "imagen": "productos/miscelaneas/set-fidgets-engranaje-multicolor.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 156,
+            "titulo": "Set de Kits de Animales Salvajes para Armar",
+            "descripcion": "Set de kits de animales salvajes impresos en 3D para armar tipo maqueta, incluye león, gorila de montaña, elefante, oso polar, rinoceronte, camello, jirafa e hipopótamo. Las piezas se desprenden de la plancha y se ensamblan sin pegamento. Ideal para coleccionar o como actividad para chicos.",
+            "precio": 2200,
+            "imagen": "productos/miscelaneas/set-kits-animales-salvajes.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 157,
+            "titulo": "Mezclador de Cartas Manual 3D",
+            "descripcion": "Mezclador de cartas mecánico impreso en 3D, con sistema de engranajes y manivela para barajar dos mazos al mismo tiempo. Ideal para noches de juego, evita el desgaste de las cartas al mezclarlas a mano. Funciona con cualquier mazo estándar.",
+            "precio": 2400,
+            "imagen": "productos/miscelaneas/mezclador-cartas-manual.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 158,
+            "titulo": "Set de Piedras Sensoriales Texturizadas",
+            "descripcion": "Set de seis piedras sensoriales impresas en 3D, cada una con una textura diferente: puntos, líneas, ondas y relieves. Ideales para estimulación táctil, terapia sensorial o como fidget toy. Colores vivos y tamaño de bolsillo.",
+            "precio": 1600,
+            "imagen": "productos/miscelaneas/set-piedras-sensoriales.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 159,
+            "titulo": "Set de Jeeps Militares para Armar",
+            "descripcion": "Set de mini vehículos militares tipo jeep impresos en 3D para armar, incluye plancha de piezas y dos unidades ya ensambladas en verde oliva. Gran nivel de detalle a pequeña escala, ideal para dioramas o coleccionistas de modelismo.",
+            "precio": 1400,
+            "imagen": "productos/miscelaneas/set-jeeps-militares-armar.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 160,
+            "titulo": "Camión Militar para Armar 3D",
+            "descripcion": "Kit de camión militar impreso en 3D para armar, con plancha de piezas detalladas y unidad de muestra ya ensamblada en verde oliva. Incluye caja de carga, ruedas y chasis a escala. Una pieza ideal para dioramas militares o vitrinas de modelismo.",
+            "precio": 1600,
+            "imagen": "productos/miscelaneas/camion-militar-armar.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 161,
+            "titulo": "Mini Estuche Organizador con Llavero",
+            "descripcion": "Mini estuche rígido de tapa abatible, impreso en 3D, ideal para guardar tarjetas, pastillas o pequeños objetos personales. Disponible en negro con argolla para llavero o en gris liso. Compacto, resistente y fácil de llevar en el bolsillo.",
+            "precio": 700,
+            "imagen": "productos/miscelaneas/mini-estuche-organizador-llavero.webp",
+            "categoria": "miscelaneas"
+        },
+        {
+            "id": 162,
+            "titulo": "Pack de Accesorios Personaje Rosa: Organizador, Portalápices, Llavero y Figura",
+            "descripcion": "Pack temático con cuatro piezas impresas en 3D inspiradas en un entrañable personaje rosa de videojuegos: organizador de escritorio multifunción, portalápices con su silueta, llavero y figura con sombrero de mago y estrellas. Ideal para fans que quieren renovar su escritorio con un mismo estilo.",
+            "precio": 2400,
+            "imagen": "productos/miscelaneas/pack-personaje-rosa-escritorio.webp",
+            "categoria": "miscelaneas"
+        }
+    ]
+}

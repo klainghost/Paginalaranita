@@ -1,0 +1,162 @@
+/* PANEL ADMIN */
+.admin-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+}
+
+.admin-filtros input,
+.admin-filtros select {
+  flex: 1;
+  min-width: 200px;
+  padding: var(--spacing-md);
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-family: var(--font-primary);
+}
+
+.admin-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--spacing-lg);
+  margin: var(--spacing-xl) 0;
+}
+
+.admin-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing-md);
+}
+
+.admin-card__image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.admin-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.admin-card__titulo {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.admin-card__precio {
+  font-weight: bold;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.admin-card__botones {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.admin-card__botones button {
+  flex: 1;
+  margin-top: 0;
+  border: none;
+  border-radius: 8px;
+  padding: var(--spacing-sm);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+.admin-card__editar {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.admin-card__editar:hover {
+  background-color: var(--color-secondary);
+}
+
+.admin-card__eliminar {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+}
+
+.admin-card__eliminar:hover {
+  background-color: #b71c1c;
+}
+
+.admin-card__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-sm) 0 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  border-left: none;
+  max-width: none;
+  width: 100%;
+}
+
+.admin-card__form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.admin-card__form input,
+.admin-card__form textarea {
+  padding: var(--spacing-sm);
+}
+
+.admin-card__actions {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-sm);
+}
+
+.admin-card__actions button {
+  margin-top: 0;
+  flex: 1;
+  min-width: 0;
+  padding: var(--spacing-sm);
+  font-size: 0.8rem;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+
+.admin-card__mensaje {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.admin-card__mensaje--ok {
+  color: var(--color-success);
+}
+
+.admin-card__mensaje--error {
+  color: var(--color-danger);
+}
+
+.admin-card__info[hidden],
+.admin-card__form[hidden] {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .admin-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--spacing-md);
+  }
+}

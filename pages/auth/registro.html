@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA RANITA 3D - Registro</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar"></nav>
+
+    <!-- FORMULARIO DE REGISTRO -->
+    <main>
+        <h1>Registro</h1>
+
+        <form action="" method="post">
+            <div>
+                <label for="txtNombre"><b>Nombre:</b></label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Ingrese su nombre">
+
+                <label for="txtApellido"><b>Apellido:</b></label>
+                <input type="text" id="apellido" name="apellido" required placeholder="Ingrese su apellido">
+
+                <label for="txtemail"><b>Email:</b></label>
+                <input type="email" id="txtemail" name="txtemail" required>
+
+                <label for="password"><b>Contraseña:</b></label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="fecha_nacimiento"><b>Fecha de Nacimiento:</b></label>
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+
+                <button type="submit">Registrarse</button>
+            </div>
+        </form>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <script>const navBasePath = "../../";</script>
+    <script src="../../js/data/navLinks.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/components/navbar.js"></script>
+    <script src="../../js/components/footer.js"></script>
+    <script src="../../js/controllers/logout.js"></script>
+</body>
+</html>

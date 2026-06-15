@@ -1,0 +1,210 @@
+/* BOTONES NAVBAR */
+.navbar__logout-btn,
+.logout-btn {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-timing);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
+}
+
+.navbar__logout-btn:hover,
+.logout-btn:hover {
+  background-color: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(211, 47, 47, 0.4);
+}
+
+.navbar__login-btn,
+.login-btn {
+  background-color: var(--color-success);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-timing);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 8px rgba(56, 142, 60, 0.3);
+}
+
+.navbar__login-btn:hover,
+.login-btn:hover {
+  background-color: #2e7d32;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(56, 142, 60, 0.4);
+}
+
+
+/* BOTONES FORMULARIO */
+form button,
+form button[type="submit"] {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-timing);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(45, 80, 22, 0.3);
+  margin-top: var(--spacing-md);
+}
+
+form button:hover,
+form button[type="submit"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(45, 80, 22, 0.4);
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%);
+}
+
+form button:active,
+form button[type="submit"]:active {
+  transform: translateY(-1px);
+}
+
+
+/* BOTONES CARDS */
+.product-card__button,
+.card__button {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-timing);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  align-self: flex-end;
+}
+
+.product-card__button:hover,
+.card__button:hover {
+  background-color: var(--color-hover);
+  transform: scale(1.05);
+}
+
+
+/* BOTONES AUTH */
+.auth-buttons .login-btn {
+  background: linear-gradient(135deg, var(--color-success) 0%, #52c41a 100%);
+  color: var(--color-white);
+}
+
+.auth-buttons .login-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(56, 142, 60, 0.4);
+  background: linear-gradient(135deg, #2e7d32 0%, var(--color-success) 100%);
+}
+
+.auth-buttons .logout-btn {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: var(--color-white);
+}
+
+.auth-buttons .logout-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(45, 80, 22, 0.4);
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%);
+}
+
+
+/* BOTONES CANTIDAD */
+.cantidad-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.btn-cantidad {
+    background-color: var(--color-light);
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition-speed) var(--transition-timing);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-cantidad:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.cantidad-producto {
+    font-size: 1.1rem;
+    font-weight: bold;
+    min-width: 24px;
+    text-align: center;
+    color: var(--color-dark);
+}
+
+
+/* BOTONES CARRITO */
+.btn-eliminar {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-timing);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.btn-eliminar:hover {
+  background-color: #b71c1c;
+  transform: scale(1.05);
+}
+
+
+/* ESTADOS */
+button:disabled,
+input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .navbar__logout-btn,
+  .logout-btn,
+  .navbar__login-btn,
+  .login-btn {
+    width: 100%;
+  }
+
+  form button,
+  form button[type="submit"] {
+    padding: var(--spacing-md);
+    font-size: 1rem;
+  }
+
+  .auth-buttons .login-btn,
+  .auth-buttons .logout-btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 1rem;
+  }
+}

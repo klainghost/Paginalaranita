@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA RANITA 3D - Iniciar Sesión</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar"></nav>
+
+    <!-- FORMULARIO DE LOGIN -->
+    <main>
+        <h1>Iniciar Sesión</h1>
+
+        <form id="formLogin" action="" method="post">
+            <div>
+                <label for="txtemail"><b>Email:</b></label>
+                <input type="email" id="txtemail" name="txtemail" required placeholder="Ingrese su email">
+
+                <label for="password"><b>Contraseña:</b></label>
+                <input type="password" id="password" name="password" required placeholder="Ingrese su contraseña">
+
+                <button type="submit">Ingresar</button>
+
+                <p id="mensajeError" style="color: red;"></p>
+
+                <p>¿No tenés cuenta? <a href="registro.html">Registrate acá</a></p>
+            </div>
+        </form>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <script>const navBasePath = "../../";</script>
+    <script src="../../js/data/navLinks.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/components/navbar.js"></script>
+    <script src="../../js/components/footer.js"></script>
+    <script src="../../js/controllers/login.js"></script>
+    <script src="../../js/controllers/logout.js"></script>
+</body>
+</html>

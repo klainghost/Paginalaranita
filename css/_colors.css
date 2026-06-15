@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap');
+
+:root {
+  --color-primary: #2d5016;
+  --color-secondary: #b7cd7f;
+  --color-accent: #8fbc3d;
+  --color-gold: #c9a227;
+  --color-dark: #1a1a1a;
+  --color-light: #f3ead7;
+  --color-white: #ffffff;
+  --color-hover: #6fa73a;
+  --color-danger: #d32f2f;
+  --color-success: #388e3c;
+
+  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-secondary: 'Arial', sans-serif;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  --transition-speed: 0.3s;
+  --transition-timing: ease-in-out;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}

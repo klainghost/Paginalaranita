@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA RANITA 3D - Panel de Administración</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+    <nav class="navbar" id="navbar"></nav>
+
+    <main>
+        <h1>Panel de Administración</h1>
+        <p>Editá el título, precio y descripción de cada producto. Los cambios se guardan en el catálogo al tocar "Guardar".</p>
+
+        <div class="admin-filtros">
+            <input type="search" id="adminBuscar" placeholder="Buscar por título...">
+            <select id="adminCategoria">
+                <option value="">Todas las categorías</option>
+                <option value="miniaturas">Miniaturas</option>
+                <option value="dados">Dados</option>
+                <option value="escenografia">Escenografía</option>
+                <option value="miscelaneas">Misceláneas</option>
+            </select>
+        </div>
+
+        <div class="admin-container" id="adminContainer"></div>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <script>const navBasePath = "../../";</script>
+    <script src="../../js/data/navLinks.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/components/navbar.js"></script>
+    <script src="../../js/components/footer.js"></script>
+    <script src="../../js/controllers/admin.js"></script>
+    <script src="../../js/controllers/logout.js"></script>
+</body>
+</html>
