@@ -30,8 +30,20 @@ function generarNavbar() {
 
     let links = '<ul class="nav-links">';
     navLinks.forEach((link) => {
-        const id = link.titulo === "Carrito" ? ' id="navCarrito"' : "";
-        links += `<li><a href="${base}${link.url}"${id}>${link.titulo}</a></li>`;
+        if (link.dropdown) {
+            const items = link.dropdown.map(c =>
+                `<li><a href="${base}${c.url}">${c.titulo}</a></li>`
+            ).join('');
+            links += `<li class="nav-has-dropdown">
+                <button class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                    ${link.titulo} <span class="nav-dropdown-arrow" aria-hidden="true">▾</span>
+                </button>
+                <ul class="nav-dropdown">${items}</ul>
+            </li>`;
+        } else {
+            const id = link.titulo === "Carrito" ? ' id="navCarrito"' : "";
+            links += `<li><a href="${base}${link.url}"${id}>${link.titulo}</a></li>`;
+        }
     });
     if (esAdmin()) {
         links += `<li><a href="${base}pages/admin/productos.html">Admin</a></li>`;
@@ -63,6 +75,25 @@ function generarNavbar() {
         const abierto = menu.classList.toggle("navbar__menu--abierto");
         toggle.setAttribute("aria-expanded", abierto);
         toggle.textContent = abierto ? "✕" : "☰";
+    });
+
+    // Dropdown de categorías
+    nav.querySelectorAll(".nav-dropdown-toggle").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const li = this.closest(".nav-has-dropdown");
+            const isOpen = li.classList.toggle("abierto");
+            this.setAttribute("aria-expanded", isOpen);
+        });
+    });
+    document.addEventListener("click", function (e) {
+        if (!e.target.closest(".nav-has-dropdown")) {
+            nav.querySelectorAll(".nav-has-dropdown").forEach(el => {
+                el.classList.remove("abierto");
+                const b = el.querySelector(".nav-dropdown-toggle");
+                if (b) b.setAttribute("aria-expanded", "false");
+            });
+        }
     });
 
     generarCarritoFlotante();
