@@ -62,10 +62,12 @@ function generarNavbar() {
             <h2>LA RANITA 3D</h2>
         </div>
         <button class="navbar__toggle" id="navbarToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
-        <div class="navbar__menu" id="navbarMenu">
-            ${links}
+        <div class="navbar__actions">
             ${botonSesion}
             ${botonTema}
+        </div>
+        <div class="navbar__menu" id="navbarMenu">
+            ${links}
         </div>
     `;
 

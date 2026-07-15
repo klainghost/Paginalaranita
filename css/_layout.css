@@ -1,7 +1,8 @@
 /* NAVBAR */
 .navbar {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "logo nav actions";
   align-items: center;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   padding: var(--spacing-md) var(--spacing-lg);
@@ -9,7 +10,6 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  flex-wrap: wrap;
   transition: padding var(--transition-speed) var(--transition-timing),
               box-shadow var(--transition-speed) var(--transition-timing);
 }
@@ -30,8 +30,16 @@
   max-width: 52px;
 }
 
+.navbar__actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
 .navbar__logo,
 .logo {
+  grid-area: logo;
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
@@ -65,9 +73,10 @@
 }
 
 .navbar__menu {
+  grid-area: nav;
   display: flex;
   align-items: center;
-  flex: 1;
+  justify-content: center;
   gap: var(--spacing-lg);
 }
 
@@ -1298,22 +1307,31 @@ a.category-card:hover,
   }
 
   .navbar {
-    flex-wrap: wrap;
+    grid-template-columns: auto auto 1fr;
+    grid-template-areas: "logo toggle actions"
+                         "nav  nav    nav";
     padding: var(--spacing-md) var(--spacing-lg);
+    gap: 0;
   }
 
   .navbar__toggle {
+    grid-area: toggle;
     display: block;
   }
 
+  .navbar__actions {
+    justify-content: flex-end;
+  }
+
   .navbar__menu {
+    grid-area: nav;
     display: none;
     flex-direction: column;
     align-items: stretch;
-    flex: none;
     width: 100%;
     gap: var(--spacing-md);
     margin-top: var(--spacing-md);
+    justify-content: flex-start;
   }
 
   .navbar__menu--abierto {
