@@ -54,7 +54,7 @@
             "badgeTipo": "limitado",
             "titulo": "Figuras de Edición Limitada",
             "descripcion": "Figuras coleccionables de tiempo limitado, diseñadas en colaboración con artistas invitados. Stock reducido y numerado.",
-            "precio": 2200,
+            "precio": 10000,
             "imagen": "productos/miniaturas/Rol.webp",
             "categoria": "miniaturas"
         },
@@ -72,7 +72,7 @@
             "badgeTipo": "popular",
             "titulo": "Compañía Heroica 3D",
             "descripcion": "Seis héroes que incluyen mago, druida con tocado de ciervo, paladín de escudo sagrado y bardo con laúd. Cada figura está lista para pintar.",
-            "precio": 2900,
+            "precio": 14000,
             "imagen": "productos/miniaturas/compania-heroica.webp",
             "categoria": "miniaturas"
         },
@@ -80,7 +80,7 @@
             "id": 11,
             "titulo": "Banda de Goblins 3D",
             "descripcion": "Cinco goblins armados con dagas, lanzas y artefactos mágicos. Una horda perfecta para emboscar a los aventureros.",
-            "precio": 2400,
+            "precio": 10000,
             "imagen": "productos/miniaturas/banda-goblins.webp",
             "categoria": "miniaturas"
         },
@@ -88,7 +88,7 @@
             "id": 12,
             "titulo": "Paladín Encapuchado 3D",
             "descripcion": "Miniatura de un paladín con armadura pesada, capa larga y brazos cruzados. Pose imponente, ideal como jefe o aliado poderoso.",
-            "precio": 950,
+            "precio": 1400,
             "imagen": "productos/miniaturas/paladin-encapuchado.webp",
             "categoria": "miniaturas"
         },
@@ -96,7 +96,7 @@
             "id": 13,
             "titulo": "Mago Rana Errante 3D",
             "descripcion": "El mago rana, mascota de La Ranita 3D, en versión miniatura, con bastón y capa. Compañero ideal para tus aventuras de mesa.",
-            "precio": 850,
+            "precio": 900,
             "imagen": "productos/miniaturas/mago-rana.webp",
             "categoria": "miniaturas"
         },
@@ -104,7 +104,7 @@
             "id": 14,
             "titulo": "Explorador Rana 3D",
             "descripcion": "Una rana aventurera encapuchada con arma al hombro y mochila de viaje. La compañera perfecta del Mago Rana.",
-            "precio": 850,
+            "precio": 1200,
             "imagen": "productos/miniaturas/explorador-rana.webp",
             "categoria": "miniaturas"
         },
@@ -128,7 +128,7 @@
             "id": 17,
             "titulo": "Grupo de Mercenarios Heroicos",
             "descripcion": "Set de 5 miniaturas de aventureros de fantasía impresas en 3D: pícaro, guerrero, paladín, sacerdotisa y enano guerrero. Ideal para representar un grupo mercenario completo en tu campaña de rol. Detalles nítidos, listas para pintar.",
-            "precio": 2800,
+            "precio": 12000,
             "imagen": "productos/miniaturas/grupo-mercenarios-heroicos.webp",
             "categoria": "miniaturas"
         },
@@ -136,7 +136,7 @@
             "id": 18,
             "titulo": "Guardia Real con Escudos",
             "descripcion": "Escuadrón de 5 caballeros con armadura pesada y escudos heráldicos, impresos en 3D con gran detalle. Perfectos para representar la guardia de honor de un reino o una orden de caballería en tu mesa de juego.",
-            "precio": 2900,
+            "precio": 10000,
             "imagen": "productos/miniaturas/guardia-real-escudos.webp",
             "categoria": "miniaturas"
         },
@@ -144,7 +144,7 @@
             "id": 19,
             "titulo": "Caballero Cruzado",
             "descripcion": "Miniatura de caballero con armadura completa, espada larga y capa, impresa en 3D con gran nivel de detalle. Perfecta como protagonista, jefe de una orden de caballeros o aliado poderoso.",
-            "precio": 1300,
+            "precio": 1800,
             "imagen": "productos/miniaturas/caballero-cruzado.webp",
             "categoria": "miniaturas"
         },
@@ -152,7 +152,7 @@
             "id": 20,
             "titulo": "Rana Peregrina Viajera",
             "descripcion": "Miniatura de una rana peregrina con capucha, bastón de viaje y mochila, impresa en 3D con un acabado cálido tipo resina natural. Un personaje entrañable para sumar a tu grupo de aventureros o como PNJ viajero.",
-            "precio": 950,
+            "precio": 1500,
             "imagen": "productos/miniaturas/rana-peregrina-viajera.webp",
             "categoria": "miniaturas"
         },
@@ -160,7 +160,7 @@
             "id": 21,
             "titulo": "Dragón Azul sobre Ruinas",
             "descripcion": "Miniatura de dragón azulado de grandes alas, posado sobre las ruinas de una construcción gótica, impresa en 3D como pieza de exhibición. Un set espectacular para representar al guardián de una torre o catedral en ruinas.",
-            "precio": 2600,
+            "precio": 15000,
             "imagen": "productos/miniaturas/dragon-azul-ruinas.webp",
             "categoria": "miniaturas"
         },
@@ -168,7 +168,7 @@
             "id": 22,
             "titulo": "Dragón Negro Rugiente",
             "descripcion": "Miniatura de dragón negro rugiendo con las alas extendidas, impresa en 3D en un acabado oscuro de gran impacto visual. Ideal como jefe final o presagio de mal agüero para tu campaña de rol.",
-            "precio": 2200,
+            "precio": 15000,
             "imagen": "productos/miniaturas/dragon-negro-rugiente.webp",
             "categoria": "miniaturas"
         },
@@ -176,7 +176,7 @@
             "id": 23,
             "titulo": "Dragón Blanco de Alas Abiertas",
             "descripcion": "Miniatura de dragón blanco con las alas completamente abiertas sobre una base rocosa, impresa en 3D con un acabado claro y muy detallado. Perfecta como guardián de hielo o criatura legendaria de tu mesa de juego.",
-            "precio": 1900,
+            "precio": 15000,
             "imagen": "productos/miniaturas/dragon-blanco-alas-abiertas.webp",
             "categoria": "miniaturas"
         },
@@ -424,7 +424,7 @@
             "id": 54,
             "titulo": "Set de Criaturas Fantásticas Miniatura",
             "descripcion": "Set de pequeñas criaturas de un solo ojo en tonos violeta y negro, impresas en 3D. Ideales como monstruos menores, familiares o marcadores de iniciativa en tu campaña de rol.",
-            "precio": 1100,
+            "precio": 1300,
             "imagen": "productos/miniaturas/set-criaturas-fantasticas-mini.webp",
             "categoria": "miniaturas"
         },
@@ -480,7 +480,7 @@
             "id": 61,
             "titulo": "Esqueleto de Anquilosaurio 3D",
             "descripcion": "Réplica de un esqueleto de anquilosaurio con su característica maza en la cola, impresa en 3D con gran nivel de detalle en costillas y placas óseas. Incluye cabeza desmontable, ideal para coleccionistas de dinosaurios.",
-            "precio": 1500,
+            "precio": 1600,
             "imagen": "productos/miniaturas/esqueleto-anquilosaurio.webp",
             "categoria": "miniaturas"
         },
@@ -488,7 +488,7 @@
             "id": 62,
             "titulo": "Esqueleto de Triceratops 3D",
             "descripcion": "Esqueleto de triceratops impreso en 3D, con cráneo de gran tamaño, cuernos y escudo óseo perfectamente detallados. Una pieza imponente para vitrinas, escritorios o como escenografía prehistórica en tus partidas.",
-            "precio": 1600,
+            "precio": 1800,
             "imagen": "productos/miniaturas/esqueleto-triceratops.webp",
             "categoria": "miniaturas"
         },
@@ -504,7 +504,7 @@
             "id": 64,
             "titulo": "Esqueleto de T-Rex Rugiente 3D",
             "descripcion": "Esqueleto de Tiranosaurio Rex en pose de ataque, con la boca abierta mostrando sus afilados dientes y una garra en alto. Impreso en 3D en tono hueso con cola articulada y gran nivel de detalle, ideal para coleccionistas.",
-            "precio": 1500,
+            "precio": 1800,
             "imagen": "productos/miniaturas/esqueleto-trex-rugiente.webp",
             "categoria": "miniaturas"
         },
@@ -512,7 +512,7 @@
             "id": 65,
             "titulo": "Kit de Esqueleto de Triceratops para Armar 3D",
             "descripcion": "Kit articulado de esqueleto de triceratops impreso en 3D, con todas las piezas en su marco listas para ensamblar sin pegamento. Una actividad entretenida para armar y exhibir, ideal para amantes de los dinosaurios.",
-            "precio": 1200,
+            "precio": 1400,
             "imagen": "productos/miniaturas/kit-esqueleto-triceratops-armar.webp",
             "categoria": "miniaturas"
         },
@@ -520,7 +520,7 @@
             "id": 66,
             "titulo": "Kit de Esqueleto de T-Rex para Armar 3D",
             "descripcion": "Kit articulado de esqueleto de Tiranosaurio Rex impreso en 3D, con piezas desmontables del marco para ensamblar sin pegamento. Perfecto como actividad manual o pieza decorativa una vez armado.",
-            "precio": 1200,
+            "precio": 1400,
             "imagen": "productos/miniaturas/kit-esqueleto-trex-armar.webp",
             "categoria": "miniaturas"
         },
