@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /pages/auth/
+Disallow: /pages/admin/
+Disallow: /pages/carrito/
+Disallow: /api/
+Disallow: /node_modules/
+
+Sitemap: https://laranita3d.netlify.app/sitemap.xml

@@ -3,10 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Título de la página que aparece en la pestaña -->
-    <title>LA RANITA 3D - Tienda de Impresiones 3D</title>
-    <!-- Enlace al archivo CSS externo para los estilos -->
+
+    <!-- SEO básico -->
+    <title>La Ranita 3D | Miniaturas, Dados y Escenografía 3D - Malargüe, Argentina</title>
+    <meta name="description" content="Tienda de impresión 3D en Malargüe, Mendoza. Miniaturas para rol, dados, escenografía y accesorios únicos. Diseños personalizados con envíos a todo Argentina.">
+    <meta name="keywords" content="miniaturas 3D, rol, D&D, Dungeons and Dragons, Pathfinder, escenografía, dados, impresión 3D, Malargüe, Mendoza, Argentina, juegos de mesa">
+    <meta name="author" content="La Ranita 3D">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#2d5016">
+    <link rel="canonical" href="https://laranita3d.netlify.app/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="apple-touch-icon" href="images/logo.png">
+
+    <!-- Open Graph (Facebook, WhatsApp, Instagram) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="La Ranita 3D">
+    <meta property="og:title" content="La Ranita 3D | Miniaturas, Dados y Escenografía 3D">
+    <meta property="og:description" content="Tienda de impresión 3D en Malargüe, Mendoza. Miniaturas para rol, dados, escenografía y accesorios únicos con envíos a todo Argentina.">
+    <meta property="og:image" content="https://laranita3d.netlify.app/images/banner/Banner.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://laranita3d.netlify.app/">
+    <meta property="og:locale" content="es_AR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="La Ranita 3D | Miniaturas, Dados y Escenografía 3D">
+    <meta name="twitter:description" content="Tienda de impresión 3D en Malargüe. Miniaturas, dados, escenografía y accesorios con envíos a todo Argentina.">
+    <meta name="twitter:image" content="https://laranita3d.netlify.app/images/banner/Banner.png">
+
+    <!-- Estilos -->
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- JSON-LD: Tienda online -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "OnlineStore",
+      "name": "La Ranita 3D",
+      "url": "https://laranita3d.netlify.app/",
+      "logo": "https://laranita3d.netlify.app/images/logo.png",
+      "image": "https://laranita3d.netlify.app/images/banner/Banner.png",
+      "description": "Tienda de impresión 3D en Malargüe, Mendoza. Miniaturas para rol, dados, escenografía y accesorios únicos con envíos a todo Argentina.",
+      "telephone": "+5492604349945",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Malargüe",
+        "addressRegion": "Mendoza",
+        "addressCountry": "AR"
+      },
+      "sameAs": ["https://www.instagram.com/laranita3d"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Catálogo La Ranita 3D",
+        "itemListElement": [
+          {"@type": "OfferCatalog", "name": "Miniaturas", "url": "https://laranita3d.netlify.app/pages/categorias/miniaturas.html"},
+          {"@type": "OfferCatalog", "name": "Dados", "url": "https://laranita3d.netlify.app/pages/categorias/dados.html"},
+          {"@type": "OfferCatalog", "name": "Escenografía", "url": "https://laranita3d.netlify.app/pages/categorias/escenografia.html"},
+          {"@type": "OfferCatalog", "name": "Misceláneas", "url": "https://laranita3d.netlify.app/pages/categorias/miscelaneas.html"}
+        ]
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "La Ranita 3D",
+      "url": "https://laranita3d.netlify.app/"
+    }
+    </script>
 </head>
 <body>
     <!-- NAVBAR - Barra de navegación -->
@@ -14,92 +82,72 @@
     
     <!-- CONTENIDO PRINCIPAL -->
     <main>
-        <h1>Bienvenidos a LA RANITA 3D</h1>
+        <h1>Bienvenidos a La Ranita 3D</h1>
+        <p class="hero-tagline">¡De la dimensión onírica a tu mesa de juego!</p>
 
-        <img src="images/banner/Banner.png" alt="La Ranita 3D - Miniaturas y accesorios para juegos de rol" class="hero-banner">
+        <img src="images/banner/Banner.png" alt="La Ranita 3D — Miniaturas, dados y escenografía 3D. Tienda en Malargüe, Mendoza. Envíos a todo Argentina." class="hero-banner">
 
-        <p>Bienvenidos a LA RANITA 3D, tu tienda especializada en impresión 3D de alta calidad para el mundo del rol. Miniaturas, dados, escenografía y misceláneas creadas con tecnología 3D de última generación. ¡De la dimensión onírica a tu mesa de juego!</p>
-        
-        <!-- SECCIÓN DE CATEGORÍAS CON CARDS -->
+        <p class="hero-description">Cada pieza que imprimimos nació primero como una idea: un personaje, un mundo, algo que alguien imaginó. En La Ranita 3D la hacemos real — con tecnología 3D de última generación y un nivel de detalle que va a sorprender a todos en la mesa.</p>
+
+        <div class="trust-strip">
+            <div class="trust-strip__item">
+                <span class="trust-strip__icon">🚚</span>
+                <div>
+                    <strong>Envíos a todo el país</strong>
+                    <span>Correo Argentino desde Malargüe</span>
+                </div>
+            </div>
+            <div class="trust-strip__item">
+                <span class="trust-strip__icon">🎨</span>
+                <div>
+                    <strong>Detalle excepcional</strong>
+                    <span>Impresión de alta resolución</span>
+                </div>
+            </div>
+            <div class="trust-strip__item">
+                <span class="trust-strip__icon">⚡</span>
+                <div>
+                    <strong>Respuesta rápida</strong>
+                    <span>Presupuesto en menos de 24 hs</span>
+                </div>
+            </div>
+            <div class="trust-strip__item">
+                <span class="trust-strip__icon">🐸</span>
+                <div>
+                    <strong>Diseños únicos</strong>
+                    <span>Personalizamos tu pieza ideal</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ornamental-divider"><span>✦ ✦ ✦</span></div>
+
+        <!-- EL GRIMORIO -->
+        <section class="grimorio">
+            <span class="grimorio__corner grimorio__corner--tl">❧</span>
+            <span class="grimorio__corner grimorio__corner--tr">❧</span>
+            <span class="grimorio__corner grimorio__corner--bl">❧</span>
+            <span class="grimorio__corner grimorio__corner--br">❧</span>
+            <span class="grimorio__emblema">🐸</span>
+            <h2 class="grimorio__titulo">El Grimorio de La Ranita</h2>
+            <p class="grimorio__texto">
+                En los confines de Malargüe, donde la cordillera guarda sus secretos más antiguos,
+                una ranita descubrió el arte de dar forma a los sueños. Desde entonces, héroes,
+                dragones, mazmorras y cofres de dados cobran vida capa a capa, con una precisión
+                que solo la magia —y la impresión 3D— pueden lograr. Cada pieza que sale de nuestro
+                taller lleva consigo un pedazo de esa aventura. ¿Cuál será la tuya?
+            </p>
+        </section>
+
+        <div class="ornamental-divider"><span>✦ ✦ ✦</span></div>
+
+        <!-- SECCIÓN DE CATEGORÍAS -->
         <section class="category-section">
             <h2 class="category-section__title">Nuestras Categorías</h2>
-            
-            <!-- Grid de cards de categorías -->
-            <div class="products-container">
-                
-                <!-- Card 1: Miniaturas -->
-                <div class="product-card">
-                    <!-- Imagen de la categoría -->
-                    <img src="images/productos/miniaturas/compania-heroica.webp" alt="Miniaturas" class="product-card__image">
-
-                    <!-- Información de la categoría -->
-                    <div class="product-card__body">
-                        <h3 class="product-card__title">Miniaturas</h3>
-
-                        <p class="product-card__description">
-                            Héroes, criaturas y monstruos impresos en 3D con un detalle excepcional. Aventureros, caballeros, goblins y dragones listos para protagonizar tu próxima campaña.
-                        </p>
-
-                        <p class="product-card__price">Desde $850</p>
-
-                        <!-- Botón que lleva a la categoría -->
-                        <button class="product-card__button" onclick="window.location.href='pages/categorias/miniaturas.html'">Ver Más</button>
-                    </div>
-                </div>
-
-                <!-- Card 2: Dados -->
-                <div class="product-card">
-                    <img src="images/productos/dados/estuche-dados-mago-azul.webp" alt="Dados" class="product-card__image">
-
-                    <div class="product-card__body">
-                        <h3 class="product-card__title">Dados</h3>
-
-                        <p class="product-card__description">
-                            Bandejas, estuches y cofres para tus dados de mesa, impresos en 3D. Organiza y transporta tu set de dados con estilo, listos para cualquier tirada.
-                        </p>
-
-                        <p class="product-card__price">Desde $800</p>
-
-                        <button class="product-card__button" onclick="window.location.href='pages/categorias/dados.html'">Ver Más</button>
-                    </div>
-                </div>
-
-                <!-- Card 3: Escenografía -->
-                <div class="product-card">
-                    <img src="images/productos/escenografia/set-mobiliario-taberna-madera.webp" alt="Escenografía" class="product-card__image">
-
-                    <div class="product-card__body">
-                        <h3 class="product-card__title">Escenografía</h3>
-
-                        <p class="product-card__description">
-                            Terrenos, casas, torres y ruinas impresas en 3D para construir el mundo de tu campaña. Piezas modulares y detalladas, listas para pintar y ambientar tu mesa de juego.
-                        </p>
-
-                        <p class="product-card__price">Desde $1200</p>
-
-                        <button class="product-card__button" onclick="window.location.href='pages/categorias/escenografia.html'">Ver Más</button>
-                    </div>
-                </div>
-
-                <!-- Card 4: Misceláneas -->
-                <div class="product-card">
-                    <img src="images/productos/miscelaneas/set-llaveros-criaturas.webp" alt="Misceláneas" class="product-card__image">
-
-                    <div class="product-card__body">
-                        <h3 class="product-card__title">Misceláneas</h3>
-
-                        <p class="product-card__description">
-                            Llaveros, organizadores, decoraciones y accesorios varios impresos en 3D. Productos generales para todos los gustos, más allá de la mesa de juego.
-                        </p>
-
-                        <p class="product-card__price">Desde $500</p>
-
-                        <button class="product-card__button" onclick="window.location.href='pages/categorias/miscelaneas.html'">Ver Más</button>
-                    </div>
-                </div>
-
-            </div>
+            <div class="categories-grid" id="categoriasContainer"></div>
         </section>
+
+        <div class="ornamental-divider"><span>✦ ✦ ✦</span></div>
 
         <!-- SECCIÓN DE PRODUCTOS DESTACADOS -->
         <section class="category-section">
@@ -118,18 +166,21 @@
             <div class="products-container" data-categoria="miscelaneas" data-limite="3"></div>
         </section>
     </main>
-    
-    <!-- FOOTER -->
-    <footer>
-        <p>&copy; 2026 LA RANITA 3D. Todos los derechos reservados.</p>
-        <p>Tienda especializada en impresión 3D y servicios de merchandising personalizados</p>
-    </footer>
+
+    <footer id="footer"></footer>
     
     <script>const navBasePath = "";</script>
     <script src="js/data/navLinks.js"></script>
+    <script src="js/data/categorias.js"></script>
     <script src="js/utils/storage.js"></script>
     <script src="js/components/navbar.js"></script>
+    <script src="js/components/cartDrawer.js"></script>
+    <script src="js/components/scrollReveal.js"></script>
+    <script src="js/components/categoriaCard.js"></script>
     <script src="js/components/card.js"></script>
+    <script src="js/components/lightbox.js"></script>
+    <script src="js/components/footer.js"></script>
+    <script src="js/components/tematico.js"></script>
     <script src="js/controllers/logout.js"></script>
 </body>
 </html>

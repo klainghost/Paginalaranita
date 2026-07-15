@@ -78,23 +78,50 @@ form button[type="submit"]:active {
 /* BOTONES CARDS */
 .product-card__button,
 .card__button {
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
   color: var(--color-white);
   border: none;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
   transition: all var(--transition-speed) var(--transition-timing);
   text-transform: uppercase;
-  font-size: 0.9rem;
-  align-self: flex-end;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(45, 80, 22, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card__button::after,
+.card__button::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -80%;
+  width: 45%;
+  height: 200%;
+  background: linear-gradient(to right, transparent 0%, rgba(255,255,255,.32) 50%, transparent 100%);
+  transform: skewX(-18deg);
+  animation: shimmerBtn 4s ease-in-out infinite;
+  animation-delay: 1.2s;
+  pointer-events: none;
+}
+
+@keyframes shimmerBtn {
+  0%   { left: -80%; }
+  28%  { left: 130%; }
+  100% { left: 130%; }
 }
 
 .product-card__button:hover,
 .card__button:hover {
-  background-color: var(--color-hover);
-  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-gold) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(45, 80, 22, 0.4);
+  color: var(--color-white);
 }
 
 
@@ -126,35 +153,41 @@ form button[type="submit"]:active {
 .cantidad-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
+    background: var(--color-light);
+    border-radius: 25px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1.5px solid rgba(143, 188, 61, 0.3);
 }
 
 .btn-cantidad {
-    background-color: var(--color-light);
-    border: 2px solid var(--color-primary);
+    background: var(--color-white);
+    border: 1.5px solid var(--color-primary);
     color: var(--color-primary);
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: all var(--transition-speed) var(--transition-timing);
     display: flex;
     align-items: center;
     justify-content: center;
+    line-height: 1;
+    flex-shrink: 0;
 }
 
 .btn-cantidad:hover {
-    background-color: var(--color-primary);
+    background: var(--color-primary);
     color: var(--color-white);
 }
 
 .cantidad-producto {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
-    min-width: 24px;
+    min-width: 28px;
     text-align: center;
     color: var(--color-dark);
 }
@@ -162,22 +195,51 @@ form button[type="submit"]:active {
 
 /* BOTONES CARRITO */
 .btn-eliminar {
-  background-color: var(--color-danger);
-  color: var(--color-white);
-  border: none;
+  background: transparent;
+  color: var(--color-danger);
+  border: 1.5px solid var(--color-danger);
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
   transition: all var(--transition-speed) var(--transition-timing);
   text-transform: uppercase;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
   flex-shrink: 0;
 }
 
 .btn-eliminar:hover {
-  background-color: #b71c1c;
-  transform: scale(1.05);
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.35);
+}
+
+
+/* BOTON WHATSAPP */
+.btn-whatsapp {
+  display: block;
+  width: 100%;
+  margin-top: var(--spacing-md);
+  background-color: #25d366;
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-timing);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+}
+
+.btn-whatsapp:hover {
+  background-color: #1ebe5b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.5);
 }
 
 
@@ -186,6 +248,15 @@ button:disabled,
 input:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.product-card__button:disabled {
+  background: #ccc;
+  color: #888;
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 @media (max-width: 480px) {

@@ -1,25 +1,41 @@
+function obtenerBadge(producto) {
+    if (producto.badge) return { texto: producto.badge, tipo: producto.badgeTipo || "nuevo" };
+    if (producto.id >= 150) return { texto: "Nuevo", tipo: "nuevo" };
+    return null;
+}
+
 function crearCard(producto) {
     const base = typeof navBasePath !== "undefined" ? navBasePath : "";
+    const precioFormateado = producto.precio.toLocaleString("es-AR");
+    const badge = obtenerBadge(producto);
+    const sinStock = !!producto.sinStock;
 
     return `
-        <div class="product-card">
-            <img src="${base}images/${producto.imagen}" alt="${producto.titulo}" class="product-card__image">
+        <div class="product-card${sinStock ? " product-card--sin-stock" : ""}">
+            <div class="product-card__img-wrapper">
+                ${badge ? `<span class="product-card__badge product-card__badge--${badge.tipo}">${badge.texto}</span>` : ""}
+                ${sinStock ? `<div class="product-card__sin-stock"><span>Sin stock</span></div>` : ""}
+                <img src="${base}images/${producto.imagen}" alt="${producto.titulo}" class="product-card__image" loading="lazy">
+            </div>
             <div class="product-card__body">
                 <h3 class="product-card__title">${producto.titulo}</h3>
                 <p class="product-card__description">${producto.descripcion}</p>
-                <p class="product-card__price">$${producto.precio}</p>
-                <div class="cantidad-container">
-                    <button class="btn-cantidad" data-accion="menos">-</button>
-                    <span class="cantidad-producto">1</span>
-                    <button class="btn-cantidad" data-accion="mas">+</button>
+                <div class="product-card__footer">
+                    <p class="product-card__price">$ ${precioFormateado}</p>
+                    <div class="cantidad-container">
+                        <button class="btn-cantidad" data-accion="menos">−</button>
+                        <span class="cantidad-producto">1</span>
+                        <button class="btn-cantidad" data-accion="mas">+</button>
+                    </div>
+                    <button class="product-card__button btn-agregar-carrito"
+                        data-id="${producto.id}"
+                        data-titulo="${producto.titulo}"
+                        data-precio="${producto.precio}"
+                        data-imagen="${producto.imagen}"
+                        ${sinStock ? "disabled" : ""}>
+                        ${sinStock ? "Sin stock" : "Añadir al carrito"}
+                    </button>
                 </div>
-                <button class="product-card__button btn-agregar-carrito"
-                    data-id="${producto.id}"
-                    data-titulo="${producto.titulo}"
-                    data-precio="${producto.precio}"
-                    data-imagen="${producto.imagen}">
-                    Añadir al Carrito
-                </button>
             </div>
         </div>
     `;
@@ -55,7 +71,7 @@ function agregarAlCarrito(producto) {
 
     guardarCarrito(carrito);
     actualizarContadorCarrito();
-    alert(`${producto.titulo} se agregó al carrito.`);
+    mostrarToast(producto.titulo + " añadido al carrito", "🛒");
 }
 
 function activarBotonesCarrito() {
@@ -84,6 +100,10 @@ function generarCards() {
 
     const base = typeof navBasePath !== "undefined" ? navBasePath : "";
 
+    contenedores.forEach(function (c) {
+        c.innerHTML = '<div class="card-loading"><span class="card-loading__icono">⚗️</span><p>Conjurando miniaturas<span class="loading-dots"></span></p></div>';
+    });
+
     fetch(`${base}api/data.json`)
         .then((response) => response.json())
         .then((data) => {
@@ -103,6 +123,11 @@ function generarCards() {
 
             activarBotonesCantidad();
             activarBotonesCarrito();
+
+            if (typeof initScrollReveal === "function") {
+                var todasLasCards = document.querySelectorAll(".product-card:not(.reveal):not(.reveal--visible)");
+                initScrollReveal(Array.from(todasLasCards));
+            }
         });
 }
 

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador de Impresión 3D | La Ranita 3D</title>
+    <meta name="description" content="Calculá el precio de tu impresión 3D personalizada. Ingresá gramos de filamento, tiempo de impresión y nivel de dificultad para obtener una cotización al instante.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#2d5016">
+    <link rel="canonical" href="https://laranita3d.netlify.app/pages/cotizador/">
+    <link rel="icon" type="image/png" href="../../images/logo.png">
+    <link rel="apple-touch-icon" href="../../images/logo.png">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="cotizador.css">
+</head>
+<body>
+
+    <div id="cotizadorAuth" class="cotizador-auth">
+        <div class="cotizador-auth__caja">
+            <span class="cotizador-auth__icono">⚗️</span>
+            <h2 class="cotizador-auth__titulo">La Forja de Precios</h2>
+            <p class="cotizador-auth__sub">Área privada</p>
+            <input type="password" id="cotizadorPassword" class="cotizador-auth__input" placeholder="Contraseña" autocomplete="current-password">
+            <button id="cotizadorEntrar" class="cotizador-auth__btn">Entrar</button>
+            <p class="cotizador-auth__error" id="cotizadorError">Contraseña incorrecta</p>
+        </div>
+    </div>
+
+    <nav class="navbar" id="navbar"></nav>
+
+    <main class="cotizador-main" id="cotizadorMain">
+
+        <div class="cotizador-hero">
+            <h1 class="cotizador-hero__titulo">⚗️ La Forja de Precios</h1>
+            <p class="cotizador-hero__sub">Calculá el costo de cualquier impresión 3D en segundos</p>
+        </div>
+
+        <div class="cotizador-layout">
+
+            <!-- PANEL IZQUIERDO: INPUTS -->
+            <div class="cotizador-panel cotizador-panel--inputs">
+                <h2 class="cotizador-panel__titulo">📐 Datos de la pieza</h2>
+
+                <div class="cotizador-campo">
+                    <label class="cotizador-label" for="gramos">
+                        Filamento usado
+                        <span class="cotizador-label__hint">Dato del slicer (Cura, Bambu Studio, etc.)</span>
+                    </label>
+                    <div class="cotizador-input-group">
+                        <input type="number" id="gramos" class="cotizador-input" min="0" step="0.1" placeholder="0" value="">
+                        <span class="cotizador-input-group__unidad">gramos</span>
+                    </div>
+                </div>
+
+                <div class="cotizador-campo">
+                    <label class="cotizador-label" for="impresora">
+                        Impresora
+                    </label>
+                    <select id="impresora" class="cotizador-select">
+                        <option value="0.18" selected>BambuLab A1 Mini — promedio ~0.18 kW</option>
+                        <option value="0.25">BambuLab A1 Combo + AMS — promedio ~0.25 kW</option>
+                        <option value="custom">Otra (configurar en parámetros avanzados)</option>
+                    </select>
+                </div>
+
+                <div class="cotizador-campo">
+                    <label class="cotizador-label">
+                        Tiempo de impresión
+                        <span class="cotizador-label__hint">Estimado del slicer (Bambu Studio)</span>
+                    </label>
+                    <div class="cotizador-tiempo">
+                        <div class="cotizador-input-group">
+                            <input type="number" id="horas" class="cotizador-input" min="0" step="1" placeholder="0" value="">
+                            <span class="cotizador-input-group__unidad">h</span>
+                        </div>
+                        <div class="cotizador-input-group">
+                            <input type="number" id="minutos" class="cotizador-input" min="0" max="59" step="1" placeholder="0" value="">
+                            <span class="cotizador-input-group__unidad">min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cotizador-campo">
+                    <label class="cotizador-label">
+                        Nivel de dificultad
+                        <span class="cotizador-label__hint">Afecta el factor de riesgo y reimpresión</span>
+                    </label>
+                    <div class="dificultad-grid">
+                        <label class="dificultad-opcion">
+                            <input type="radio" name="dificultad" value="2.0" data-min="600" data-nombre="Básico">
+                            <div class="dificultad-opcion__cuerpo">
+                                <span class="dificultad-opcion__icono">🟢</span>
+                                <strong>Básico</strong>
+                                <span>Sin soportes, geometría simple</span>
+                                <span class="dificultad-opcion__factor">×2.0 · mín $600</span>
+                            </div>
+                        </label>
+                        <label class="dificultad-opcion">
+                            <input type="radio" name="dificultad" value="2.5" data-min="1000" data-nombre="Estándar" checked>
+                            <div class="dificultad-opcion__cuerpo">
+                                <span class="dificultad-opcion__icono">🟡</span>
+                                <strong>Estándar</strong>
+                                <span>Algunos soportes o curvas</span>
+                                <span class="dificultad-opcion__factor">×2.5 · mín $1.000</span>
+                            </div>
+                        </label>
+                        <label class="dificultad-opcion">
+                            <input type="radio" name="dificultad" value="3.5" data-min="1500" data-nombre="Avanzado">
+                            <div class="dificultad-opcion__cuerpo">
+                                <span class="dificultad-opcion__icono">🟠</span>
+                                <strong>Avanzado</strong>
+                                <span>Muchos soportes, articulado</span>
+                                <span class="dificultad-opcion__factor">×3.5 · mín $1.500</span>
+                            </div>
+                        </label>
+                        <label class="dificultad-opcion">
+                            <input type="radio" name="dificultad" value="4.5" data-min="2500" data-nombre="Premium">
+                            <div class="dificultad-opcion__cuerpo">
+                                <span class="dificultad-opcion__icono">🔴</span>
+                                <strong>Premium</strong>
+                                <span>Alta precisión, miniaturas detalladas</span>
+                                <span class="dificultad-opcion__factor">×4.5 · mín $2.500</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cotizador-campo">
+                    <label class="cotizador-label">
+                        Diseño / Archivo STL
+                        <span class="cotizador-label__hint">¿El cliente trae el archivo o hay que diseñarlo?</span>
+                    </label>
+                    <div class="disenio-grid">
+                        <label class="disenio-opcion">
+                            <input type="radio" name="disenio" value="ninguno" checked>
+                            <div class="disenio-opcion__cuerpo">
+                                <span class="disenio-opcion__icono">📁</span>
+                                <strong>STL listo</strong>
+                                <span>El cliente provee el archivo</span>
+                                <span class="disenio-opcion__precio">+$0</span>
+                            </div>
+                        </label>
+                        <label class="disenio-opcion">
+                            <input type="radio" name="disenio" value="adaptacion">
+                            <div class="disenio-opcion__cuerpo">
+                                <span class="disenio-opcion__icono">✏️</span>
+                                <strong>Adaptación</strong>
+                                <span>Modificar un diseño existente</span>
+                                <span class="disenio-opcion__precio" id="labelAdaptacion">+$2.000</span>
+                            </div>
+                        </label>
+                        <label class="disenio-opcion">
+                            <input type="radio" name="disenio" value="completo">
+                            <div class="disenio-opcion__cuerpo">
+                                <span class="disenio-opcion__icono">🎨</span>
+                                <strong>Diseño completo</strong>
+                                <span>Desde cero en CAD / escultura 3D</span>
+                                <span class="disenio-opcion__precio" id="labelDisenoCompleto">+$6.000</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cotizador-campo">
+                    <label class="cotizador-label">
+                        Packaging
+                        <span class="cotizador-label__hint">Cajita de presentación</span>
+                    </label>
+                    <div class="disenio-grid" style="grid-template-columns:1fr 1fr">
+                        <label class="disenio-opcion">
+                            <input type="radio" name="packaging" value="0" checked>
+                            <div class="disenio-opcion__cuerpo">
+                                <span class="disenio-opcion__icono">📦</span>
+                                <strong>Sin cajita</strong>
+                                <span class="disenio-opcion__precio">+$0</span>
+                            </div>
+                        </label>
+                        <label class="disenio-opcion">
+                            <input type="radio" name="packaging" value="1">
+                            <div class="disenio-opcion__cuerpo">
+                                <span class="disenio-opcion__icono">🎁</span>
+                                <strong>Con cajita</strong>
+                                <span class="disenio-opcion__precio" id="labelPackaging">+$700</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- PARÁMETROS AVANZADOS -->
+                <details class="cotizador-avanzado">
+                    <summary class="cotizador-avanzado__toggle">⚙️ Parámetros avanzados</summary>
+                    <div class="cotizador-avanzado__contenido">
+                        <div class="cotizador-campo">
+                            <label class="cotizador-label" for="precioPorKg">
+                                Precio filamento / kg
+                                <span class="cotizador-label__hint">Actualizalo cuando cambie</span>
+                            </label>
+                            <div class="cotizador-input-group">
+                                <span class="cotizador-input-group__unidad cotizador-input-group__unidad--prefix">$</span>
+                                <input type="number" id="precioPorKg" class="cotizador-input" min="0" step="100" value="27000">
+                                <span class="cotizador-input-group__unidad">/kg</span>
+                            </div>
+                        </div>
+                        <div class="cotizador-campo">
+                            <label class="cotizador-label" for="precioLuz">
+                                Precio electricidad / kWh
+                            </label>
+                            <div class="cotizador-input-group">
+                                <span class="cotizador-input-group__unidad cotizador-input-group__unidad--prefix">$</span>
+                                <input type="number" id="precioLuz" class="cotizador-input" min="0" step="1" value="268.22">
+                                <span class="cotizador-input-group__unidad">/kWh</span>
+                            </div>
+                        </div>
+                        <div class="cotizador-campo">
+                            <label class="cotizador-label" for="consumoImpresora">
+                                Consumo promedio de impresión
+                                <span class="cotizador-label__hint">A1 Mini ≈ 0.18 kW · A1 Combo+AMS ≈ 0.25 kW</span>
+                            </label>
+                            <div class="cotizador-input-group">
+                                <input type="number" id="consumoImpresora" class="cotizador-input" min="0.01" step="0.01" value="0.18">
+                                <span class="cotizador-input-group__unidad">kW</span>
+                            </div>
+                        </div>
+                        <div class="cotizador-campo">
+                            <label class="cotizador-label" for="costoHoraMaquina">
+                                Costo hora máquina
+                                <span class="cotizador-label__hint">Se suma al final, sin pasar por el factor de dificultad</span>
+                            </label>
+                            <div class="cotizador-input-group">
+                                <span class="cotizador-input-group__unidad cotizador-input-group__unidad--prefix">$</span>
+                                <input type="number" id="costoHoraMaquina" class="cotizador-input" min="0" step="50" value="1000">
+                                <span class="cotizador-input-group__unidad">/h</span>
+                            </div>
+                        </div>
+                        <div class="cotizador-campo">
+                            <label class="cotizador-label" for="margen">
+                                Margen de ganancia
+                                <span class="cotizador-label__hint">Se aplica sobre el costo de producción</span>
+                            </label>
+                            <div class="cotizador-input-group">
+                                <input type="number" id="margen" class="cotizador-input" min="0" max="500" step="5" value="40">
+                                <span class="cotizador-input-group__unidad">%</span>
+                            </div>
+                        </div>
+                        <div class="cotizador-campo">
+                            <label class="cotizador-label" for="costoAdaptacion">
+                                Costo adaptación STL
+                            </label>
+                            <div class="cotizador-input-group">
+                                <span class="cotizador-input-group__unidad cotizador-input-group__unidad--prefix">$</span>
+                                <input type="number" id="costoAdaptacion" class="cotizador-input" min="0" step="100" value="2000">
+                            </div>
+                        </div>
+                        <div class="cotizador-campo">
+                            <label class="cotizador-label" for="costoDisenoCompleto">
+                                Costo diseño desde cero
+                            </label>
+                            <div class="cotizador-input-group">
+                                <span class="cotizador-input-group__unidad cotizador-input-group__unidad--prefix">$</span>
+                                <input type="number" id="costoDisenoCompleto" class="cotizador-input" min="0" step="500" value="6000">
+                            </div>
+                        </div>
+                        <div class="cotizador-campo" style="margin-bottom:0">
+                            <label class="cotizador-label" for="costoPackaging">
+                                Costo cajita packaging
+                            </label>
+                            <div class="cotizador-input-group">
+                                <span class="cotizador-input-group__unidad cotizador-input-group__unidad--prefix">$</span>
+                                <input type="number" id="costoPackaging" class="cotizador-input" min="0" step="50" value="700">
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+            </div>
+
+            <!-- PANEL DERECHO: RESULTADOS -->
+            <div class="cotizador-panel cotizador-panel--resultados" id="panelResultados">
+
+                <h2 class="cotizador-panel__titulo">📜 Cotización</h2>
+
+                <div class="cotizador-vacio" id="estadoVacio">
+                    <span class="cotizador-vacio__icono">🐸</span>
+                    <p>Ingresá los datos de la pieza<br>para ver la cotización</p>
+                </div>
+
+                <div class="cotizador-resultado" id="estadoResultado" style="display:none">
+                    <div class="cotizador-desglose">
+                        <div class="cotizador-desglose__fila">
+                            <span>🧵 Filamento (<span id="resGramos">—</span> g)</span>
+                            <span id="resCostoFilamento">$—</span>
+                        </div>
+                        <div class="cotizador-desglose__fila">
+                            <span>⚡ Electricidad (<span id="resHoras">—</span>)</span>
+                            <span id="resCostoLuz">$—</span>
+                        </div>
+                        <div class="cotizador-desglose__fila cotizador-desglose__fila--subtotal">
+                            <span>Subtotal costos</span>
+                            <span id="resSubtotal">$—</span>
+                        </div>
+                        <div class="cotizador-desglose__fila">
+                            <span>🎯 Factor dificultad (<span id="resDificultadNombre">—</span>)</span>
+                            <span id="resFactor">×—</span>
+                        </div>
+                        <div class="cotizador-desglose__fila">
+                            <span>💰 Margen ganancia (<span id="resMargenPct">—</span>%)</span>
+                            <span id="resMargenMonto">$—</span>
+                        </div>
+                        <div class="cotizador-desglose__fila">
+                            <span>⚙️ Hora máquina (<span id="resHorasM">—</span>)</span>
+                            <span id="resCostoMaquina">$—</span>
+                        </div>
+                        <div class="cotizador-desglose__fila" id="filaDisenio" style="display:none">
+                            <span>✏️ Diseño / STL (<span id="resDisenoNombre">—</span>)</span>
+                            <span id="resCostoDisenio">$—</span>
+                        </div>
+                        <div class="cotizador-desglose__fila" id="filaPackaging" style="display:none">
+                            <span>🎁 Packaging</span>
+                            <span id="resCostoPackaging">$—</span>
+                        </div>
+                    </div>
+
+                    <div class="cotizador-precio-final">
+                        <span class="cotizador-precio-final__label">Precio sugerido</span>
+                        <span class="cotizador-precio-final__monto" id="resPrecioFinal">$—</span>
+                    </div>
+
+                    <div class="cotizador-acciones">
+                        <button class="cotizador-btn cotizador-btn--copiar" id="btnCopiar">
+                            📋 Copiar precio
+                        </button>
+                        <button class="cotizador-btn cotizador-btn--wa" id="btnCompartirWa">
+                            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                            Enviar cotización por WhatsApp
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer id="footer"></footer>
+
+    <script>const navBasePath = "../../";</script>
+    <script src="../../js/data/navLinks.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/components/navbar.js"></script>
+    <script src="../../js/components/cartDrawer.js"></script>
+    <script src="../../js/components/footer.js"></script>
+    <script src="../../js/controllers/logout.js"></script>
+    <script src="cotizador.js"></script>
+</body>
+</html>

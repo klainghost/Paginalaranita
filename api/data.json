@@ -50,6 +50,8 @@
         },
         {
             "id": 8,
+            "badge": "Limitado",
+            "badgeTipo": "limitado",
             "titulo": "Figuras de Edición Limitada",
             "descripcion": "Figuras coleccionables de tiempo limitado, diseñadas en colaboración con artistas invitados. Stock reducido y numerado.",
             "precio": 2200,
@@ -66,6 +68,8 @@
         },
         {
             "id": 10,
+            "badge": "Popular",
+            "badgeTipo": "popular",
             "titulo": "Compañía Heroica 3D",
             "descripcion": "Seis héroes que incluyen mago, druida con tocado de ciervo, paladín de escudo sagrado y bardo con laúd. Cada figura está lista para pintar.",
             "precio": 2900,
