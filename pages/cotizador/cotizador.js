@@ -199,6 +199,48 @@
         document.getElementById("btnCompartirWa").dataset.cotizacion = JSON.stringify(d);
     }
 
+    function generarPresupuesto(d) {
+        var h = Math.floor(d.horasTotales);
+        var m = Math.round((d.horasTotales % 1) * 60);
+        var tiempo = (h > 0 ? h + "h " : "") + (m > 0 ? m + "min" : "0min");
+
+        var lineas = [
+            "📄 PRESUPUESTO – LA RANITA 3D",
+            "",
+            "Detalle del trabajo:",
+            "• Peso estimado: " + (d.gramos % 1 === 0 ? d.gramos : d.gramos.toFixed(1)) + " g",
+            "• Tiempo estimado de impresión: " + tiempo,
+            "• Nivel de detalle: " + d.difNombre
+        ];
+
+        if (d.disenioMonto > 0) {
+            lineas.push("• Diseño incluido: " + (NOMBRE_DISENIO[d.disenioTipo] || d.disenioTipo));
+        }
+
+        lineas.push("");
+        lineas.push("💰 Precio final: $" + fmt(d.precioFinal) + " ARS");
+        lineas.push("");
+        lineas.push("Incluye:");
+        lineas.push("• Impresión 3D de la pieza");
+
+        if (d.disenioMonto > 0) {
+            lineas.push("• " + (NOMBRE_DISENIO[d.disenioTipo] || "Diseño"));
+        }
+
+        lineas.push("• Configuración y preparación del archivo");
+        lineas.push("• Consumo de material y electricidad");
+        lineas.push("• Uso de máquina y postprocesado básico");
+
+        if (d.conPackaging) {
+            lineas.push("• Packaging (cajita de presentación)");
+        }
+
+        lineas.push("");
+        lineas.push("Gracias por elegir La Ranita 3D 🐸");
+
+        return lineas.join("\n");
+    }
+
     function generarMensajeWa(d) {
         var h = Math.floor(d.horasTotales);
         var m = Math.round((d.horasTotales % 1) * 60);
@@ -288,6 +330,17 @@
         var costoInputs = document.querySelectorAll("#costoAdaptacion, #costoDisenoCompleto, #costoPackaging");
         costoInputs.forEach(function (el) {
             el.addEventListener("input", actualizarLabelsDisenio);
+        });
+
+        document.getElementById("btnPresupuesto").addEventListener("click", function () {
+            var raw = document.getElementById("btnCompartirWa").dataset.cotizacion;
+            if (!raw) return;
+            var texto = generarPresupuesto(JSON.parse(raw));
+            navigator.clipboard.writeText(texto).then(function () {
+                mostrarToast("Presupuesto copiado al portapapeles", "📄");
+            }).catch(function () {
+                mostrarToast("No se pudo copiar, intentá de nuevo", "⚠️");
+            });
         });
 
         document.getElementById("btnCopiar").addEventListener("click", function () {

@@ -629,6 +629,24 @@
     transform: translateY(-1px);
 }
 
+.cotizador-btn--presupuesto {
+    background: var(--color-light);
+    color: var(--color-primary);
+    border: 1.5px solid rgba(201, 162, 39, 0.4);
+}
+
+.cotizador-btn--presupuesto:hover {
+    background: rgba(201, 162, 39, 0.1);
+    border-color: var(--color-gold);
+    transform: translateY(-1px);
+}
+
+[data-theme="dark"] .cotizador-btn--presupuesto {
+    background: #1a2510;
+    border-color: rgba(201, 162, 39, 0.3);
+    color: var(--color-gold);
+}
+
 .cotizador-btn--wa {
     background: #25D366;
     color: #fff;
