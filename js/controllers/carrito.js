@@ -52,7 +52,7 @@ function activarBotonesCantidadCarrito() {
     });
 }
 
-const WHATSAPP_NUMERO = "5492604349945";
+const WHATSAPP_NUMERO = "5492604581757";
 
 function generarMensajeWhatsapp(carrito, total) {
     const usuario = obtenerUsuario();

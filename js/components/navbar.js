@@ -152,7 +152,7 @@ function generarWhatsApp() {
     const link = document.createElement("a");
     link.id = "whatsappBtn";
     link.className = "whatsapp-btn";
-    link.href = "https://wa.me/5492604349945?text=Hola%2C+vi+tu+tienda+La+Ranita+3D+y+tengo+una+consulta+%F0%9F%90%B8";
+    link.href = "https://wa.me/5492604581757?text=Hola%2C+vi+tu+tienda+La+Ranita+3D+y+tengo+una+consulta+%F0%9F%90%B8";
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     link.setAttribute("aria-label", "Contactar por WhatsApp");

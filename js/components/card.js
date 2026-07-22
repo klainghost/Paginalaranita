@@ -116,6 +116,7 @@ function generarCards() {
                     productos = productos.slice(0, limite);
                 }
 
+                contenedor.innerHTML = "";
                 productos.forEach((producto) => {
                     contenedor.innerHTML += crearCard(producto);
                 });

@@ -292,7 +292,7 @@
         document.getElementById("btnCompartirWa").addEventListener("click", function () {
             var raw = this.dataset.cotizacion;
             if (!raw) return;
-            window.open("https://wa.me/5492604349945?text=" + encodeURIComponent(generarMensajeWa(JSON.parse(raw))), "_blank");
+            window.open("https://wa.me/5492604581757?text=" + encodeURIComponent(generarMensajeWa(JSON.parse(raw))), "_blank");
         });
 
         calcular();
