@@ -11,7 +11,7 @@
         {
             "id": 3,
             "titulo": "Caja porta dados + dados + miniaturas",
-            "descripcion": "Dados personalizados, torres de dados, bandejas de organización y accesorios temáticos impresos en 3D. Diseños únicos y funcionales para organizar tu mesa de juego.",
+            "descripcion": "Combo completo: caja organizadora y miniaturas impresas en 3D, más un set de dados de resina poliédricos. Todo lo que necesitás para tus sesiones de juego de rol.",
             "precio": 17000,
             "imagen": "productos/dados/caja.webp",
             "categoria": "dados"
@@ -223,7 +223,7 @@
         {
             "id": 163,
             "titulo": "Set de Dados - Varios Colores",
-            "descripcion": "Set de dados poliédricos impresos en 3D, disponibles en múltiples colores. Ideales para juegos de rol y mesa. Cada set incluye los dados estándar (d4, d6, d8, d10, d12, d20). Perfectos para regalar o completar tu colección.",
+            "descripcion": "Set de dados poliédricos de resina, disponibles en múltiples colores. Incluye los dados estándar (d4, d6, d8, d10, d12, d20). Perfectos para juegos de rol y de mesa, ideales para regalar o completar tu colección.",
             "precio": 7500,
             "imagen": "productos/dados/Set de dados - Varios colores.webp",
             "categoria": "dados"
