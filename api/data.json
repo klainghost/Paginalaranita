@@ -10,9 +10,9 @@
         },
         {
             "id": 3,
-            "titulo": "Dados y Accesorios 3D",
+            "titulo": "Caja porta dados + dados + miniaturas",
             "descripcion": "Dados personalizados, torres de dados, bandejas de organización y accesorios temáticos impresos en 3D. Diseños únicos y funcionales para organizar tu mesa de juego.",
-            "precio": 800,
+            "precio": 17000,
             "imagen": "productos/dados/caja.webp",
             "categoria": "dados"
         },
@@ -190,41 +190,25 @@
         },
         {
             "id": 29,
-            "titulo": "Set de Mobiliario de Taberna",
+            "titulo": "Set de Mobiliario de Taberna c/u",
             "descripcion": "Set de mesa, dos bancos, dos sillas y un banquito en madera natural, impreso en 3D a escala de miniatura. Perfecto para amueblar tabernas, posadas o campamentos en tu mesa de juego.",
-            "precio": 1400,
+            "precio": 500,
             "imagen": "productos/escenografia/set-mobiliario-taberna-madera.webp",
             "categoria": "escenografia"
         },
         {
-            "id": 30,
-            "titulo": "Set de Dados Ámbar con Bandeja",
-            "descripcion": "Bandeja organizadora para dados impresa en 3D, incluye un set de 7 dados de rol en tono ámbar con numeración dorada (D4 a D100). Cada dado tiene su compartimento rotulado para mantener tu colección ordenada y a mano.",
-            "precio": 1600,
-            "imagen": "productos/dados/set-dados-ambar-bandeja.webp",
-            "categoria": "dados"
-        },
-        {
             "id": 31,
-            "titulo": "Estuche Dados con Compartimento para Miniatura",
+            "titulo": "Caja para dados sin dados ni miniatura",
             "descripcion": "Estuche plegable de doble cuerpo impreso en 3D, con compartimentos para tu set de 7 dados de rol y un espacio extra para guardar una miniatura pintada. Ideal para llevar todo lo necesario a tu próxima sesión.",
-            "precio": 1650,
+            "precio": 10000,
             "imagen": "productos/dados/estuche-dados-miniatura.webp",
-            "categoria": "dados"
-        },
-        {
-            "id": 32,
-            "titulo": "Organizador de Dados para Múltiples Sets",
-            "descripcion": "Organizador de madera con siete divisiones y base deslizable, impreso en 3D, con espacio para guardar varios sets de dados completos a la vez. Perfecto para jugadores que coleccionan distintos juegos de dados.",
-            "precio": 1700,
-            "imagen": "productos/dados/organizador-dados-multiples-sets.webp",
             "categoria": "dados"
         },
         {
             "id": 33,
             "titulo": "Cofre Fauces Rojas Guarda-Dados",
             "descripcion": "Cofre con tapa en forma de fauces y colmillos blancos, interior rojo, impreso en 3D para guardar tu set de dados metálicos. Una pieza llamativa para sumar un toque de fantasía a tu mesa de juego.",
-            "precio": 1600,
+            "precio": 4000,
             "imagen": "productos/dados/cofre-fauces-dados-rojo.webp",
             "categoria": "dados"
         },
@@ -232,8 +216,16 @@
             "id": 34,
             "titulo": "Espada Vitrina de Dados",
             "descripcion": "Estuche con forma de espada y empuñadura desmontable, con grabados de poliedros y una vitrina transversal para exhibir tu set de dados metálicos. Impreso en 3D, combina función y estética en tu mesa de juego.",
-            "precio": 1200,
+            "precio": 13000,
             "imagen": "productos/dados/espada-vitrina-dados.webp",
+            "categoria": "dados"
+        },
+        {
+            "id": 163,
+            "titulo": "Set de Dados - Varios Colores",
+            "descripcion": "Set de dados poliédricos impresos en 3D, disponibles en múltiples colores. Ideales para juegos de rol y mesa. Cada set incluye los dados estándar (d4, d6, d8, d10, d12, d20). Perfectos para regalar o completar tu colección.",
+            "precio": 7500,
+            "imagen": "productos/dados/Set de dados - Varios colores.webp",
             "categoria": "dados"
         },
         {
@@ -485,14 +477,6 @@
             "categoria": "adornos"
         },
         {
-            "id": 73,
-            "titulo": "Estuche de Dados con Miniatura de Mago",
-            "descripcion": "Estuche rígido color azul con compartimentos para cada tipo de dado y un espacio especial para guardar una miniatura de mago. Impreso en 3D con textura de panal, combina funcionalidad y estilo para tu set de rol.",
-            "precio": 1650,
-            "imagen": "productos/dados/estuche-dados-mago-azul.webp",
-            "categoria": "dados"
-        },
-        {
             "id": 75,
             "titulo": "Combo Hello Kitty: Rompecabezas y Accesorios",
             "descripcion": "Pack temático de Hello Kitty que incluye rompecabezas con forma de cabeza, mini cómoda de cajones, separador de libros, cubos sensoriales, llavero y bandeja para anteojos, todo impreso en 3D. Un combo ideal para fans de la franquicia.",
@@ -602,7 +586,7 @@
             "descripcion": "Cajita cilíndrica con tapa y el logo de Stranger Things en relieve, impresa en 3D en verde militar. Ideal para guardar pequeños objetos, perfecta para fans de la serie.",
             "precio": 700,
             "imagen": "productos/miscelaneas/caja-stranger-things.webp",
-            "categoria": "adornos"
+            "categoria": "cortantes"
         },
         {
             "id": 89,
@@ -1138,7 +1122,7 @@
             "descripcion": "Mini estuche rígido de tapa abatible, impreso en 3D, ideal para guardar tarjetas, pastillas o pequeños objetos personales. Disponible en negro con argolla para llavero o en gris liso. Compacto, resistente y fácil de llevar en el bolsillo.",
             "precio": 3000,
             "imagen": "productos/miscelaneas/mini-estuche-organizador-llavero.webp",
-            "categoria": "adornos"
+            "categoria": "llaveros"
         },
         {
             "id": 162,
