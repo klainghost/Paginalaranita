@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo — La Ranita 3D</title>
+  <meta name="description" content="Catálogo de productos La Ranita 3D">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="catalogo-body">
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar__logo">
+      <img src="images/logo.png" alt="La Ranita 3D" onclick="location.href='/'">
+      <span class="navbar__logo-texto">La Ranita 3D</span>
+    </div>
+
+    <button class="navbar__toggle" aria-label="Menú">☰</button>
+
+    <ul class="navbar__nav">
+      <li><a href="/">← Todos los mundos</a></li>
+    </ul>
+
+    <div class="navbar__actions" id="navbar-actions">
+      <button class="navbar__btn-tema" id="btn-tema" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+      <button class="navbar__btn-login" id="btn-login">Iniciar sesión</button>
+    </div>
+  </header>
+
+  <!-- HERO DEL MUNDO -->
+  <section class="catalogo-hero">
+    <h1 class="catalogo-hero__titulo" id="mundo-titulo">Cargando…</h1>
+    <p class="catalogo-hero__desc" id="mundo-desc"></p>
+  </section>
+
+  <!-- CATÁLOGO -->
+  <main class="catalogo-main">
+
+    <!-- Filtros -->
+    <div class="filtros" id="filtros" style="display:none">
+      <select class="filtros__select" id="filtro-categoria">
+        <option value="">Todas las categorías</option>
+      </select>
+      <span class="filtros__count" id="filtros-count"></span>
+    </div>
+
+    <!-- Grid -->
+    <div class="productos-grid" id="productos-grid">
+      <div class="estado-vacio">
+        <div class="spinner"></div>
+        <p style="margin-top:16px">Cargando catálogo…</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>
+      <strong>La Ranita 3D</strong> · @laranita3d ·
+      Malargüe, Mendoza, Argentina<br>
+      Todos los precios son en pesos argentinos e incluyen IVA.
+    </p>
+  </footer>
+
+  <!-- WA FLOTANTE -->
+  <a class="wa-float" href="https://wa.me/5492604XXXXXX?text=Hola%2C%20quiero%20consultar%20sobre%20La%20Ranita%203D"
+     target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.76.463 3.413 1.268 4.847L2 22.001l5.301-1.259a9.953 9.953 0 004.703 1.186c5.514 0 9.997-4.483 9.997-9.997 0-5.515-4.483-9.928-9.997-9.928zm0 18.21a8.204 8.204 0 01-4.186-1.145l-.3-.178-3.146.747.783-2.988-.195-.307a8.186 8.186 0 01-1.268-4.339c0-4.535 3.688-8.224 8.22-8.224 4.533 0 8.22 3.689 8.22 8.224.001 4.535-3.687 8.21-8.128 8.21z"/>
+    </svg>
+  </a>
+
+  <!-- MODAL LOGIN -->
+  <div class="modal-overlay" id="modal-login" role="dialog" aria-modal="true" aria-label="Iniciar sesión">
+    <div class="modal">
+      <h2 class="modal__titulo">Iniciar sesión</h2>
+      <form id="form-login" autocomplete="on" novalidate>
+        <div class="modal__campo">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" placeholder="tu@email.com" autocomplete="email" required>
+        </div>
+        <div class="modal__campo">
+          <label for="login-pass">Contraseña</label>
+          <input type="password" id="login-pass" name="password" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+        <p class="modal__error" id="login-error"></p>
+        <button type="submit" class="modal__btn">Entrar</button>
+      </form>
+      <span class="modal__cerrar" id="modal-cerrar" role="button" tabindex="0">Cancelar</span>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    initToggleTema(); // restaura preferencia guardada antes de pintar
+
+    const params = new URLSearchParams(location.search);
+    const SLUG   = params.get('mundo') || 'rol';
+
+    let todosLosProductos = [];
+    let categoriaActual   = '';
+
+    /* ---- Render de una card ---- */
+    function crearCard(p) {
+      const conPromo = p.promo_activa && p.precio_sin_promo;
+      const card     = document.createElement('div');
+      card.className = 'prod-card' + (conPromo ? ' prod-card--promo' : '');
+      card.innerHTML = `
+        <div class="prod-card__img-wrap">
+          <span class="prod-card__promo">🔥 PROMO</span>
+          ${p.imagen_url
+            ? `<img class="prod-card__img" src="${p.imagen_url}" alt="${p.nombre}" loading="lazy"
+                    onerror="this.parentElement.innerHTML='<div class=prod-card__sin-imagen>🐸</div>'">`
+            : `<div class="prod-card__sin-imagen">🐸</div>`}
+        </div>
+        <div class="prod-card__body">
+          ${p.categoria ? `<div class="prod-card__cat">${p.categoria}</div>` : ''}
+          <div class="prod-card__nombre">${p.nombre}</div>
+          ${p.descripcion ? `<p class="prod-card__desc">${p.descripcion}</p>` : ''}
+        </div>
+        <div class="prod-card__footer">
+          <div>
+            <div class="prod-card__precio">${formatPrecio(p.precio)}</div>
+            ${conPromo ? `<div class="prod-card__precio-original">${formatPrecio(p.precio_sin_promo)}</div>` : ''}
+          </div>
+          <button class="prod-card__btn-ws" onclick="pedirPorWA(${JSON.stringify(p.nombre)}, ${p.precio})">
+            💬 Pedir
+          </button>
+        </div>`;
+      return card;
+    }
+
+    /* ---- Renderiza el grid ---- */
+    function renderGrid(productos) {
+      const grid = document.getElementById('productos-grid');
+      grid.innerHTML = '';
+      if (!productos.length) {
+        grid.innerHTML = '<p class="estado-vacio">No hay productos en esta categoría.</p>';
+        return;
+      }
+      productos.forEach(p => grid.appendChild(crearCard(p)));
+      document.getElementById('filtros-count').textContent =
+        `${productos.length} producto${productos.length !== 1 ? 's' : ''}`;
+    }
+
+    /* ---- Filtro por categoría ---- */
+    function filtrarYRenderizar() {
+      const filtrados = categoriaActual
+        ? todosLosProductos.filter(p => p.categoria === categoriaActual)
+        : todosLosProductos;
+      renderGrid(filtrados);
+    }
+
+    /* ---- Poblar select de categorías ---- */
+    function poblarCategorias(productos) {
+      const cats = [...new Set(productos.map(p => p.categoria).filter(Boolean))].sort();
+      if (!cats.length) return;
+      const sel = document.getElementById('filtro-categoria');
+      cats.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c; opt.textContent = c;
+        sel.appendChild(opt);
+      });
+      sel.addEventListener('change', () => {
+        categoriaActual = sel.value;
+        filtrarYRenderizar();
+      });
+      document.getElementById('filtros').style.display = 'flex';
+    }
+
+    /* ---- WhatsApp ---- */
+    function pedirPorWA(nombre, precio) {
+      const txt = encodeURIComponent(`Hola! Me interesa: *${nombre}* (${formatPrecio(precio)}). ¿Tienen disponibilidad?`);
+      window.open(`https://wa.me/5492604XXXXXX?text=${txt}`, '_blank', 'noopener');
+    }
+
+    /* ---- Arranque ---- */
+    (async () => {
+      initNavbarScroll();
+      initNavToggle();
+      initLoginModal();
+      await initNavbarSesion();
+
+      try {
+        // Carga mundo y productos en paralelo
+        const [mundos, productos] = await Promise.all([
+          getMundos(),
+          getProductos(SLUG),
+        ]);
+
+        const mundo = mundos.find(m => m.slug === SLUG);
+        if (mundo) {
+          aplicarMundo(mundo);
+          document.getElementById('mundo-titulo').textContent = mundo.nombre;
+          document.getElementById('mundo-desc').textContent   = mundo.descripcion || '';
+        }
+
+        todosLosProductos = productos;
+        poblarCategorias(productos);
+        renderGrid(productos);
+
+      } catch (e) {
+        document.getElementById('productos-grid').innerHTML =
+          `<p class="estado-vacio">No se pudo cargar el catálogo. ¿El servidor está corriendo?</p>`;
+      }
+    })();
+  </script>
+</body>
+</html>

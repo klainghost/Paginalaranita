@@ -1,0 +1,904 @@
+/* ============================================================
+   LA RANITA 3D — Sistema de diseño multi-mundo
+   Tokens de mundo: JS los setea en :root al cargar la página.
+   Tokens adaptativos: CSS los redefine según clase .mundo-oscuro
+   o .mundo-claro (puesta por JS) y según prefers-color-scheme.
+   ============================================================ */
+
+/* ============================================================
+   TOKENS BASE (inmutables)
+   ============================================================ */
+:root {
+  /* Colores fijos del sistema */
+  --color-danger:  #d32f2f;
+  --wa-green:      #25d366;
+
+  /* Mundo — valores por defecto (Rol). JS los sobreescribe. */
+  --mundo-acento: #c9a227;
+  --mundo-fondo:  #1a2e1a;
+  --mundo-fuente: 'Cinzel', serif;
+
+  /* Espaciado */
+  --sp-xs:  4px;
+  --sp-sm:  8px;
+  --sp-md: 16px;
+  --sp-lg: 24px;
+  --sp-xl: 32px;
+  --sp-2x: 48px;
+
+  --ease: 0.3s ease-in-out;
+  --radius-card: 16px;
+}
+
+/* ============================================================
+   TOKENS ADAPTATIVOS — TEMA CLARO (por defecto)
+   ============================================================ */
+:root {
+  --page-bg:            #f5f0e8;
+  --page-text:          #1a1a1a;
+  --page-text-muted:    #555555;
+
+  --card-bg:            #ffffff;
+  --card-border:        rgba(0, 0, 0, 0.07);
+  --card-footer-border: #e8e4dc;
+  --card-shadow:        0 4px 16px rgba(0,0,0,.08);
+  --card-shadow-hover:  0 16px 32px rgba(0,0,0,.14);
+  --card-title:         var(--mundo-fondo);
+  --card-text-muted:    #666666;
+  --card-img-bg:        #f0ebe0;
+  --card-precio:        var(--mundo-fondo);
+  --card-precio-tachado:#aaaaaa;
+
+  --filtros-bg:         #ffffff;
+  --filtros-border:     rgba(0, 0, 0, 0.1);
+  --filtros-select-bg:  #ffffff;
+  --filtros-select-txt: #1a1a1a;
+  --filtros-arrow:      %23555555;
+  --filtros-count:      #999999;
+
+  --modal-bg:           #ffffff;
+  --modal-text:         #1a1a1a;
+  --modal-label:        #555555;
+  --modal-input-bg:     #ffffff;
+  --modal-input-border: #dddddd;
+  --modal-input-text:   #1a1a1a;
+  --modal-cerrar:       #aaaaaa;
+  --modal-cerrar-hover: #1a1a1a;
+
+  --spinner-track:      rgba(0, 0, 0, 0.1);
+  --estado-vacio:       #aaaaaa;
+}
+
+/* ============================================================
+   TOKENS ADAPTATIVOS — MUNDO OSCURO o TEMA OSCURO MANUAL
+   Aplica cuando: el mundo es oscuro (.mundo-oscuro) O el usuario
+   activó el tema oscuro explícitamente ([data-theme="dark"])
+   ============================================================ */
+:root.mundo-oscuro,
+:root[data-theme="dark"] {
+  --page-bg:            color-mix(in srgb, var(--mundo-fondo) 85%, black);
+  --page-text:          #f0ede6;
+  --page-text-muted:    rgba(240, 237, 230, 0.65);
+
+  /* Cards: ligeramente más claras que el fondo de página para dar profundidad */
+  --card-bg:            color-mix(in srgb, var(--mundo-fondo) 60%, black);
+  --card-border:        rgba(255, 255, 255, 0.1);
+  --card-footer-border: rgba(255, 255, 255, 0.1);
+  --card-shadow:        0 4px 24px rgba(0,0,0,.4);
+  --card-shadow-hover:  0 16px 48px rgba(0,0,0,.6);
+  --card-title:         var(--mundo-acento);      /* acento, legible sobre oscuro */
+  --card-text-muted:    rgba(240, 237, 230, 0.6);
+  --card-img-bg:        rgba(0, 0, 0, 0.25);
+  --card-precio:        #f0ede6;
+  --card-precio-tachado:rgba(240, 237, 230, 0.4);
+
+  --filtros-bg:         rgba(255, 255, 255, 0.07);
+  --filtros-border:     rgba(255, 255, 255, 0.14);
+  --filtros-select-bg:  rgba(255, 255, 255, 0.1);
+  --filtros-select-txt: #f0ede6;
+  --filtros-arrow:      %23f0ede6;
+  --filtros-count:      rgba(240, 237, 230, 0.5);
+
+  /* Modal oscuro cuando el mundo es oscuro */
+  --modal-bg:           color-mix(in srgb, var(--mundo-fondo) 50%, #111);
+  --modal-text:         #f0ede6;
+  --modal-label:        rgba(240, 237, 230, 0.7);
+  --modal-input-bg:     rgba(255, 255, 255, 0.08);
+  --modal-input-border: rgba(255, 255, 255, 0.2);
+  --modal-input-text:   #f0ede6;
+  --modal-cerrar:       rgba(240, 237, 230, 0.45);
+  --modal-cerrar-hover: #f0ede6;
+
+  --spinner-track:      rgba(255, 255, 255, 0.15);
+  --estado-vacio:       rgba(240, 237, 230, 0.5);
+}
+
+/* ============================================================
+   TEMA CLARO FORZADO — anula mundo-oscuro y data-theme="dark"
+   Aplica cuando el usuario eligió explícitamente el tema claro
+   ============================================================ */
+:root[data-theme="light"] {
+  --page-bg:            #f5f0e8;
+  --page-text:          #1a1a1a;
+  --page-text-muted:    #555555;
+  --card-bg:            #ffffff;
+  --card-border:        rgba(0, 0, 0, 0.07);
+  --card-footer-border: #e8e4dc;
+  --card-shadow:        0 4px 16px rgba(0,0,0,.08);
+  --card-shadow-hover:  0 16px 32px rgba(0,0,0,.14);
+  --card-title:         var(--mundo-fondo);
+  --card-text-muted:    #666666;
+  --card-img-bg:        #f0ebe0;
+  --card-precio:        var(--mundo-fondo);
+  --card-precio-tachado:#aaaaaa;
+  --filtros-bg:         #ffffff;
+  --filtros-border:     rgba(0, 0, 0, 0.1);
+  --filtros-select-bg:  #ffffff;
+  --filtros-select-txt: #1a1a1a;
+  --filtros-count:      #999999;
+  --modal-bg:           #ffffff;
+  --modal-text:         #1a1a1a;
+  --modal-label:        #555555;
+  --modal-input-bg:     #ffffff;
+  --modal-input-border: #dddddd;
+  --modal-input-text:   #1a1a1a;
+  --modal-cerrar:       #aaaaaa;
+  --modal-cerrar-hover: #1a1a1a;
+  --spinner-track:      rgba(0, 0, 0, 0.1);
+  --estado-vacio:       #aaaaaa;
+}
+
+/* ============================================================
+   OS DARK MODE — aplica solo a modal y elementos neutros
+   Solo cuando no hay preferencia manual ni mundo oscuro
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]):not(.mundo-oscuro) {
+    --modal-bg:           #1e1e1e;
+    --modal-text:         #f0ede6;
+    --modal-label:        #b0acaa;
+    --modal-input-bg:     #2a2a2a;
+    --modal-input-border: rgba(255, 255, 255, 0.2);
+    --modal-input-text:   #f0ede6;
+    --modal-cerrar:       #888888;
+    --modal-cerrar-hover: #f0ede6;
+
+    --spinner-track:      rgba(255, 255, 255, 0.15);
+    --estado-vacio:       rgba(240, 237, 230, 0.5);
+  }
+}
+
+/* ============================================================
+   RESET MÍNIMO
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--page-bg);
+  color: var(--page-text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+img { max-width: 100%; display: block; }
+a   { text-decoration: none; color: inherit; }
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "logo nav actions";
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    var(--mundo-fondo) 0%,
+    color-mix(in srgb, var(--mundo-fondo) 60%, var(--mundo-acento)) 100%
+  );
+  padding: var(--sp-md) var(--sp-lg);
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: padding var(--ease);
+}
+
+.navbar--compacta { padding-top: var(--sp-sm); padding-bottom: var(--sp-sm); }
+
+.navbar__logo { grid-area: logo; display: flex; align-items: center; gap: var(--sp-md); }
+.navbar__logo img {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: 3px solid var(--mundo-acento);
+  background: #ffebd0;
+  padding: 6px;
+  object-fit: contain;
+  transition: transform var(--ease);
+}
+.navbar__logo img:hover { transform: scale(1.08); cursor: pointer; }
+
+.navbar__logo-texto {
+  font-family: var(--mundo-fuente);
+  color: var(--mundo-acento);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  /* garantizar legibilidad sobre fondo oscuro */
+  text-shadow: 0 1px 4px rgba(0,0,0,.5);
+}
+
+.navbar__nav {
+  grid-area: nav;
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-lg);
+  list-style: none;
+}
+.navbar__nav a {
+  color: rgba(255,255,255,.9);
+  font-weight: 500;
+  padding: var(--sp-sm) var(--sp-md);
+  position: relative;
+  transition: color var(--ease);
+}
+.navbar__nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  width: 0; height: 2px;
+  background: var(--mundo-acento);
+  transition: all var(--ease);
+  transform: translateX(-50%);
+}
+.navbar__nav a:hover         { color: var(--mundo-acento); }
+.navbar__nav a:hover::after  { width: 100%; }
+
+.navbar__actions { grid-area: actions; display: flex; align-items: center; gap: var(--sp-sm); }
+
+.navbar__btn-login {
+  background: var(--mundo-acento);
+  color: #fff;
+  border: none;
+  padding: var(--sp-sm) var(--sp-lg);
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: filter var(--ease);
+  white-space: nowrap;
+}
+.navbar__btn-login:hover { filter: brightness(1.15); }
+
+.navbar__usuario {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,.8);
+  padding: var(--sp-xs) var(--sp-md);
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.navbar__toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.9);
+  font-size: 1.8rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Botón de cambio de tema */
+.navbar__btn-tema {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.9);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--ease), transform var(--ease);
+  line-height: 1;
+}
+.navbar__btn-tema:hover {
+  background: rgba(255,255,255,.22);
+  transform: rotate(20deg) scale(1.1);
+}
+
+/* ============================================================
+   LANDING — página de elección de mundo
+   ============================================================ */
+.landing {
+  min-height: 100vh;
+  background: #0d1117;
+  display: flex;
+  flex-direction: column;
+}
+
+.landing__hero {
+  text-align: center;
+  padding: var(--sp-2x) var(--sp-lg) var(--sp-xl);
+  background: linear-gradient(160deg, #0d1117 0%, #1a1a2e 100%);
+}
+
+.landing__emblema {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: var(--sp-lg);
+  animation: emblemaFloat 3s ease-in-out infinite;
+}
+@keyframes emblemaFloat {
+  0%, 100% { transform: translateY(0)    rotate(-3deg); }
+  50%       { transform: translateY(-10px) rotate( 3deg); }
+}
+
+.landing__titulo {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: #c9a227;
+  letter-spacing: 3px;
+  margin-bottom: var(--sp-md);
+  text-shadow: 0 0 40px rgba(201,162,39,.4);
+}
+
+.landing__subtitulo {
+  color: rgba(255,255,255,.65);
+  font-size: 1rem;
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.landing__mundos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--sp-xl);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--sp-2x) var(--sp-lg);
+  flex: 1;
+}
+
+/* Card de mundo (landing) — siempre sobre fondo oscuro */
+.mundo-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.45);
+  transition: transform var(--ease), box-shadow var(--ease);
+  cursor: pointer;
+  text-decoration: none;
+}
+.mundo-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 24px 56px rgba(0,0,0,.65);
+}
+
+.mundo-card__img-wrapper {
+  height: 280px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+.mundo-card__img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.mundo-card:hover .mundo-card__img { transform: scale(1.07); }
+
+.mundo-card__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 55%);
+  transition: opacity var(--ease);
+}
+.mundo-card:hover .mundo-card__overlay { opacity: 0.9; }
+
+.mundo-card__body {
+  padding: var(--sp-xl);
+  background: var(--mundo-card-fondo, #1a1a2e);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.mundo-card__nombre {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--mundo-card-acento, #c9a227);
+}
+
+.mundo-card__desc {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,.6);
+  line-height: 1.6;
+}
+
+.mundo-card__cta {
+  margin-top: auto;
+  padding-top: var(--sp-md);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--mundo-card-acento, #c9a227);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+.mundo-card__cta::after           { content: '→'; transition: transform var(--ease); }
+.mundo-card:hover .mundo-card__cta::after { transform: translateX(6px); }
+
+.landing__footer {
+  text-align: center;
+  padding: var(--sp-xl);
+  color: rgba(255,255,255,.3);
+  font-size: 0.8rem;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+/* ============================================================
+   CATÁLOGO — página de mundo
+   ============================================================ */
+.catalogo-body {
+  background: var(--page-bg);
+  color: var(--page-text);
+}
+
+.catalogo-hero {
+  background: linear-gradient(
+    135deg,
+    var(--mundo-fondo) 0%,
+    color-mix(in srgb, var(--mundo-fondo) 70%, black) 100%
+  );
+  padding: var(--sp-2x) var(--sp-lg);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.catalogo-hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent, transparent 30px,
+    rgba(255,255,255,.02) 30px, rgba(255,255,255,.02) 31px
+  );
+}
+
+/* Título siempre legible sobre gradiente oscuro del hero */
+.catalogo-hero__titulo {
+  font-family: var(--mundo-fuente);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--mundo-acento);
+  letter-spacing: 2px;
+  position: relative; z-index: 1;
+  text-shadow: 0 2px 20px rgba(0,0,0,.4);
+}
+
+.catalogo-hero__desc {
+  color: rgba(255,255,255,.7);
+  margin-top: var(--sp-sm);
+  font-size: 0.95rem;
+  position: relative; z-index: 1;
+}
+
+.catalogo-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--sp-xl) var(--sp-lg);
+}
+
+/* ============================================================
+   BARRA DE FILTROS
+   ============================================================ */
+.filtros {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-md);
+  background: var(--filtros-bg);
+  border: 1px solid var(--filtros-border);
+  border-left: 4px solid var(--mundo-acento);
+  border-radius: 10px;
+  padding: var(--sp-md) var(--sp-lg);
+  margin-bottom: var(--sp-xl);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  transition: background var(--ease), border-color var(--ease);
+}
+
+.filtros__select {
+  padding: var(--sp-sm) 28px var(--sp-sm) var(--sp-md);
+  border: 1.5px solid var(--filtros-border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  background: var(--filtros-select-bg);
+  color: var(--filtros-select-txt);
+  cursor: pointer;
+  transition: border-color var(--ease), background var(--ease), color var(--ease);
+  appearance: none;
+  /* flecha adaptativa — variable CSS en el SVG embebido */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+.filtros__select:focus { outline: none; border-color: var(--mundo-acento); }
+
+/* La flecha SVG del select no puede usar CSS custom props directamente;
+   en mundo oscuro le ponemos una versión clara con una clase extra */
+:root.mundo-oscuro .filtros__select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23f0ede6'/%3E%3C/svg%3E");
+}
+
+.filtros__count {
+  font-size: 0.82rem;
+  color: var(--filtros-count);
+  font-style: italic;
+  transition: color var(--ease);
+}
+
+/* ============================================================
+   GRID DE PRODUCTOS
+   ============================================================ */
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--sp-lg);
+}
+
+/* ============================================================
+   CARD DE PRODUCTO
+   ============================================================ */
+.prod-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  border-bottom: 3px solid var(--mundo-acento);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--ease), box-shadow var(--ease),
+              background var(--ease), border-color var(--ease);
+}
+.prod-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Imagen */
+.prod-card__img-wrap {
+  height: 220px;
+  overflow: hidden;
+  background: var(--card-img-bg);
+  flex-shrink: 0;
+  position: relative;
+}
+.prod-card__img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.prod-card:hover .prod-card__img { transform: scale(1.05); }
+
+.prod-card__sin-imagen {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  opacity: .3;
+}
+
+/* Badge de promo */
+.prod-card__promo {
+  display: none;
+  position: absolute;
+  top: var(--sp-sm); left: var(--sp-sm);
+  background: #e53e3e;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+.prod-card--promo .prod-card__promo { display: block; }
+
+/* Cuerpo */
+.prod-card__body {
+  padding: var(--sp-lg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-xs);
+}
+
+.prod-card__cat {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--mundo-acento);
+}
+
+.prod-card__nombre {
+  font-family: var(--mundo-fuente);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--card-title);
+  transition: color var(--ease);
+}
+
+.prod-card__desc {
+  font-size: 0.82rem;
+  color: var(--card-text-muted);
+  line-height: 1.6;
+  flex: 1;
+  transition: color var(--ease);
+}
+
+/* Footer de la card */
+.prod-card__footer {
+  padding: var(--sp-md) var(--sp-lg) var(--sp-lg);
+  border-top: 1px solid var(--card-footer-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-sm);
+  transition: border-color var(--ease);
+}
+
+.prod-card__precio {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--card-precio);
+  transition: color var(--ease);
+}
+
+.prod-card__precio-original {
+  font-size: 0.82rem;
+  color: var(--card-precio-tachado);
+  text-decoration: line-through;
+  transition: color var(--ease);
+}
+
+.prod-card__btn-ws {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  background: var(--wa-green);
+  color: #fff;
+  border: none;
+  padding: var(--sp-sm) var(--sp-md);
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter var(--ease);
+  white-space: nowrap;
+}
+.prod-card__btn-ws:hover { filter: brightness(1.1); }
+
+/* ============================================================
+   ESTADO VACÍO / CARGANDO
+   ============================================================ */
+.estado-vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--sp-2x) var(--sp-lg);
+  color: var(--estado-vacio);
+  font-size: 1rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 2.5rem; height: 2.5rem;
+  border: 3px solid var(--spinner-track);
+  border-top-color: var(--mundo-acento);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   MODAL DE LOGIN
+   ============================================================ */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(4px);
+  z-index: 900;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-lg);
+}
+.modal-overlay--visible { display: flex; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  background: var(--modal-bg);
+  border-radius: var(--radius-card);
+  padding: var(--sp-2x);
+  max-width: 420px; width: 100%;
+  border-top: 4px solid var(--mundo-acento);
+  box-shadow: 0 32px 80px rgba(0,0,0,.5);
+  animation: slideUp .3s cubic-bezier(.34,1.56,.64,1);
+  transition: background var(--ease), color var(--ease);
+}
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modal__titulo {
+  font-family: var(--mundo-fuente);
+  font-size: 1.3rem;
+  color: var(--modal-text);
+  margin-bottom: var(--sp-xl);
+  text-align: center;
+}
+
+.modal__campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-xs);
+  margin-bottom: var(--sp-md);
+}
+.modal__campo label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--modal-label);
+  transition: color var(--ease);
+}
+.modal__campo input {
+  padding: var(--sp-md);
+  border: 2px solid var(--modal-input-border);
+  border-radius: 8px;
+  background: var(--modal-input-bg);
+  color: var(--modal-input-text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: border-color var(--ease), background var(--ease), color var(--ease);
+}
+.modal__campo input::placeholder { color: var(--modal-cerrar); }
+.modal__campo input:focus {
+  outline: none;
+  border-color: var(--mundo-acento);
+}
+
+.modal__error {
+  display: none;
+  color: #e53e3e;
+  font-size: 0.82rem;
+  text-align: center;
+  margin-bottom: var(--sp-md);
+}
+.modal__error--visible { display: block; }
+
+.modal__btn {
+  width: 100%;
+  padding: var(--sp-md);
+  border: none;
+  border-radius: 8px;
+  background: var(--mundo-fondo);
+  color: var(--mundo-acento);
+  font-family: var(--mundo-fuente);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter var(--ease);
+  letter-spacing: 1px;
+}
+.modal__btn:hover { filter: brightness(1.18); }
+
+.modal__cerrar {
+  display: block;
+  text-align: center;
+  margin-top: var(--sp-md);
+  font-size: 0.82rem;
+  color: var(--modal-cerrar);
+  cursor: pointer;
+  transition: color var(--ease);
+}
+.modal__cerrar:hover { color: var(--modal-cerrar-hover); }
+
+/* ============================================================
+   FOOTER DEL CATÁLOGO
+   ============================================================ */
+footer {
+  background: linear-gradient(
+    135deg,
+    var(--mundo-fondo) 0%,
+    color-mix(in srgb, var(--mundo-fondo) 80%, black) 100%
+  );
+  color: rgba(255,255,255,.65);
+  padding: var(--sp-2x) var(--sp-lg);
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  margin-top: var(--sp-2x);
+}
+footer strong { color: var(--mundo-acento); }
+footer a      { color: var(--wa-green); font-weight: 700; }
+footer a:hover { text-decoration: underline; }
+
+/* ============================================================
+   BOTÓN FLOTANTE DE WHATSAPP
+   ============================================================ */
+.wa-float {
+  position: fixed;
+  bottom: var(--sp-lg); left: var(--sp-lg);
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--wa-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,211,102,.45);
+  z-index: 200;
+  transition: transform var(--ease);
+}
+.wa-float:hover { transform: scale(1.1); }
+.wa-float svg   { width: 28px; height: 28px; fill: #fff; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .navbar {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "logo toggle actions"
+      "nav  nav    nav";
+  }
+  .navbar__toggle { display: block; }
+  .navbar__nav {
+    grid-area: nav;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    padding: var(--sp-md) 0;
+    gap: var(--sp-xs);
+    border-top: 1px solid rgba(255,255,255,.1);
+    margin-top: var(--sp-sm);
+  }
+  .navbar__nav--abierto { display: flex; }
+  .navbar__nav a {
+    display: block;
+    text-align: center;
+    padding: var(--sp-sm) var(--sp-md);
+    border-radius: 6px;
+  }
+  .navbar__nav a:hover { background: rgba(255,255,255,.08); }
+
+  .landing__mundos { padding: var(--sp-xl) var(--sp-md); gap: var(--sp-lg); }
+  .mundo-card__img-wrapper { height: 220px; }
+
+  .filtros { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .navbar__logo img     { width: 50px; height: 50px; }
+  .navbar__logo-texto   { font-size: 0.9rem; }
+  .catalogo-main        { padding: var(--sp-lg) var(--sp-md); }
+  .productos-grid       { grid-template-columns: 1fr; }
+  .landing__titulo      { font-size: 1.8rem; }
+  footer                { padding: var(--sp-xl) var(--sp-md); }
+  .modal                { padding: var(--sp-xl) var(--sp-lg); }
+}

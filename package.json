@@ -1,0 +1,19 @@
+{
+  "name": "rebranding-web-ranita",
+  "version": "1.0.0",
+  "description": "La Ranita 3D — backend propio multi-mundo",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node db/seed.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "connect-sqlite3": "^0.9.14",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  }
+}

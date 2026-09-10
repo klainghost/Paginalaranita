@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Ranita 3D — Elegí tu mundo</title>
+  <meta name="description" content="Impresión 3D a medida: miniaturas para rol, organizadores funcionales y regalos únicos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar__logo">
+      <img src="images/logo.png" alt="La Ranita 3D" onclick="location.href='/'">
+      <span class="navbar__logo-texto">La Ranita 3D</span>
+    </div>
+
+    <button class="navbar__toggle" aria-label="Menú">☰</button>
+
+    <ul class="navbar__nav">
+      <li><a href="#mundos">Mundos</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+
+    <div class="navbar__actions" id="navbar-actions">
+      <button class="navbar__btn-tema" id="btn-tema" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+      <button class="navbar__btn-login" id="btn-login">Iniciar sesión</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main class="landing">
+    <section class="landing__hero">
+      <span class="landing__emblema">🐸</span>
+      <h1 class="landing__titulo">Elegí tu mundo</h1>
+      <p class="landing__subtitulo">
+        Miniaturas de rol, piezas funcionales y regalos únicos, todo impreso en 3D.
+        ¿A dónde viajamos hoy?
+      </p>
+    </section>
+
+    <!-- CARDS DE MUNDOS -->
+    <section class="landing__mundos" id="mundos">
+      <div id="mundos-loading" style="grid-column:1/-1;text-align:center;padding:48px;color:rgba(255,255,255,.4);">
+        <div class="spinner"></div>
+        <p style="margin-top:16px;">Cargando mundos…</p>
+      </div>
+    </section>
+
+    <!-- CONTACTO / FOOTER -->
+    <footer class="landing__footer" id="contacto">
+      <p>
+        <strong style="color:#c9a227">La Ranita 3D</strong> · @laranita3d ·
+        Malargüe, Mendoza, Argentina<br>
+        Consultas por <a href="https://wa.me/5492604XXXXXX" target="_blank" rel="noopener"
+          style="color:#25d366;font-weight:700">WhatsApp</a>
+      </p>
+    </footer>
+  </main>
+
+  <!-- MODAL LOGIN -->
+  <div class="modal-overlay" id="modal-login" role="dialog" aria-modal="true" aria-label="Iniciar sesión">
+    <div class="modal">
+      <h2 class="modal__titulo">Iniciar sesión</h2>
+      <form id="form-login" autocomplete="on" novalidate>
+        <div class="modal__campo">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" placeholder="tu@email.com" autocomplete="email" required>
+        </div>
+        <div class="modal__campo">
+          <label for="login-pass">Contraseña</label>
+          <input type="password" id="login-pass" name="password" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+        <p class="modal__error" id="login-error"></p>
+        <button type="submit" class="modal__btn">Entrar</button>
+      </form>
+      <span class="modal__cerrar" id="modal-cerrar" role="button" tabindex="0">Cancelar</span>
+    </div>
+  </div>
+
+  <!-- WA FLOTANTE -->
+  <a class="wa-float" href="https://wa.me/5492604XXXXXX?text=Hola%2C%20quiero%20consultar%20sobre%20La%20Ranita%203D"
+     target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.76.463 3.413 1.268 4.847L2 22.001l5.301-1.259a9.953 9.953 0 004.703 1.186c5.514 0 9.997-4.483 9.997-9.997 0-5.515-4.483-9.928-9.997-9.928zm0 18.21a8.204 8.204 0 01-4.186-1.145l-.3-.178-3.146.747.783-2.988-.195-.307a8.186 8.186 0 01-1.268-4.339c0-4.535 3.688-8.224 8.22-8.224 4.533 0 8.22 3.689 8.22 8.224.001 4.535-3.687 8.21-8.128 8.21z"/>
+    </svg>
+  </a>
+
+  <script src="js/app.js"></script>
+  <script>
+    initToggleTema(); // restaura preferencia guardada antes de pintar
+
+    // Paleta por mundo-slug (define el color de la card antes de que cargue la API)
+    const PALETAS_CARD = {
+      rol:     { fondo: '#1a2e1a', acento: '#c9a227' },
+      oficina: { fondo: '#1e3a2f', acento: '#84cc16' },
+      regalos: { fondo: '#3b1a2e', acento: '#d97706' },
+    };
+
+    const EMOJIS = { rol: '⚔️', oficina: '🖨️', regalos: '🎁' };
+
+    function renderMundos(mundos) {
+      const section = document.getElementById('mundos');
+      document.getElementById('mundos-loading').remove();
+
+      mundos.forEach(m => {
+        const p = PALETAS_CARD[m.slug] || { fondo: '#1a1a2e', acento: '#c9a227' };
+        const card = document.createElement('a');
+        card.href = `mundo.html?mundo=${m.slug}`;
+        card.className = 'mundo-card';
+        card.style.setProperty('--mundo-card-fondo',  p.fondo);
+        card.style.setProperty('--mundo-card-acento', p.acento);
+        card.innerHTML = `
+          <div class="mundo-card__img-wrapper">
+            <img class="mundo-card__img"
+                 src="images/mundos/${m.slug}.webp"
+                 alt="${m.nombre}"
+                 onerror="this.src='images/logo.png'">
+            <div class="mundo-card__overlay"></div>
+          </div>
+          <div class="mundo-card__body">
+            <div class="mundo-card__nombre">${EMOJIS[m.slug] || '🌍'} ${m.nombre}</div>
+            <p class="mundo-card__desc">${m.descripcion || ''}</p>
+            <div class="mundo-card__cta">Ver catálogo</div>
+          </div>`;
+        section.appendChild(card);
+      });
+    }
+
+    (async () => {
+      initNavbarScroll();
+      initNavToggle();
+      initLoginModal();
+      await initNavbarSesion();
+
+      try {
+        const mundos = await getMundos();
+        renderMundos(mundos);
+      } catch (e) {
+        document.getElementById('mundos-loading').innerHTML =
+          `<p style="color:rgba(255,255,255,.45)">No se pudo conectar con el servidor. Revisá que esté corriendo.</p>`;
+      }
+    })();
+  </script>
+</body>
+</html>
