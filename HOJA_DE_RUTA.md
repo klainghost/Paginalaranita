@@ -218,21 +218,39 @@ npm start          # arranca en puerto 3001
 - CRUD de cuentas de usuario desde el admin
 - Verificado: tres niveles ven precios distintos de la misma pieza
 
-### ✅ Fase 3 — Sistema de mundos (completa)
-- Landing "elegí tu mundo" (`public/index.html`) con cards dinámicas por mundo
-- Catálogo por mundo (`public/mundo.html`) con filtro por categoría
-- CSS con sistema de design tokens multi-mundo (`public/css/styles.css`): variables `--mundo-acento`, `--mundo-fondo`, `--mundo-fuente` aplicadas al vuelo desde la API
-- Fuentes Google cargadas dinámicamente por mundo (Cinzel / Plus Jakarta Sans / Playfair Display)
-- Modal de login + estado de sesión en navbar
-- `server.js` sirve `public/` como archivos estáticos (acceso desde `http://localhost:3001/`)
-- Tres mundos activos: Rol (dorado/verde bosque), Oficina (lima/blanco), Regalos (ámbar/rosa)
+### ✅ Fase 3 — Sistema de mundos + tema claro/oscuro (completa)
 
-### ⬜ Fase 4 — Migración y pulido (pendiente)
-- Panel de admin propio (UI, no solo API)
-- Pasar el sitio de rol al nuevo sistema
-- Backup automático de la DB (cron diario a repo privado o storage)
-- Configurar pm2 o systemd para mantener el proceso vivo
-- Apuntar dominio a Cloudflare Tunnel (`api.laranita3d.com.ar`)
+#### Frontend multi-mundo
+- Landing "elegí tu mundo" (`public/index.html`) con cards dinámicas cargadas desde la API
+- Catálogo por mundo (`public/mundo.html`) con filtro por categoría y botón "Pedir por WhatsApp"
+- `server.js` sirve `public/` como archivos estáticos — mismo proceso Express sirve API y frontend
+
+#### Sistema de diseño (`public/css/styles.css`)
+- Tokens CSS adaptativos: `--mundo-acento`, `--mundo-fondo`, `--mundo-fuente` seteados por JS al cargar el mundo
+- **Tema oscuro/claro automático**: JS clasifica cada mundo como oscuro o claro según luminancia del `color_fondo` y agrega clase `mundo-oscuro` / `mundo-claro` a `<html>`
+- **Toggle manual** 🌙/☀️ en la navbar: persiste en `localStorage`, se restaura antes de pintar (sin flash)
+- Prioridad del tema (mayor a menor): `[data-theme="light"]` → `[data-theme="dark"]` → `.mundo-oscuro` → claro por defecto
+- OS dark mode: aplica automáticamente al modal y elementos neutros cuando no hay preferencia manual
+- Cards de producto: todos los colores usan tokens (`--card-bg`, `--card-title`, `--card-text-muted`, etc.) — nunca hardcodeados
+- Fuentes Google cargadas dinámicamente por mundo (Cinzel / Plus Jakarta Sans / Playfair Display)
+
+#### Correcciones de bugs
+- `getSession()` ahora desenvuelve `{ usuario: {...} }` correctamente (antes devolvía `undefined` en navbar)
+- `initNavbarSesion()` preserva el botón de tema al reemplazar el contenido de la navbar
+- URL de la API auto-detectada: `''` en producción (mismo origen), `http://localhost:3001` en desarrollo
+
+#### Despliegue
+- Repo: `github.com/klainghost/Paginalaranita` rama `main`
+- Servidor: Linux con Cloudflare Tunnel (`cloudflared-laranita3d.service` — activo con systemd)
+- Puerto nuevo: **3001** (el servidor viejo corría en 3000 — pueden coexistir durante la transición)
+- Estrategia de corte sin downtime: arrancar nuevo en 3001, probar, cambiar tunnel, apagar viejo
+
+### ⬜ Fase 4 — Panel admin + producción (pendiente)
+- Panel de admin propio (UI web, no solo API REST)
+- Número de WhatsApp real (reemplazar `5492604XXXXXX` en `index.html` y `mundo.html`)
+- Backup automático de `data/ranita.db` (cron diario → repo privado o storage)
+- Confirmar pm2 corriendo y `pm2 startup` configurado en el servidor Linux
+- Verificar que el Cloudflare Tunnel apunte al puerto 3001
 
 ---
 
