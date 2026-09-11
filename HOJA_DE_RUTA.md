@@ -1,6 +1,6 @@
 # La Ranita 3D — Hoja de ruta técnica
 
-Última actualización: 2026-09-10
+Última actualización: 2026-09-10 — sitio online, deploy continuo vía webhook
 
 ---
 
@@ -241,16 +241,22 @@ npm start          # arranca en puerto 3001
 
 #### Despliegue
 - Repo: `github.com/klainghost/Paginalaranita` rama `main`
-- Servidor: Linux con Cloudflare Tunnel (`cloudflared-laranita3d.service` — activo con systemd)
-- Puerto nuevo: **3001** (el servidor viejo corría en 3000 — pueden coexistir durante la transición)
-- Estrategia de corte sin downtime: arrancar nuevo en 3001, probar, cambiar tunnel, apagar viejo
+- Servidor: Linux con Cloudflare Tunnel (dashboard Cloudflare → tunnel `laranita3d`, rutas apuntan a `http://localhost:8080`)
+- pm2 arranca el servidor en **puerto 8080** para coincidir con lo configurado en el tunnel remoto
+- Sitio online en `https://laranita3d.com.ar` ✓
+
+#### Deploy continuo (workflow actual)
+- Desde la compu de desarrollo: `.\deploy.ps1` (o `.\deploy.ps1 "mensaje"`)
+- El script hace `git push origin main`
+- GitHub llama al webhook `POST /webhook/deploy` en el servidor vía Cloudflare Tunnel
+- El servidor verifica la firma HMAC-SHA256 con `WEBHOOK_SECRET` y ejecuta `git pull origin main && pm2 restart ranita3d`
+- Para cambios que agregan dependencias nuevas (`npm install`): hacer SSH local o extender el comando del webhook
+- `WEBHOOK_SECRET` se pasa inline al arrancar pm2: `PORT=8080 WEBHOOK_SECRET='...' pm2 start server.js --name ranita3d`
 
 ### ⬜ Fase 4 — Panel admin + producción (pendiente)
 - Panel de admin propio (UI web, no solo API REST)
-- Número de WhatsApp real (reemplazar `5492604XXXXXX` en `index.html` y `mundo.html`)
 - Backup automático de `data/ranita.db` (cron diario → repo privado o storage)
-- Confirmar pm2 corriendo y `pm2 startup` configurado en el servidor Linux
-- Verificar que el Cloudflare Tunnel apunte al puerto 3001
+- `SESSION_SECRET` configurado en pm2 (actualmente usa el valor por defecto de desarrollo)
 
 ---
 
@@ -258,9 +264,18 @@ npm start          # arranca en puerto 3001
 
 ```
 SESSION_SECRET=          # cadena aleatoria larga, requerida en producción
-PORT=3001                # opcional, default 3001
+PORT=8080                # en producción debe coincidir con el tunnel de Cloudflare
+WEBHOOK_SECRET=          # secreto HMAC para el webhook de GitHub (generado con python3 secrets.token_hex(32))
 ALLOWED_ORIGIN=          # origen del frontend, ej: https://laranita3d.com.ar
 NODE_ENV=production      # activa cookies secure
+```
+
+### Cómo arrancar el servidor en producción
+
+```bash
+PORT=8080 WEBHOOK_SECRET='...' SESSION_SECRET='...' pm2 start server.js --name ranita3d
+pm2 save
+pm2 startup   # solo la primera vez, para que arranque con el sistema
 ```
 
 ---
