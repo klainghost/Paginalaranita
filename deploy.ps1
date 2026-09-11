@@ -30,11 +30,12 @@ if ($cambios) {
     Ok "Sin cambios locales pendientes"
 }
 
-# 2. Push — el webhook en el servidor hace git pull + pm2 restart automaticamente
+# 2. Push - el webhook en el servidor hace git pull + pm2 restart automaticamente
 Paso "Subiendo a GitHub..."
 git push origin main
 if ($LASTEXITCODE -ne 0) { Falla "git push fallo" }
 
-Ok "Push completado — el servidor se actualiza en segundos via webhook"
+Ok "Push completado - el servidor se actualiza en segundos via webhook"
 Write-Host ""
-Write-Host "   https://laranita3d.com.ar" -ForegroundColor Yellow
+$url = "https://laranita3d.com.ar"
+Write-Host "   $url" -ForegroundColor Yellow
