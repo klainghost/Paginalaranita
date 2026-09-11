@@ -6,6 +6,8 @@ const session       = require('express-session');
 const SQLiteStore   = require('connect-sqlite3')(session);
 const cors          = require('cors');
 const path          = require('path');
+const crypto        = require('crypto');
+const { exec }      = require('child_process');
 
 const authRoutes     = require('./routes/auth');
 const mundosRoutes   = require('./routes/mundos');
@@ -19,6 +21,34 @@ app.use(cors({
   origin:      process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
   credentials: true,
 }));
+
+// Webhook de GitHub — va ANTES de express.json() para recibir el body crudo
+app.post('/webhook/deploy', express.raw({ type: 'application/json' }), (req, res) => {
+  const secret = process.env.WEBHOOK_SECRET;
+  if (!secret) return res.status(500).end();
+
+  const sig      = req.headers['x-hub-signature-256'] || '';
+  const expected = 'sha256=' + crypto.createHmac('sha256', secret).update(req.body).digest('hex');
+
+  if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) {
+    return res.status(401).end();
+  }
+
+  let payload;
+  try { payload = JSON.parse(req.body.toString()); } catch { return res.status(400).end(); }
+
+  if (payload.ref !== 'refs/heads/main') {
+    return res.status(200).json({ skipped: true });
+  }
+
+  res.status(200).json({ ok: true });
+
+  const cmd = 'git pull origin main && pm2 restart ranita3d && pm2 save';
+  exec(cmd, { cwd: '/home/usuario/Escritorio/laranita3d' }, (err, stdout) => {
+    if (err) console.error('[webhook] deploy error:', err.message);
+    else     console.log('[webhook] deploy OK:', stdout.trim());
+  });
+});
 
 app.use(express.json());
 
