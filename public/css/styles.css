@@ -212,13 +212,15 @@ a   { text-decoration: none; color: inherit; }
   grid-template-columns: auto 1fr auto;
   grid-template-areas: "logo nav actions";
   align-items: center;
+  /* Siempre oscuro: fondo mezclado con negro garantiza texto blanco legible
+     sin importar si el mundo es claro u oscuro */
   background: linear-gradient(
     135deg,
-    var(--mundo-fondo) 0%,
-    color-mix(in srgb, var(--mundo-fondo) 60%, var(--mundo-acento)) 100%
+    color-mix(in srgb, var(--mundo-fondo) 45%, #000) 0%,
+    color-mix(in srgb, var(--mundo-acento) 35%, #000) 100%
   );
   padding: var(--sp-md) var(--sp-lg);
-  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  box-shadow: 0 4px 20px rgba(0,0,0,.45);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -473,10 +475,11 @@ a   { text-decoration: none; color: inherit; }
 }
 
 .catalogo-hero {
+  /* Siempre suficientemente oscuro para que texto blanco sea legible */
   background: linear-gradient(
-    135deg,
-    var(--mundo-fondo) 0%,
-    color-mix(in srgb, var(--mundo-fondo) 70%, black) 100%
+    160deg,
+    color-mix(in srgb, var(--mundo-fondo) 50%, #000) 0%,
+    color-mix(in srgb, var(--mundo-fondo) 25%, #000) 100%
   );
   padding: var(--sp-2x) var(--sp-lg);
   text-align: center;
@@ -500,14 +503,15 @@ a   { text-decoration: none; color: inherit; }
   color: var(--mundo-acento);
   letter-spacing: 2px;
   position: relative; z-index: 1;
-  text-shadow: 0 2px 20px rgba(0,0,0,.4);
+  text-shadow: 0 2px 20px rgba(0,0,0,.6), 0 0 40px rgba(0,0,0,.3);
 }
 
 .catalogo-hero__desc {
-  color: rgba(255,255,255,.7);
+  color: rgba(255,255,255,.88);
   margin-top: var(--sp-sm);
   font-size: 0.95rem;
   position: relative; z-index: 1;
+  text-shadow: 0 1px 8px rgba(0,0,0,.5);
 }
 
 .catalogo-main {
