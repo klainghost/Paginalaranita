@@ -43,10 +43,10 @@
   --card-footer-border: #e8e4dc;
   --card-shadow:        0 4px 16px rgba(0,0,0,.08);
   --card-shadow-hover:  0 16px 32px rgba(0,0,0,.14);
-  --card-title:         var(--mundo-fondo);
+  --card-title:         #1a1a1a;
   --card-text-muted:    #666666;
   --card-img-bg:        #f0ebe0;
-  --card-precio:        var(--mundo-fondo);
+  --card-precio:        var(--mundo-acento);
   --card-precio-tachado:#aaaaaa;
 
   --filtros-bg:         #ffffff;
@@ -126,10 +126,10 @@
   --card-footer-border: #e8e4dc;
   --card-shadow:        0 4px 16px rgba(0,0,0,.08);
   --card-shadow-hover:  0 16px 32px rgba(0,0,0,.14);
-  --card-title:         var(--mundo-fondo);
+  --card-title:         #1a1a1a;
   --card-text-muted:    #666666;
   --card-img-bg:        #f0ebe0;
-  --card-precio:        var(--mundo-fondo);
+  --card-precio:        var(--mundo-acento);
   --card-precio-tachado:#aaaaaa;
   --filtros-bg:         #ffffff;
   --filtros-border:     rgba(0, 0, 0, 0.1);
@@ -146,6 +146,24 @@
   --modal-cerrar-hover: #1a1a1a;
   --spinner-track:      rgba(0, 0, 0, 0.1);
   --estado-vacio:       #aaaaaa;
+}
+
+/* ============================================================
+   MUNDO CLARO — textos en cards siempre oscuros
+   Cuando el mundo tiene color_fondo claro, var(--mundo-fondo) es
+   claro también: usarlo como color de texto sobre card blanca lo
+   hace invisible. Este bloque garantiza legibilidad.
+   ============================================================ */
+:root.mundo-claro {
+  --card-title:  #1a1a1a;              /* nombre: siempre oscuro, legible */
+  --card-precio: var(--mundo-acento);  /* precio: color de marca, legible */
+}
+
+/* OS DARK MODE aplicado a mundo claro: cards se oscurecen, texto claro */
+:root.mundo-claro[data-theme="dark"],
+:root.mundo-claro[data-theme="dark"] {
+  --card-title:  var(--mundo-acento);
+  --card-precio: #f0ede6;
 }
 
 /* ============================================================
