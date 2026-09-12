@@ -1,0 +1,36 @@
+name: Backup diario ranita.db
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 3am ART (UTC-3)
+  workflow_dispatch:       # permite dispararlo manualmente desde GitHub
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login como admin
+        run: |
+          curl -s -c cookies.txt \
+            -X POST https://laranita3d.com.ar/api/auth/login \
+            -H "Content-Type: application/json" \
+            -d "{\"email\":\"${{ secrets.ADMIN_EMAIL }}\",\"password\":\"${{ secrets.ADMIN_PASSWORD }}\"}" \
+            | tee login_response.json
+          grep -q '"ok":true' login_response.json || (echo "Login fallido" && cat login_response.json && exit 1)
+
+      - name: Descargar backup de la base de datos
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          HTTP_STATUS=$(curl -s -o "ranita-${DATE}.db" -w "%{http_code}" \
+            -b cookies.txt \
+            https://laranita3d.com.ar/api/admin/backup/download)
+          echo "HTTP status: $HTTP_STATUS"
+          [ "$HTTP_STATUS" = "200" ] || (echo "Error descargando backup" && exit 1)
+          ls -lh "ranita-${DATE}.db"
+
+      - name: Guardar backup como artifact (retención 30 días)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ranita-db-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ranita-*.db
+          retention-days: 30

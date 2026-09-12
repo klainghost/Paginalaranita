@@ -5,6 +5,7 @@ const express       = require('express');
 const session       = require('express-session');
 const SQLiteStore   = require('connect-sqlite3')(session);
 const cors          = require('cors');
+const fs            = require('fs');
 const path          = require('path');
 const crypto        = require('crypto');
 const { exec }      = require('child_process');
@@ -16,6 +17,22 @@ const adminRoutes    = require('./routes/admin');
 
 const app  = express();
 const PORT = process.env.PORT || 3001;
+
+function getOrCreateSessionSecret() {
+  if (process.env.SESSION_SECRET) return process.env.SESSION_SECRET;
+  const secretFile = path.join(__dirname, 'data', 'session.secret');
+  try {
+    return fs.readFileSync(secretFile, 'utf8').trim();
+  } catch {
+    const secret = crypto.randomBytes(32).toString('hex');
+    fs.mkdirSync(path.dirname(secretFile), { recursive: true });
+    fs.writeFileSync(secretFile, secret, { mode: 0o600 });
+    console.log('[session] SESSION_SECRET generado y guardado en data/session.secret');
+    return secret;
+  }
+}
+
+const SESSION_SECRET = getOrCreateSessionSecret();
 
 app.use(cors({
   origin:      process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
@@ -57,7 +74,7 @@ app.use(session({
     db:  'sessions.db',
     dir: path.join(__dirname, 'data'),
   }),
-  secret:            process.env.SESSION_SECRET || 'ranita-dev-secret-cambiar-en-prod',
+  secret:            SESSION_SECRET,
   resave:            false,
   saveUninitialized: false,
   cookie: {
@@ -77,6 +94,6 @@ app.use('/api/admin',   adminRoutes);
 app.listen(PORT, () => {
   console.log(`La Ranita 3D backend corriendo en http://localhost:${PORT}`);
   if (!process.env.SESSION_SECRET) {
-    console.warn('⚠  SESSION_SECRET no definida — usar solo en desarrollo');
+    console.warn('⚠  SESSION_SECRET tomado de data/session.secret (sin variable de entorno)');
   }
 });

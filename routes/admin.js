@@ -1,5 +1,7 @@
 const express                        = require('express');
 const bcrypt                         = require('bcrypt');
+const fs                             = require('fs');
+const path                           = require('path');
 const { getDb, p }                   = require('../db/database');
 const { calcularPrecio, DIFICULTADES } = require('../lib/precio');
 const { requireAdmin }               = require('../middleware/auth');
@@ -237,6 +239,28 @@ router.delete('/usuarios/:id', (req, res) => {
   const result = getDb().prepare('DELETE FROM usuarios WHERE id = ?').run(id);
   if (result.changes === 0) return res.status(404).json({ error: 'Usuario no encontrado.' });
   res.json({ ok: true });
+});
+
+// --- Backup ---
+
+router.get('/backup/download', (req, res) => {
+  const db         = getDb();
+  const date       = new Date().toISOString().slice(0, 10);
+  const backupPath = path.join(__dirname, '..', 'data', `backup-tmp-${Date.now()}.db`);
+
+  try {
+    // VACUUM INTO genera una copia limpia y consistente aunque el WAL esté activo
+    db.exec(`VACUUM INTO '${backupPath}'`);
+  } catch (err) {
+    return res.status(500).json({ error: 'Error generando backup: ' + err.message });
+  }
+
+  res.download(backupPath, `ranita-${date}.db`, (err) => {
+    fs.unlink(backupPath, () => {});
+    if (err && !res.headersSent) {
+      res.status(500).json({ error: 'Error enviando backup.' });
+    }
+  });
 });
 
 module.exports = router;

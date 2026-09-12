@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Admin — La Ranita 3D</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0f1117;
+    --surface:   #1a1d27;
+    --surface2:  #23273a;
+    --border:    #2e3347;
+    --accent:    #c9a227;
+    --accent-dim:#a07e17;
+    --text:      #e8eaf0;
+    --text-dim:  #8b90a8;
+    --danger:    #e55;
+    --success:   #4caf7d;
+    --radius:    8px;
+    --font:      -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+
+  /* ── Header ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header h1 { font-size: 1rem; font-weight: 600; letter-spacing: .02em; }
+  header h1 span { color: var(--accent); }
+  #user-info { display: flex; align-items: center; gap: 12px; font-size: .85rem; color: var(--text-dim); }
+  #btn-logout {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 4px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: .8rem;
+  }
+  #btn-logout:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* ── Layout ── */
+  .layout { display: flex; min-height: calc(100vh - 56px); }
+
+  nav {
+    width: 200px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 16px 0;
+    flex-shrink: 0;
+  }
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .9rem;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  nav a:hover { background: var(--surface2); color: var(--text); }
+  nav a.active { background: var(--surface2); color: var(--accent); border-right: 2px solid var(--accent); }
+
+  main { flex: 1; padding: 24px; overflow-y: auto; }
+
+  section { display: none; }
+  section.active { display: block; }
+
+  /* ── Headings ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .section-header h2 { font-size: 1.2rem; font-weight: 600; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: var(--radius);
+    font-size: .85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: opacity .15s;
+  }
+  .btn:hover { opacity: .85; }
+  .btn:disabled { opacity: .4; cursor: default; }
+  .btn-primary { background: var(--accent); color: #111; }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-sm { padding: 4px 10px; font-size: .78rem; }
+
+  /* ── Tables ── */
+  .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  thead { background: var(--surface2); }
+  th { padding: 10px 14px; text-align: left; font-weight: 600; color: var(--text-dim); font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
+  td { padding: 10px 14px; border-top: 1px solid var(--border); vertical-align: middle; }
+  tr:hover td { background: var(--surface2); }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: .75rem;
+    font-weight: 600;
+  }
+  .badge-ok { background: #1a3a2a; color: var(--success); }
+  .badge-off { background: #2a1a1a; color: var(--danger); }
+  .badge-nivel { background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border); }
+  .actions { display: flex; gap: 6px; }
+
+  /* ── Forms ── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid .full { grid-column: 1 / -1; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: .8rem; color: var(--text-dim); font-weight: 500; }
+  .field input, .field select, .field textarea {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    padding: 8px 12px;
+    font-size: .875rem;
+    font-family: var(--font);
+    transition: border-color .15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .field textarea { resize: vertical; min-height: 72px; }
+  .field select option { background: var(--surface2); }
+
+  /* ── Parámetros ── */
+  .params-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 560px; }
+  .params-grid .field input { font-size: 1rem; }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.65);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 200;
+    padding: 24px 16px;
+    overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 640px;
+    padding: 24px;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .modal-header h3 { font-size: 1rem; font-weight: 600; }
+  .modal-close { background: none; border: none; color: var(--text-dim); font-size: 1.4rem; cursor: pointer; line-height: 1; }
+  .modal-close:hover { color: var(--text); }
+  .modal-footer { margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* ── Toast ── */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 10px 18px;
+    border-radius: var(--radius);
+    font-size: .875rem;
+    font-weight: 500;
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .25s, transform .25s;
+    pointer-events: none;
+  }
+  #toast.show { opacity: 1; transform: none; }
+  #toast.ok  { background: var(--success); color: #fff; }
+  #toast.err { background: var(--danger);  color: #fff; }
+
+  /* ── Login screen ── */
+  #login-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+  }
+  #login-screen.visible { display: flex; }
+  .login-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    width: 100%;
+    max-width: 360px;
+  }
+  .login-box h2 { margin-bottom: 24px; font-size: 1.1rem; }
+  .login-box h2 span { color: var(--accent); }
+  .login-box .field { margin-bottom: 14px; }
+  .login-error { color: var(--danger); font-size: .82rem; margin-top: 10px; min-height: 1em; }
+
+  /* ── Niveles table inline edit ── */
+  .nivel-margen { width: 80px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    nav { width: 56px; }
+    nav a span { display: none; }
+    nav a { justify-content: center; padding: 12px; }
+    nav a.active { border-right: none; border-bottom: 2px solid var(--accent); }
+    .form-grid { grid-template-columns: 1fr; }
+    .params-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login-screen">
+  <div class="login-box">
+    <h2><span>La Ranita 3D</span> — Admin</h2>
+    <div class="field"><label>Email</label><input type="email" id="login-email" autocomplete="username"></div>
+    <div class="field"><label>Contraseña</label><input type="password" id="login-pass" autocomplete="current-password"></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="doLogin()">Entrar</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- App -->
+<header>
+  <h1>La <span>Ranita</span> 3D — Panel Admin</h1>
+  <div id="user-info">
+    <span id="user-email"></span>
+    <button id="btn-logout" onclick="doLogout()">Salir</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav>
+    <a class="active" data-tab="productos" onclick="setTab('productos',this)"><span>📦 Productos</span></a>
+    <a data-tab="parametros" onclick="setTab('parametros',this)"><span>⚙️ Parámetros</span></a>
+    <a data-tab="niveles" onclick="setTab('niveles',this)"><span>💰 Niveles</span></a>
+    <a data-tab="usuarios" onclick="setTab('usuarios',this)"><span>👤 Usuarios</span></a>
+  </nav>
+
+  <main>
+
+    <!-- ── Productos ── -->
+    <section id="tab-productos" class="active">
+      <div class="section-header">
+        <h2>Productos</h2>
+        <button class="btn btn-primary" onclick="openProductoModal()">+ Nuevo producto</button>
+      </div>
+      <div class="table-wrap">
+        <table id="tabla-productos">
+          <thead><tr>
+            <th>Nombre</th><th>Mundo</th><th>Categoría</th>
+            <th>Dificultad</th><th>Gramos</th><th>Precio público</th>
+            <th>Estado</th><th>Acciones</th>
+          </tr></thead>
+          <tbody id="tbody-productos"><tr><td colspan="8" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Parámetros ── -->
+    <section id="tab-parametros">
+      <div class="section-header"><h2>Parámetros de costo</h2></div>
+      <form onsubmit="guardarParametros(event)" style="max-width:560px">
+        <div class="params-grid">
+          <div class="field">
+            <label>Precio filamento ($ / kg)</label>
+            <input type="number" id="p-precio_kg" min="0" step="100" required>
+          </div>
+          <div class="field">
+            <label>Precio electricidad ($ / kWh)</label>
+            <input type="number" id="p-precio_kwh" min="0" step="1" required>
+          </div>
+          <div class="field">
+            <label>Consumo impresora (kW)</label>
+            <input type="number" id="p-consumo_impresora_kw" min="0" step="0.01" required>
+          </div>
+          <div class="field">
+            <label>Costo hora máquina ($)</label>
+            <input type="number" id="p-costo_hora_maquina" min="0" step="10" required>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit" style="margin-top:20px">Guardar parámetros</button>
+      </form>
+    </section>
+
+    <!-- ── Niveles ── -->
+    <section id="tab-niveles">
+      <div class="section-header"><h2>Niveles de precio</h2></div>
+      <div class="table-wrap" style="max-width:420px">
+        <table>
+          <thead><tr><th>Nivel</th><th>Margen (%)</th><th></th></tr></thead>
+          <tbody id="tbody-niveles"><tr><td colspan="3" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Usuarios ── -->
+    <section id="tab-usuarios">
+      <div class="section-header">
+        <h2>Usuarios</h2>
+        <button class="btn btn-primary" onclick="openUsuarioModal()">+ Nuevo usuario</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Email</th><th>Nivel</th><th>Admin</th><th>Creado</th><th>Acciones</th>
+          </tr></thead>
+          <tbody id="tbody-usuarios"><tr><td colspan="5" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ── Modal Producto ── -->
+<div class="modal-overlay" id="modal-producto">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-producto-title">Nuevo producto</h3>
+      <button class="modal-close" onclick="closeModal('modal-producto')">×</button>
+    </div>
+    <form onsubmit="guardarProducto(event)">
+      <div class="form-grid">
+        <div class="field full">
+          <label>Nombre *</label>
+          <input type="text" id="prod-nombre" required>
+        </div>
+        <div class="field">
+          <label>Mundo *</label>
+          <select id="prod-mundo_id" required></select>
+        </div>
+        <div class="field">
+          <label>Categoría</label>
+          <input type="text" id="prod-categoria" placeholder="ej: Humanoides, Monstruos…">
+        </div>
+        <div class="field full">
+          <label>Descripción</label>
+          <textarea id="prod-descripcion"></textarea>
+        </div>
+        <div class="field">
+          <label>Gramos (filamento) *</label>
+          <input type="number" id="prod-gramos" min="0.1" step="0.1" required>
+        </div>
+        <div class="field">
+          <label>Dificultad *</label>
+          <select id="prod-dificultad" required>
+            <option value="2.0">Básico (×2.0)</option>
+            <option value="2.5" selected>Estándar (×2.5)</option>
+            <option value="3.5">Avanzado (×3.5)</option>
+            <option value="4.5">Premium (×4.5)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Horas de impresión</label>
+          <input type="number" id="prod-horas" min="0" step="1" value="0">
+        </div>
+        <div class="field">
+          <label>Minutos de impresión</label>
+          <input type="number" id="prod-minutos" min="0" max="59" step="1" value="0">
+        </div>
+        <div class="field">
+          <label>Precio fijo (override, opcional)</label>
+          <input type="number" id="prod-precio_override" min="0" step="100" placeholder="deja vacío para calcular">
+        </div>
+        <div class="field">
+          <label>Ajuste % (ej: 10 = +10%)</label>
+          <input type="number" id="prod-precio_ajuste_pct" step="0.1" value="0">
+        </div>
+        <div class="field">
+          <label>Descuento promo %</label>
+          <input type="number" id="prod-promo_descuento_pct" min="0" max="100" step="1" value="0">
+        </div>
+        <div class="field">
+          <label>Promo válida hasta</label>
+          <input type="date" id="prod-promo_hasta">
+        </div>
+        <div class="field">
+          <label>URL MakerWorld</label>
+          <input type="url" id="prod-makerworld_url" placeholder="https://…">
+        </div>
+        <div class="field">
+          <label>URL imagen</label>
+          <input type="url" id="prod-imagen_url" placeholder="https://…">
+        </div>
+        <div class="field full">
+          <label>Notas internas</label>
+          <textarea id="prod-notas"></textarea>
+        </div>
+      </div>
+      <input type="hidden" id="prod-id">
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-producto')">Cancelar</button>
+        <button class="btn btn-primary" type="submit" id="btn-guardar-producto">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── Modal Usuario ── -->
+<div class="modal-overlay" id="modal-usuario">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <h3 id="modal-usuario-title">Nuevo usuario</h3>
+      <button class="modal-close" onclick="closeModal('modal-usuario')">×</button>
+    </div>
+    <form onsubmit="guardarUsuario(event)">
+      <div class="form-grid">
+        <div class="field full">
+          <label>Email *</label>
+          <input type="email" id="usu-email" required>
+        </div>
+        <div class="field full">
+          <label id="usu-pass-label">Contraseña *</label>
+          <input type="password" id="usu-password" autocomplete="new-password">
+        </div>
+        <div class="field full">
+          <label>Nivel de precio *</label>
+          <select id="usu-nivel_precio_id" required></select>
+        </div>
+      </div>
+      <input type="hidden" id="usu-id">
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-usuario')">Cancelar</button>
+        <button class="btn btn-primary" type="submit">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+
+// ── Utilidades ──────────────────────────────────────────
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.className = ''; }, 3000);
+}
+
+function fmt(n) {
+  return n == null ? '—' : '$' + Math.round(n).toLocaleString('es-AR');
+}
+
+function fmtDate(s) {
+  if (!s) return '—';
+  return s.slice(0, 10);
+}
+
+async function api(method, path, body) {
+  const opts = { method, credentials: 'include', headers: {} };
+  if (body) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+  const r = await fetch(API + path, opts);
+  const json = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(json.error || `HTTP ${r.status}`);
+  return json;
+}
+
+// ── Auth ─────────────────────────────────────────────────
+async function checkAuth() {
+  const { usuario } = await api('GET', '/api/auth/me');
+  if (!usuario || !usuario.es_admin) {
+    document.getElementById('login-screen').classList.add('visible');
+    return false;
+  }
+  document.getElementById('user-email').textContent = usuario.email;
+  return true;
+}
+
+async function doLogin() {
+  const email    = document.getElementById('login-email').value;
+  const password = document.getElementById('login-pass').value;
+  const errEl    = document.getElementById('login-error');
+  errEl.textContent = '';
+  try {
+    const { usuario } = await api('POST', '/api/auth/login', { email, password });
+    if (!usuario.es_admin) { errEl.textContent = 'Esta cuenta no tiene acceso admin.'; return; }
+    document.getElementById('login-screen').classList.remove('visible');
+    document.getElementById('user-email').textContent = usuario.email;
+    loadAll();
+  } catch (e) {
+    errEl.textContent = e.message;
+  }
+}
+
+async function doLogout() {
+  await api('POST', '/api/auth/logout');
+  location.reload();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('login-screen').classList.contains('visible')) {
+    doLogin();
+  }
+});
+
+// ── Navegación ──────────────────────────────────────────
+function setTab(id, el) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── Cerrar modal con Escape ──────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+});
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── Cache de mundos y niveles ────────────────────────────
+let mundos  = [];
+let niveles = [];
+
+// ── Productos ────────────────────────────────────────────
+async function loadProductos() {
+  const prods = await api('GET', '/api/admin/productos');
+  const tbody = document.getElementById('tbody-productos');
+  tbody.innerHTML = prods.length === 0
+    ? '<tr><td colspan="8" style="text-align:center;color:var(--text-dim)">Sin productos</td></tr>'
+    : prods.map(p => `
+      <tr>
+        <td>${esc(p.nombre)}</td>
+        <td>${esc(p.mundo_nombre)}</td>
+        <td>${esc(p.categoria || '—')}</td>
+        <td>${difLabel(p.dificultad)}</td>
+        <td>${p.gramos} g</td>
+        <td>${fmt(p.desglose?.precio_final)}</td>
+        <td><span class="badge ${p.activo ? 'badge-ok' : 'badge-off'}">${p.activo ? 'Activo' : 'Inactivo'}</span></td>
+        <td class="actions">
+          <button class="btn btn-secondary btn-sm" onclick="editProducto(${p.id})">Editar</button>
+          <button class="btn ${p.activo ? 'btn-danger' : 'btn-secondary'} btn-sm"
+            onclick="toggleProducto(${p.id}, ${p.activo})">${p.activo ? 'Desactivar' : 'Activar'}</button>
+        </td>
+      </tr>`).join('');
+}
+
+function difLabel(v) {
+  const map = { '2.0': 'Básico', '2.5': 'Estándar', '3.5': 'Avanzado', '4.5': 'Premium' };
+  return map[String(v)] || v;
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function openProductoModal(prod = null) {
+  document.getElementById('prod-id').value = prod?.id ?? '';
+  document.getElementById('modal-producto-title').textContent = prod ? 'Editar producto' : 'Nuevo producto';
+  document.getElementById('btn-guardar-producto').textContent  = prod ? 'Guardar cambios' : 'Crear producto';
+
+  // Poblar select de mundos
+  const sel = document.getElementById('prod-mundo_id');
+  sel.innerHTML = mundos.map(m => `<option value="${m.id}">${esc(m.nombre)}</option>`).join('');
+
+  const fields = ['nombre','categoria','descripcion','gramos','horas','minutos','dificultad',
+    'precio_override','precio_ajuste_pct','promo_descuento_pct','promo_hasta',
+    'makerworld_url','imagen_url','notas','mundo_id'];
+
+  if (prod) {
+    fields.forEach(f => {
+      const el = document.getElementById('prod-' + f);
+      if (!el) return;
+      el.value = prod[f] ?? '';
+    });
+  } else {
+    fields.forEach(f => {
+      const el = document.getElementById('prod-' + f);
+      if (!el) return;
+      el.value = ['horas','minutos','precio_ajuste_pct','promo_descuento_pct'].includes(f) ? '0' : '';
+    });
+    document.getElementById('prod-dificultad').value = '2.5';
+    if (mundos.length) sel.value = mundos[0].id;
+  }
+
+  openModal('modal-producto');
+}
+
+let _editProdCache = {};
+
+async function editProducto(id) {
+  const prods = await api('GET', '/api/admin/productos');
+  const prod  = prods.find(p => p.id === id);
+  if (!prod) return;
+  _editProdCache[id] = prod;
+  openProductoModal(prod);
+}
+
+async function guardarProducto(e) {
+  e.preventDefault();
+  const id = document.getElementById('prod-id').value;
+
+  const body = {
+    mundo_id:            +document.getElementById('prod-mundo_id').value,
+    nombre:               document.getElementById('prod-nombre').value,
+    categoria:            document.getElementById('prod-categoria').value || null,
+    descripcion:          document.getElementById('prod-descripcion').value || null,
+    gramos:              +document.getElementById('prod-gramos').value,
+    horas:               +document.getElementById('prod-horas').value,
+    minutos:             +document.getElementById('prod-minutos').value,
+    dificultad:           document.getElementById('prod-dificultad').value,
+    precio_override:      document.getElementById('prod-precio_override').value !== ''
+                            ? +document.getElementById('prod-precio_override').value : null,
+    precio_ajuste_pct:   +document.getElementById('prod-precio_ajuste_pct').value,
+    promo_descuento_pct: +document.getElementById('prod-promo_descuento_pct').value,
+    promo_hasta:          document.getElementById('prod-promo_hasta').value || null,
+    makerworld_url:       document.getElementById('prod-makerworld_url').value || null,
+    imagen_url:           document.getElementById('prod-imagen_url').value || null,
+    notas:                document.getElementById('prod-notas').value || null,
+  };
+
+  try {
+    if (id) {
+      await api('PUT', `/api/admin/productos/${id}`, body);
+      toast('Producto actualizado');
+    } else {
+      await api('POST', '/api/admin/productos', body);
+      toast('Producto creado');
+    }
+    closeModal('modal-producto');
+    loadProductos();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+async function toggleProducto(id, activo) {
+  try {
+    await api('PUT', `/api/admin/productos/${id}`, { activo: activo ? 0 : 1 });
+    toast(activo ? 'Producto desactivado' : 'Producto activado');
+    loadProductos();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+// ── Parámetros ───────────────────────────────────────────
+async function loadParametros() {
+  const p = await api('GET', '/api/admin/parametros');
+  document.getElementById('p-precio_kg').value            = p.precio_kg            ?? '';
+  document.getElementById('p-precio_kwh').value           = p.precio_kwh           ?? '';
+  document.getElementById('p-consumo_impresora_kw').value = p.consumo_impresora_kw ?? '';
+  document.getElementById('p-costo_hora_maquina').value   = p.costo_hora_maquina   ?? '';
+}
+
+async function guardarParametros(e) {
+  e.preventDefault();
+  try {
+    await api('PUT', '/api/admin/parametros', {
+      precio_kg:            +document.getElementById('p-precio_kg').value,
+      precio_kwh:           +document.getElementById('p-precio_kwh').value,
+      consumo_impresora_kw: +document.getElementById('p-consumo_impresora_kw').value,
+      costo_hora_maquina:   +document.getElementById('p-costo_hora_maquina').value,
+    });
+    toast('Parámetros guardados');
+    loadProductos(); // refresca precios
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+// ── Niveles ──────────────────────────────────────────────
+async function loadNiveles() {
+  niveles = await api('GET', '/api/admin/niveles');
+  const tbody = document.getElementById('tbody-niveles');
+  tbody.innerHTML = niveles.map(n => `
+    <tr>
+      <td>${esc(n.nombre)}</td>
+      <td>
+        <input type="number" class="nivel-margen field input"
+          id="nivel-${n.id}" value="${n.margen_pct}" min="0" step="1"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:5px 8px;width:80px">
+      </td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="guardarNivel(${n.id})">Guardar</button>
+      </td>
+    </tr>`).join('');
+}
+
+async function guardarNivel(id) {
+  const margen_pct = +document.getElementById('nivel-' + id).value;
+  try {
+    await api('PUT', `/api/admin/niveles/${id}`, { margen_pct });
+    toast('Nivel actualizado');
+    niveles = await api('GET', '/api/admin/niveles'); // actualiza cache
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+// ── Usuarios ─────────────────────────────────────────────
+async function loadUsuarios() {
+  const users = await api('GET', '/api/admin/usuarios');
+  const tbody = document.getElementById('tbody-usuarios');
+  tbody.innerHTML = users.length === 0
+    ? '<tr><td colspan="5" style="text-align:center;color:var(--text-dim)">Sin usuarios</td></tr>'
+    : users.map(u => `
+      <tr>
+        <td>${esc(u.email)}</td>
+        <td><span class="badge badge-nivel">${esc(u.nivel_nombre)}</span></td>
+        <td>${u.es_admin ? '✓' : ''}</td>
+        <td>${fmtDate(u.creado_en)}</td>
+        <td class="actions">
+          <button class="btn btn-secondary btn-sm" onclick="editUsuario(${u.id})">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.id}, '${esc(u.email)}')">Borrar</button>
+        </td>
+      </tr>`).join('');
+}
+
+function openUsuarioModal(usu = null) {
+  document.getElementById('usu-id').value = usu?.id ?? '';
+  document.getElementById('modal-usuario-title').textContent = usu ? 'Editar usuario' : 'Nuevo usuario';
+
+  const passInput = document.getElementById('usu-password');
+  const passLabel = document.getElementById('usu-pass-label');
+  if (usu) {
+    passLabel.textContent = 'Nueva contraseña (dejar vacío para no cambiar)';
+    passInput.required    = false;
+  } else {
+    passLabel.textContent = 'Contraseña *';
+    passInput.required    = true;
+  }
+
+  // Poblar niveles
+  const sel = document.getElementById('usu-nivel_precio_id');
+  sel.innerHTML = niveles.map(n => `<option value="${n.id}">${esc(n.nombre)} (${n.margen_pct}%)</option>`).join('');
+
+  document.getElementById('usu-email').value = usu?.email ?? '';
+  passInput.value = '';
+  if (usu) sel.value = usu.nivel_precio_id;
+
+  openModal('modal-usuario');
+}
+
+async function editUsuario(id) {
+  const users = await api('GET', '/api/admin/usuarios');
+  const usu   = users.find(u => u.id === id);
+  if (usu) openUsuarioModal(usu);
+}
+
+async function guardarUsuario(e) {
+  e.preventDefault();
+  const id       = document.getElementById('usu-id').value;
+  const email    = document.getElementById('usu-email').value;
+  const password = document.getElementById('usu-password').value;
+  const nivel    = document.getElementById('usu-nivel_precio_id').value;
+
+  const body = { email, nivel_precio_id: +nivel };
+  if (password) body.password = password;
+
+  try {
+    if (id) {
+      await api('PUT', `/api/admin/usuarios/${id}`, body);
+      toast('Usuario actualizado');
+    } else {
+      await api('POST', '/api/admin/usuarios', body);
+      toast('Usuario creado');
+    }
+    closeModal('modal-usuario');
+    loadUsuarios();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+async function eliminarUsuario(id, email) {
+  if (!confirm(`¿Borrar al usuario "${email}"? Esta acción no se puede deshacer.`)) return;
+  try {
+    await api('DELETE', `/api/admin/usuarios/${id}`);
+    toast('Usuario eliminado');
+    loadUsuarios();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+// ── Init ─────────────────────────────────────────────────
+async function loadAll() {
+  mundos  = await api('GET', '/api/admin/mundos');
+  niveles = await api('GET', '/api/admin/niveles');
+  await Promise.all([loadProductos(), loadParametros(), loadNiveles(), loadUsuarios()]);
+}
+
+(async () => {
+  const ok = await checkAuth();
+  if (ok) loadAll();
+})();
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # La Ranita 3D — Hoja de ruta técnica
 
-Última actualización: 2026-09-10 — sitio online, deploy continuo vía webhook
+Última actualización: 2026-09-12 — Fase 4 completa (SESSION_SECRET, backup automático, panel admin)
 
 ---
 
@@ -253,10 +253,27 @@ npm start          # arranca en puerto 3001
 - Para cambios que agregan dependencias nuevas (`npm install`): hacer SSH local o extender el comando del webhook
 - `WEBHOOK_SECRET` se pasa inline al arrancar pm2: `PORT=8080 WEBHOOK_SECRET='...' pm2 start server.js --name ranita3d`
 
-### ⬜ Fase 4 — Panel admin + producción (pendiente)
-- Panel de admin propio (UI web, no solo API REST)
-- Backup automático de `data/ranita.db` (cron diario → repo privado o storage)
-- `SESSION_SECRET` configurado en pm2 (actualmente usa el valor por defecto de desarrollo)
+### ✅ Fase 4 — Panel admin + producción (completa)
+
+#### SESSION_SECRET auto-generado
+- Si no hay variable de entorno `SESSION_SECRET`, el servidor genera un secreto aleatorio
+  en el primer arranque y lo guarda en `data/session.secret` (gitignoreado, persiste en el servidor)
+- En arranques posteriores lo lee del archivo → el secreto es estable sin configuración manual
+
+#### Backup automático
+- Endpoint `GET /api/admin/backup/download` (requiere sesión admin): genera una copia limpia
+  con `VACUUM INTO` y la devuelve como archivo descargable
+- GitHub Action `.github/workflows/backup.yml`: se ejecuta diariamente a las 3am ART
+  (y también manualmente desde GitHub Actions), loguea como admin, descarga la DB
+  y la guarda como artifact de GitHub (retención 30 días)
+- **Setup requerido (una sola vez, desde el navegador en github.com):**
+  `Settings → Secrets and variables → Actions → New repository secret`
+  - `ADMIN_EMAIL` — email de la cuenta admin
+  - `ADMIN_PASSWORD` — contraseña de la cuenta admin
+
+#### Panel admin web
+- Disponible en `/admin.html` — protegido con login (solo admins)
+- Secciones: Productos (CRUD completo), Parámetros de costo, Niveles de precio, Usuarios
 
 ---
 
