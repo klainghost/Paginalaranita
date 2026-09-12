@@ -15,6 +15,7 @@ const mundosRoutes   = require('./routes/mundos');
 const productosRoutes = require('./routes/productos');
 const adminRoutes    = require('./routes/admin');
 const carritoRoutes  = require('./routes/carrito');
+const pedidosRoutes  = require('./routes/pedidos');
 
 const app  = express();
 const PORT = process.env.PORT || 3001;
@@ -92,6 +93,7 @@ app.use('/api/mundos',  mundosRoutes);
 app.use('/api/mundos',  productosRoutes);
 app.use('/api/admin',   adminRoutes);
 app.use('/api/carrito', carritoRoutes);
+app.use('/api/pedidos', pedidosRoutes);
 
 app.listen(PORT, () => {
   console.log(`La Ranita 3D backend corriendo en http://localhost:${PORT}`);

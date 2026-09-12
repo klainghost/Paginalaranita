@@ -241,6 +241,54 @@ router.delete('/usuarios/:id', (req, res) => {
   res.json({ ok: true });
 });
 
+// --- Pedidos ---
+
+const ESTADOS_PEDIDO = ['pendiente', 'en_proceso', 'enviado', 'cancelado'];
+
+router.get('/pedidos', (req, res) => {
+  const db = getDb();
+  const pedidos = db.prepare(`
+    SELECT p.id, p.codigo, p.total, p.estado, p.creado_en,
+           u.email AS usuario_email
+    FROM pedidos p
+    LEFT JOIN usuarios u ON p.usuario_id = u.id
+    ORDER BY p.creado_en DESC
+    LIMIT 200
+  `).all();
+  res.json(pedidos);
+});
+
+router.get('/pedidos/:codigo', (req, res) => {
+  const db = getDb();
+  const pedido = db.prepare(`
+    SELECT p.*, u.email AS usuario_email
+    FROM pedidos p
+    LEFT JOIN usuarios u ON p.usuario_id = u.id
+    WHERE p.codigo = ?
+  `).get(req.params.codigo.toUpperCase());
+
+  if (!pedido) return res.status(404).json({ error: 'Pedido no encontrado.' });
+
+  pedido.items = JSON.parse(pedido.items_json);
+  delete pedido.items_json;
+  res.json(pedido);
+});
+
+router.patch('/pedidos/:codigo/estado', (req, res) => {
+  const { estado, notas } = req.body || {};
+  if (!ESTADOS_PEDIDO.includes(estado)) {
+    return res.status(400).json({ error: `Estado inválido. Válidos: ${ESTADOS_PEDIDO.join(', ')}` });
+  }
+  const db = getDb();
+  const updates = notas !== undefined ? 'estado = ?, notas = ?' : 'estado = ?';
+  const args    = notas !== undefined
+    ? [estado, notas, req.params.codigo.toUpperCase()]
+    : [estado, req.params.codigo.toUpperCase()];
+  const result = db.prepare(`UPDATE pedidos SET ${updates} WHERE codigo = ?`).run(...args);
+  if (result.changes === 0) return res.status(404).json({ error: 'Pedido no encontrado.' });
+  res.json({ ok: true });
+});
+
 // --- Backup ---
 
 router.get('/backup/download', (req, res) => {

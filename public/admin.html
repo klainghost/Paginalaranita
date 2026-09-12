@@ -270,6 +270,7 @@
     <a data-tab="parametros" onclick="setTab('parametros',this)"><span>⚙️ Parámetros</span></a>
     <a data-tab="niveles" onclick="setTab('niveles',this)"><span>💰 Niveles</span></a>
     <a data-tab="usuarios" onclick="setTab('usuarios',this)"><span>👤 Usuarios</span></a>
+    <a data-tab="pedidos"  onclick="setTab('pedidos',this)"><span>🛒 Pedidos</span></a>
   </nav>
 
   <main>
@@ -341,6 +342,59 @@
             <th>Email</th><th>Nivel</th><th>Admin</th><th>Creado</th><th>Acciones</th>
           </tr></thead>
           <tbody id="tbody-usuarios"><tr><td colspan="5" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Pedidos ── -->
+    <section id="tab-pedidos">
+      <div class="section-header">
+        <h2>Pedidos</h2>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="pedido-buscar" placeholder="Código RAN-XXXXXX"
+                 style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);width:180px;text-transform:uppercase"
+                 oninput="this.value=this.value.toUpperCase()"
+                 onkeydown="if(event.key==='Enter')buscarPedido()">
+          <button class="btn btn-primary" onclick="buscarPedido()">Buscar</button>
+          <button class="btn" onclick="loadPedidos()">Ver todos</button>
+        </div>
+      </div>
+
+      <!-- Detalle de pedido buscado -->
+      <div id="pedido-detalle" hidden style="margin-bottom:20px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--accent)" id="det-codigo"></div>
+            <div style="font-size:.8rem;color:var(--text-dim);margin-top:2px" id="det-meta"></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <select id="det-estado-sel" style="padding:5px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text)">
+              <option value="pendiente">Pendiente</option>
+              <option value="en_proceso">En proceso</option>
+              <option value="enviado">Enviado</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+            <button class="btn btn-primary" onclick="guardarEstadoPedido()">Guardar estado</button>
+          </div>
+        </div>
+        <div id="det-notas-wrap" style="margin-top:10px">
+          <textarea id="det-notas" placeholder="Notas internas…"
+                    style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);resize:vertical;min-height:60px;font-size:.85rem"></textarea>
+        </div>
+        <div class="table-wrap" style="margin-top:12px">
+          <table>
+            <thead><tr><th>Producto</th><th>Cant.</th><th>P. unit.</th><th>Subtotal</th></tr></thead>
+            <tbody id="det-items"></tbody>
+            <tfoot id="det-tfoot"></tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Lista de todos los pedidos -->
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Código</th><th>Fecha</th><th>Usuario</th><th>Total</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="tbody-pedidos"><tr><td colspan="6" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr></tbody>
         </table>
       </div>
     </section>
@@ -822,11 +876,101 @@ async function eliminarUsuario(id, email) {
   }
 }
 
+// ── Pedidos ──────────────────────────────────────────────
+const ESTADO_LABELS = {
+  pendiente:  '⏳ Pendiente',
+  en_proceso: '🔧 En proceso',
+  enviado:    '📦 Enviado',
+  cancelado:  '❌ Cancelado',
+};
+const ESTADO_COLORS = {
+  pendiente:  '#c9a227',
+  en_proceso: '#4a9eff',
+  enviado:    '#25d366',
+  cancelado:  '#d32f2f',
+};
+
+let _pedidoCodigoActual = null;
+
+async function loadPedidos() {
+  const tbody = document.getElementById('tbody-pedidos');
+  try {
+    const pedidos = await api('GET', '/api/admin/pedidos');
+    tbody.innerHTML = pedidos.length
+      ? pedidos.map(ped => `
+          <tr>
+            <td><strong style="color:var(--accent);cursor:pointer" onclick="verPedido('${ped.codigo}')">${ped.codigo}</strong></td>
+            <td style="color:var(--text-dim);font-size:.82rem">${ped.creado_en?.slice(0,16).replace('T',' ') || '—'}</td>
+            <td style="font-size:.82rem">${ped.usuario_email || '<em>Anónimo</em>'}</td>
+            <td>${fmt(ped.total)}</td>
+            <td><span style="color:${ESTADO_COLORS[ped.estado] || 'inherit'}">${ESTADO_LABELS[ped.estado] || ped.estado}</span></td>
+            <td><button class="btn" style="padding:3px 8px;font-size:.78rem" onclick="verPedido('${ped.codigo}')">Ver</button></td>
+          </tr>`).join('')
+      : '<tr><td colspan="6" style="text-align:center;color:var(--text-dim)">No hay pedidos aún</td></tr>';
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="6" style="color:var(--danger)">${err.message}</td></tr>`;
+  }
+}
+
+async function buscarPedido() {
+  const codigo = document.getElementById('pedido-buscar').value.trim().toUpperCase();
+  if (!codigo) return;
+  await verPedido(codigo);
+}
+
+async function verPedido(codigo) {
+  document.getElementById('pedido-detalle').hidden = true;
+  try {
+    const ped = await api('GET', `/api/admin/pedidos/${codigo}`);
+    _pedidoCodigoActual = ped.codigo;
+
+    document.getElementById('det-codigo').textContent = ped.codigo;
+    document.getElementById('det-meta').textContent =
+      `${ped.creado_en?.slice(0,16).replace('T',' ') || '—'}  ·  ${ped.usuario_email || 'Anónimo'}`;
+
+    document.getElementById('det-estado-sel').value = ped.estado;
+    document.getElementById('det-notas').value = ped.notas || '';
+
+    const tbody = document.getElementById('det-items');
+    tbody.innerHTML = ped.items.map(i => `
+      <tr>
+        <td>${i.nombre}</td>
+        <td style="text-align:center">${i.cantidad}</td>
+        <td>${fmt(i.precio_unitario)}</td>
+        <td><strong>${fmt(i.precio_unitario * i.cantidad)}</strong></td>
+      </tr>`).join('');
+
+    document.getElementById('det-tfoot').innerHTML =
+      `<tr style="font-weight:700;color:var(--accent)">
+         <td colspan="3" style="text-align:right">Total</td>
+         <td>${fmt(ped.total)}</td>
+       </tr>`;
+
+    document.getElementById('pedido-detalle').hidden = false;
+    document.getElementById('pedido-detalle').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+async function guardarEstadoPedido() {
+  if (!_pedidoCodigoActual) return;
+  const estado = document.getElementById('det-estado-sel').value;
+  const notas  = document.getElementById('det-notas').value;
+  try {
+    await api('PATCH', `/api/admin/pedidos/${_pedidoCodigoActual}/estado`, { estado, notas });
+    toast('Estado actualizado');
+    loadPedidos();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
 // ── Init ─────────────────────────────────────────────────
 async function loadAll() {
   mundos  = await api('GET', '/api/admin/mundos');
   niveles = await api('GET', '/api/admin/niveles');
-  await Promise.all([loadProductos(), loadParametros(), loadNiveles(), loadUsuarios()]);
+  await Promise.all([loadProductos(), loadParametros(), loadNiveles(), loadUsuarios(), loadPedidos()]);
 }
 
 (async () => {

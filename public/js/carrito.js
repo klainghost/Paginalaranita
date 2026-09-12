@@ -61,9 +61,10 @@ const Carrito = (() => {
       _notify();
     },
 
-    getItems: () => [..._items],
-    getCount: () => _items.reduce((s, i) => s + i.cantidad, 0),
-    getTotal: () => _items.reduce((s, i) => s + i.precio_unitario * i.cantidad, 0),
+    getItems:  () => [..._items],
+    getCount:  () => _items.reduce((s, i) => s + i.cantidad, 0),
+    getTotal:  () => _items.reduce((s, i) => s + i.precio_unitario * i.cantidad, 0),
+    getSesion: () => _sesion,
 
     async agregar(producto) {
       if (_isServer()) {
@@ -143,14 +144,39 @@ function initCarritoDrawer() {
   overlay.addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
-  document.getElementById('btn-finalizar')?.addEventListener('click', () => {
+  document.getElementById('btn-finalizar')?.addEventListener('click', async () => {
     const items = Carrito.getItems();
     if (!items.length) return;
+
+    const btn = document.getElementById('btn-finalizar');
+    btn.disabled = true;
+    btn.textContent = 'Generando código…';
+
+    let codigo = null;
+    try {
+      const r = await fetch(`${API}/api/pedidos`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items,
+          total:      Carrito.getTotal(),
+          usuario_id: Carrito.getSesion()?.id || null,
+        }),
+      });
+      const data = await r.json();
+      if (data.ok) codigo = data.codigo;
+    } catch { /* si falla la red, igual abre WA sin código */ }
+
+    btn.disabled = false;
+    btn.textContent = '💬 Pedir por WhatsApp';
+
     const lineas = items.map(i =>
       `• ${i.cantidad}x ${i.nombre} — ${formatPrecio(i.precio_unitario * i.cantidad)}`
     ).join('\n');
-    const total = formatPrecio(Carrito.getTotal());
-    const txt   = encodeURIComponent(`Hola! Quiero hacer un pedido:\n\n${lineas}\n\nTotal: ${total}`);
+    const total  = formatPrecio(Carrito.getTotal());
+    const codStr = codigo ? `\n\n🔖 Código de pedido: *${codigo}*` : '';
+    const txt    = encodeURIComponent(`Hola! Quiero hacer un pedido:\n\n${lineas}\n\nTotal: ${total}${codStr}`);
     window.open(`https://wa.me/5492604581757?text=${txt}`, '_blank', 'noopener');
   });
 

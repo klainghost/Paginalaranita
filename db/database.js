@@ -82,6 +82,17 @@ function initSchema() {
       agregado_en TEXT    DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (usuario_id, producto_id)
     );
+
+    CREATE TABLE IF NOT EXISTS pedidos (
+      id          INTEGER PRIMARY KEY,
+      codigo      TEXT    UNIQUE NOT NULL,
+      usuario_id  INTEGER REFERENCES usuarios(id) ON DELETE SET NULL,
+      items_json  TEXT    NOT NULL,
+      total       REAL    NOT NULL,
+      estado      TEXT    NOT NULL DEFAULT 'pendiente',
+      notas       TEXT,
+      creado_en   TEXT    DEFAULT CURRENT_TIMESTAMP
+    );
   `);
 }
 
