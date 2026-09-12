@@ -902,3 +902,255 @@ footer a:hover { text-decoration: underline; }
   footer                { padding: var(--sp-xl) var(--sp-md); }
   .modal                { padding: var(--sp-xl) var(--sp-lg); }
 }
+
+/* ============================================================
+   CARRITO — botón navbar
+   ============================================================ */
+.navbar__btn-carrito {
+  position: relative;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.9);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--ease);
+}
+.navbar__btn-carrito:hover { background: rgba(255,255,255,.22); }
+
+.carrito-badge {
+  position: absolute;
+  top: -4px; right: -4px;
+  background: var(--mundo-acento);
+  color: #111;
+  font-size: 0.65rem;
+  font-weight: 800;
+  min-width: 18px; height: 18px;
+  border-radius: 9px;
+  padding: 0 4px;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+
+/* ============================================================
+   CARRITO — botones en card de producto
+   ============================================================ */
+.prod-card__btns {
+  display: flex;
+  gap: var(--sp-xs);
+  align-items: center;
+}
+
+.prod-card__btn-agregar {
+  flex: 1;
+  background: var(--mundo-acento);
+  color: var(--mundo-fondo);
+  border: none;
+  padding: var(--sp-sm) var(--sp-md);
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter var(--ease), opacity var(--ease);
+  white-space: nowrap;
+}
+.prod-card__btn-agregar:hover    { filter: brightness(1.1); }
+.prod-card__btn-agregar:disabled { opacity: 0.7; cursor: default; }
+
+/* ============================================================
+   CARRITO — overlay y drawer
+   ============================================================ */
+.carrito-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(3px);
+  z-index: 800;
+}
+.carrito-overlay--visible { display: block; animation: fadeIn .2s ease; }
+
+.carrito-drawer {
+  position: fixed;
+  top: 0; right: 0;
+  width: min(400px, 92vw);
+  height: 100vh;
+  background: var(--card-bg);
+  border-left: 3px solid var(--mundo-acento);
+  z-index: 850;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform var(--ease);
+  overflow: hidden;
+}
+.carrito-drawer--abierto { transform: translateX(0); }
+
+.carrito-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-lg);
+  border-bottom: 1px solid var(--card-footer-border);
+  flex-shrink: 0;
+}
+.carrito-drawer__header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--page-text);
+}
+
+.carrito-cerrar {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--card-text-muted);
+  cursor: pointer;
+  transition: color var(--ease);
+}
+.carrito-cerrar:hover { color: var(--page-text); }
+
+.carrito-lista {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.carrito-vacio {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-md);
+  color: var(--card-text-muted);
+  padding: var(--sp-2x);
+}
+.carrito-vacio span { font-size: 3rem; opacity: .4; }
+
+/* ── Ítem del carrito ── */
+.c-item {
+  display: flex;
+  gap: var(--sp-md);
+  padding: var(--sp-md);
+  background: var(--filtros-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+}
+
+.c-item__img {
+  width: 60px; height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--card-img-bg);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.c-item__img img { width: 100%; height: 100%; object-fit: cover; }
+.c-item__placeholder { font-size: 1.5rem; opacity: .4; }
+
+.c-item__info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+
+.c-item__nombre {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--page-text);
+  line-height: 1.3;
+}
+.c-item__precio {
+  font-size: 0.78rem;
+  color: var(--card-text-muted);
+}
+
+.c-item__qty {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  margin-top: 4px;
+}
+.c-qty-btn {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--page-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--ease), border-color var(--ease);
+}
+.c-qty-btn:hover { background: var(--mundo-acento); border-color: var(--mundo-acento); color: var(--mundo-fondo); }
+
+.c-qty-valor {
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+  color: var(--page-text);
+}
+
+.c-item__derecha {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.c-item__subtotal {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--mundo-acento);
+}
+.c-item__del {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: var(--card-text-muted);
+  cursor: pointer;
+  transition: color var(--ease);
+  padding: 2px;
+}
+.c-item__del:hover { color: var(--color-danger); }
+
+/* ── Footer del drawer ── */
+.carrito-footer {
+  padding: var(--sp-lg);
+  border-top: 1px solid var(--card-footer-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+  flex-shrink: 0;
+}
+
+.carrito-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--page-text);
+}
+.carrito-total strong {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--mundo-acento);
+}
+
+.carrito-btn-wa {
+  width: 100%;
+  background: var(--wa-green);
+  color: #fff;
+  border: none;
+  padding: var(--sp-md);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter var(--ease);
+}
+.carrito-btn-wa:hover { filter: brightness(1.08); }

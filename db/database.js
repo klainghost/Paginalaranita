@@ -74,6 +74,14 @@ function initSchema() {
       notas               TEXT,
       activo              INTEGER NOT NULL DEFAULT 1
     );
+
+    CREATE TABLE IF NOT EXISTS carrito_items (
+      usuario_id  INTEGER NOT NULL REFERENCES usuarios(id)  ON DELETE CASCADE,
+      producto_id INTEGER NOT NULL REFERENCES productos(id) ON DELETE CASCADE,
+      cantidad    INTEGER NOT NULL DEFAULT 1 CHECK (cantidad > 0),
+      agregado_en TEXT    DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (usuario_id, producto_id)
+    );
   `);
 }
 

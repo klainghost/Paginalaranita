@@ -26,6 +26,9 @@
 
     <div class="navbar__actions" id="navbar-actions">
       <button class="navbar__btn-tema" id="btn-tema" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+      <button class="navbar__btn-carrito" id="btn-carrito" title="Ver carrito" aria-label="Carrito">
+        🛒<span class="carrito-badge" id="carrito-badge" hidden>0</span>
+      </button>
       <button class="navbar__btn-login" id="btn-login">Iniciar sesión</button>
     </div>
   </header>
@@ -93,7 +96,29 @@
     </div>
   </div>
 
+  <!-- Drawer del carrito -->
+  <div class="carrito-overlay" id="carrito-overlay"></div>
+  <aside class="carrito-drawer" id="carrito-drawer" aria-label="Carrito de compras">
+    <div class="carrito-drawer__header">
+      <h2>🛒 Tu carrito</h2>
+      <button class="carrito-cerrar" id="btn-cerrar-carrito" aria-label="Cerrar carrito">×</button>
+    </div>
+    <div class="carrito-lista" id="carrito-lista"></div>
+    <div class="carrito-vacio" id="carrito-vacio">
+      <span>🐸</span>
+      <p>Tu carrito está vacío</p>
+    </div>
+    <div class="carrito-footer" id="carrito-footer" hidden>
+      <div class="carrito-total">
+        <span>Total</span>
+        <strong id="carrito-total-monto"></strong>
+      </div>
+      <button class="carrito-btn-wa" id="btn-finalizar">💬 Pedir por WhatsApp</button>
+    </div>
+  </aside>
+
   <script src="js/app.js"></script>
+  <script src="js/carrito.js"></script>
   <script>
     initToggleTema(); // restaura preferencia guardada antes de pintar
 
@@ -102,9 +127,11 @@
 
     let todosLosProductos = [];
     let categoriaActual   = '';
+    const _prodMap        = new Map(); // id → producto, para el carrito
 
     /* ---- Render de una card ---- */
     function crearCard(p) {
+      _prodMap.set(p.id, p);
       const conPromo = p.promo_activa && p.precio_sin_promo;
       const card     = document.createElement('div');
       card.className = 'prod-card' + (conPromo ? ' prod-card--promo' : '');
@@ -126,11 +153,23 @@
             <div class="prod-card__precio">${formatPrecio(p.precio)}</div>
             ${conPromo ? `<div class="prod-card__precio-original">${formatPrecio(p.precio_sin_promo)}</div>` : ''}
           </div>
-          <button class="prod-card__btn-ws" onclick="pedirPorWA(${JSON.stringify(p.nombre)}, ${p.precio})">
-            💬 Pedir
-          </button>
+          <div class="prod-card__btns">
+            <button class="prod-card__btn-agregar" onclick="agregarAlCarrito(${p.id}, this)">+ Agregar</button>
+            <button class="prod-card__btn-ws" onclick="pedirPorWA(${JSON.stringify(p.nombre)}, ${p.precio})" title="Pedir por WhatsApp">💬</button>
+          </div>
         </div>`;
       return card;
+    }
+
+    /* ---- Agregar al carrito ---- */
+    function agregarAlCarrito(id, btn) {
+      const prod = _prodMap.get(id);
+      if (!prod || btn.disabled) return;
+      btn.disabled    = true;
+      btn.textContent = '✓';
+      Carrito.agregar(prod).finally(() => {
+        setTimeout(() => { btn.textContent = '+ Agregar'; btn.disabled = false; }, 1200);
+      });
     }
 
     /* ---- Renderiza el grid ---- */
@@ -182,7 +221,9 @@
       initNavbarScroll();
       initNavToggle();
       initLoginModal();
-      await initNavbarSesion();
+      initCarritoDrawer();
+      const sesion = await initNavbarSesion();
+      await Carrito.init(sesion);
 
       try {
         // Carga mundo y productos en paralelo

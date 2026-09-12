@@ -201,16 +201,18 @@ function initNavToggle() {
 /* Estado de sesión en la navbar                                        */
 /* ------------------------------------------------------------------ */
 async function initNavbarSesion() {
-  const sesion = await getSession();
+  const sesion    = await getSession();
   const actionsEl = document.querySelector('.navbar__actions');
-  if (!actionsEl) return;
+  if (!actionsEl) return sesion;
 
-  // Preservar el botón de tema antes de reemplazar el contenido
-  const btnTema = actionsEl.querySelector('#btn-tema');
+  // Preservar botones fijos antes de reemplazar el contenido
+  const btnTema    = actionsEl.querySelector('#btn-tema');
+  const btnCarrito = actionsEl.querySelector('#btn-carrito');
 
   if (sesion) {
     actionsEl.innerHTML = '';
-    if (btnTema) actionsEl.appendChild(btnTema);
+    if (btnTema)    actionsEl.appendChild(btnTema);
+    if (btnCarrito) actionsEl.appendChild(btnCarrito);
 
     const span = document.createElement('span');
     span.className = 'navbar__usuario';
@@ -224,12 +226,16 @@ async function initNavbarSesion() {
     actionsEl.appendChild(span);
     actionsEl.appendChild(btnSalir);
   } else {
-    // Sin sesión: asegurar que el toggle esté antes del botón de login
     const btnLogin = actionsEl.querySelector('#btn-login');
     if (btnTema && btnLogin && actionsEl.firstChild !== btnTema) {
       actionsEl.insertBefore(btnTema, btnLogin);
     }
+    if (btnCarrito && btnLogin) {
+      actionsEl.insertBefore(btnCarrito, btnLogin);
+    }
   }
+
+  return sesion;
 }
 
 /* Exponer logout globalmente para onclick inline */
