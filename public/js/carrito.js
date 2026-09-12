@@ -206,13 +206,13 @@ function _renderDrawer(items) {
 
   if (!items.length) {
     listaEl.innerHTML = '';
-    if (vacioEl)  vacioEl.hidden  = false;
-    if (footerEl) footerEl.hidden = true;
+    if (vacioEl)  vacioEl.style.display  = 'flex';
+    if (footerEl) footerEl.style.display = 'none';
     return;
   }
 
-  if (vacioEl)  vacioEl.hidden  = true;
-  if (footerEl) footerEl.hidden = false;
+  if (vacioEl)  vacioEl.style.display  = 'none';
+  if (footerEl) footerEl.style.display = 'flex';
 
   listaEl.innerHTML = items.map(item => `
     <div class="c-item">
