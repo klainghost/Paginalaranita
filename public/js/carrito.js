@@ -136,8 +136,16 @@ function initCarritoDrawer() {
   const overlay = document.getElementById('carrito-overlay');
   if (!drawer || !overlay) return;
 
-  const open  = () => { drawer.classList.add('carrito-drawer--abierto'); overlay.classList.add('carrito-overlay--visible'); };
-  const close = () => { drawer.classList.remove('carrito-drawer--abierto'); overlay.classList.remove('carrito-overlay--visible'); };
+  const open  = () => {
+    drawer.classList.add('carrito-drawer--abierto');
+    overlay.classList.add('carrito-overlay--visible');
+    document.body.style.overflow = 'hidden';
+  };
+  const close = () => {
+    drawer.classList.remove('carrito-drawer--abierto');
+    overlay.classList.remove('carrito-overlay--visible');
+    document.body.style.overflow = '';
+  };
 
   document.getElementById('btn-carrito')?.addEventListener('click', open);
   document.getElementById('btn-cerrar-carrito')?.addEventListener('click', close);

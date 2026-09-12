@@ -901,6 +901,20 @@ footer a:hover { text-decoration: underline; }
   .landing__titulo      { font-size: 1.8rem; }
   footer                { padding: var(--sp-xl) var(--sp-md); }
   .modal                { padding: var(--sp-xl) var(--sp-lg); }
+
+  /* Drawer full-width en pantallas muy chicas */
+  .carrito-drawer { width: 100vw; border-left: none; }
+
+  /* Email del usuario — truncar si es largo */
+  .navbar__usuario {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Botón Pedir por WA — texto más grande para facilitar toque */
+  .carrito-btn-wa { font-size: 1rem; padding: 14px; }
 }
 
 /* ============================================================
@@ -977,6 +991,7 @@ footer a:hover { text-decoration: underline; }
   top: 0; right: 0;
   width: min(400px, 92vw);
   height: 100vh;
+  height: 100dvh; /* compensa la barra del browser en móvil */
   background: var(--card-bg);
   border-left: 3px solid var(--mundo-acento);
   z-index: 850;
@@ -1076,7 +1091,7 @@ footer a:hover { text-decoration: underline; }
   margin-top: 4px;
 }
 .c-qty-btn {
-  width: 24px; height: 24px;
+  width: 32px; height: 32px;
   border-radius: 50%;
   border: 1px solid var(--card-border);
   background: var(--card-bg);
@@ -1084,7 +1099,9 @@ footer a:hover { text-decoration: underline; }
   font-size: 0.9rem;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
   transition: background var(--ease), border-color var(--ease);
+  -webkit-tap-highlight-color: transparent;
 }
 .c-qty-btn:hover { background: var(--mundo-acento); border-color: var(--mundo-acento); color: var(--mundo-fondo); }
 
@@ -1111,11 +1128,13 @@ footer a:hover { text-decoration: underline; }
 .c-item__del {
   background: none;
   border: none;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: var(--card-text-muted);
   cursor: pointer;
   transition: color var(--ease);
-  padding: 2px;
+  padding: 8px;
+  margin: -8px;
+  -webkit-tap-highlight-color: transparent;
 }
 .c-item__del:hover { color: var(--color-danger); }
 
