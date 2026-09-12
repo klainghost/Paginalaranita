@@ -165,8 +165,14 @@ function initCarritoDrawer() {
         }),
       });
       const data = await r.json();
-      if (data.ok) codigo = data.codigo;
-    } catch { /* si falla la red, igual abre WA sin código */ }
+      if (data.ok) {
+        codigo = data.codigo;
+      } else {
+        console.warn('[carrito] pedido rechazado por el servidor:', data.error);
+      }
+    } catch (err) {
+      console.error('[carrito] error al crear pedido:', err);
+    }
 
     btn.disabled = false;
     btn.textContent = '💬 Pedir por WhatsApp';
