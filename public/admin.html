@@ -573,7 +573,7 @@ async function loadProductos() {
         <td>${esc(p.categoria || '—')}</td>
         <td>${difLabel(p.dificultad)}</td>
         <td>${p.gramos} g</td>
-        <td>${fmt(p.desglose?.precio_final)}</td>
+        <td>${fmt(p.desglose?.precioFinal)}</td>
         <td><span class="badge ${p.activo ? 'badge-ok' : 'badge-off'}">${p.activo ? 'Activo' : 'Inactivo'}</span></td>
         <td class="actions">
           <button class="btn btn-secondary btn-sm" onclick="editProducto(${p.id})">Editar</button>
