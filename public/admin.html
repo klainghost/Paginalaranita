@@ -788,7 +788,7 @@ function openProductoModal(prod = null) {
   // Poblar select de mundos
   const selMundo = document.getElementById('prod-mundo_id');
   selMundo.innerHTML = '<option value="">— ninguno —</option>' +
-    mundos.map(m => `<option value="${m.id}">${esc(m.nombre)}</option>`).join('');
+    mundos.filter(m => m.activo).map(m => `<option value="${m.id}">${esc(m.nombre)}</option>`).join('');
 
   // Poblar select de categorías del sistema
   const selCat = document.getElementById('prod-categoria_id');
