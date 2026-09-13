@@ -267,6 +267,7 @@
 <div class="layout">
   <nav>
     <a class="active" data-tab="productos" onclick="setTab('productos',this)"><span>📦 Productos</span></a>
+    <a data-tab="mundos"    onclick="setTab('mundos',this)"><span>🌍 Mundos</span></a>
     <a data-tab="categorias" onclick="setTab('categorias',this)"><span>🏷️ Categorías</span></a>
     <a data-tab="parametros" onclick="setTab('parametros',this)"><span>⚙️ Parámetros</span></a>
     <a data-tab="niveles" onclick="setTab('niveles',this)"><span>💰 Niveles</span></a>
@@ -290,6 +291,24 @@
             <th>Estado</th><th>Acciones</th>
           </tr></thead>
           <tbody id="tbody-productos"><tr><td colspan="8" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Mundos ── -->
+    <section id="tab-mundos">
+      <div class="section-header">
+        <h2>Mundos</h2>
+        <button class="btn btn-primary" onclick="openMundoModal()">+ Nuevo mundo</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Preview</th><th>Nombre</th><th>Slug</th><th>Tipografía</th><th>Estado</th><th>Acciones</th>
+          </tr></thead>
+          <tbody id="tbody-mundos">
+            <tr><td colspan="6" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr>
+          </tbody>
         </table>
       </div>
     </section>
@@ -435,7 +454,7 @@
           <input type="text" id="prod-nombre" required>
         </div>
         <div class="field">
-          <label>Mundo (solo Rol)</label>
+          <label>Mundo</label>
           <select id="prod-mundo_id">
             <option value="">— ninguno —</option>
           </select>
@@ -508,6 +527,53 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" onclick="closeModal('modal-producto')">Cancelar</button>
         <button class="btn btn-primary" type="submit" id="btn-guardar-producto">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── Modal Mundo ── -->
+<div class="modal-overlay" id="modal-mundo">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <h3 id="modal-mundo-title">Nuevo mundo</h3>
+      <button class="modal-close" onclick="closeModal('modal-mundo')">×</button>
+    </div>
+    <form onsubmit="guardarMundo(event)">
+      <div class="form-grid">
+        <div class="field">
+          <label>Nombre *</label>
+          <input type="text" id="mun-nombre" required oninput="autoSlugMundo()">
+        </div>
+        <div class="field">
+          <label>Slug (URL) *</label>
+          <input type="text" id="mun-slug" required pattern="[a-z0-9-]+" placeholder="ej: impresiones">
+        </div>
+        <div class="field">
+          <label>Color acento</label>
+          <input type="color" id="mun-color_acento" value="#c9a227">
+        </div>
+        <div class="field">
+          <label>Color fondo</label>
+          <input type="color" id="mun-color_fondo" value="#1a1a2e">
+        </div>
+        <div class="field full">
+          <label>Tipografía</label>
+          <select id="mun-tipografia_display">
+            <option value="Cinzel">Cinzel — medieval/fantástico</option>
+            <option value="Plus Jakarta Sans">Plus Jakarta Sans — moderno/tech</option>
+            <option value="Playfair Display">Playfair Display — elegante/decorativo</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Descripción</label>
+          <textarea id="mun-descripcion"></textarea>
+        </div>
+      </div>
+      <input type="hidden" id="mun-id">
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-mundo')">Cancelar</button>
+        <button class="btn btn-primary" type="submit">Guardar</button>
       </div>
     </form>
   </div>
@@ -961,6 +1027,100 @@ async function eliminarUsuario(id, email) {
   }
 }
 
+// ── Mundos ───────────────────────────────────────────────
+
+function autoSlugMundo() {
+  if (document.getElementById('mun-id').value) return;
+  document.getElementById('mun-slug').value = document.getElementById('mun-nombre').value
+    .toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
+async function loadMundosTab() {
+  try {
+    mundos = await api('GET', '/api/admin/mundos');
+    const tbody = document.getElementById('tbody-mundos');
+    tbody.innerHTML = mundos.length === 0
+      ? '<tr><td colspan="6" style="text-align:center;color:var(--text-dim)">Sin mundos</td></tr>'
+      : mundos.map(m => `
+          <tr>
+            <td>
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="width:20px;height:20px;border-radius:50%;background:${esc(m.color_fondo||'#1a1a2e')};border:2px solid ${esc(m.color_acento||'#c9a227')}"></div>
+                <div style="width:20px;height:6px;border-radius:3px;background:${esc(m.color_acento||'#c9a227')}"></div>
+              </div>
+            </td>
+            <td>${esc(m.nombre)}</td>
+            <td style="font-family:monospace;font-size:.82rem;color:var(--text-dim)">${esc(m.slug)}</td>
+            <td style="font-size:.82rem;color:var(--text-dim)">${esc(m.tipografia_display||'—')}</td>
+            <td><span class="badge ${m.activo ? 'badge-ok' : 'badge-off'}">${m.activo ? 'Activo' : 'Inactivo'}</span></td>
+            <td class="actions">
+              <button class="btn btn-secondary btn-sm" onclick="editMundo(${m.id})">Editar</button>
+              <button class="btn ${m.activo ? 'btn-danger' : 'btn-secondary'} btn-sm"
+                onclick="toggleMundo(${m.id}, ${m.activo})">${m.activo ? 'Desactivar' : 'Activar'}</button>
+            </td>
+          </tr>`).join('');
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+function openMundoModal(m = null) {
+  document.getElementById('mun-id').value                = m?.id              ?? '';
+  document.getElementById('modal-mundo-title').textContent = m ? 'Editar mundo' : 'Nuevo mundo';
+  document.getElementById('mun-nombre').value            = m?.nombre           ?? '';
+  document.getElementById('mun-slug').value              = m?.slug             ?? '';
+  document.getElementById('mun-color_acento').value      = m?.color_acento     ?? '#c9a227';
+  document.getElementById('mun-color_fondo').value       = m?.color_fondo      ?? '#1a1a2e';
+  document.getElementById('mun-tipografia_display').value = m?.tipografia_display ?? 'Plus Jakarta Sans';
+  document.getElementById('mun-descripcion').value       = m?.descripcion      ?? '';
+  openModal('modal-mundo');
+}
+
+function editMundo(id) {
+  openMundoModal(mundos.find(m => m.id === id));
+}
+
+async function guardarMundo(e) {
+  e.preventDefault();
+  const id = document.getElementById('mun-id').value;
+  const body = {
+    nombre:             document.getElementById('mun-nombre').value,
+    slug:               document.getElementById('mun-slug').value,
+    color_acento:       document.getElementById('mun-color_acento').value,
+    color_fondo:        document.getElementById('mun-color_fondo').value,
+    tipografia_display: document.getElementById('mun-tipografia_display').value,
+    descripcion:        document.getElementById('mun-descripcion').value || null,
+  };
+  try {
+    if (id) {
+      await api('PUT', `/api/admin/mundos/${id}`, body);
+      toast('Mundo actualizado');
+    } else {
+      await api('POST', '/api/admin/mundos', body);
+      toast('Mundo creado');
+    }
+    closeModal('modal-mundo');
+    loadMundosTab();
+    mundos = await api('GET', '/api/admin/mundos'); // refresca cache para el form de productos
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+async function toggleMundo(id, activo) {
+  try {
+    await api('PUT', `/api/admin/mundos/${id}`, { activo: activo ? 0 : 1 });
+    toast(activo ? 'Mundo desactivado' : 'Mundo activado');
+    loadMundosTab();
+    mundos = await api('GET', '/api/admin/mundos');
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
 // ── Categorías ───────────────────────────────────────────
 
 function autoSlug() {
@@ -1147,7 +1307,7 @@ async function loadAll() {
     api('GET', '/api/admin/categorias'),
     api('GET', '/api/admin/niveles'),
   ]);
-  await Promise.all([loadProductos(), loadParametros(), loadNiveles(), loadUsuarios(), loadPedidos(), loadCategorias()]);
+  await Promise.all([loadProductos(), loadParametros(), loadNiveles(), loadUsuarios(), loadPedidos(), loadCategorias(), loadMundosTab()]);
 }
 
 (async () => {

@@ -151,6 +151,54 @@ router.get('/mundos', (req, res) => {
   res.json(getDb().prepare('SELECT * FROM mundos').all());
 });
 
+router.post('/mundos', (req, res) => {
+  const { nombre, slug, color_acento, color_fondo, tipografia_display, descripcion } = req.body || {};
+  if (!nombre || !slug) return res.status(400).json({ error: 'nombre y slug son requeridos.' });
+
+  try {
+    const result = getDb().prepare(`
+      INSERT INTO mundos (nombre, slug, color_acento, color_fondo, tipografia_display, descripcion)
+      VALUES (:nombre, :slug, :color_acento, :color_fondo, :tipografia_display, :descripcion)
+    `).run(p({
+      nombre,
+      slug:               slug.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+      color_acento:       color_acento       || '#c9a227',
+      color_fondo:        color_fondo        || '#1a1a2e',
+      tipografia_display: tipografia_display || 'Plus Jakarta Sans',
+      descripcion:        descripcion        || null,
+    }));
+    res.status(201).json({ ok: true, id: result.lastInsertRowid });
+  } catch (err) {
+    if (String(err.message).includes('UNIQUE')) return res.status(409).json({ error: 'Slug ya existe.' });
+    throw err;
+  }
+});
+
+router.put('/mundos/:id', (req, res) => {
+  const db = getDb();
+  const id = parseInt(req.params.id, 10);
+
+  if (!db.prepare('SELECT id FROM mundos WHERE id = ?').get(id)) {
+    return res.status(404).json({ error: 'Mundo no encontrado.' });
+  }
+
+  const CAMPOS_MUN = ['nombre', 'slug', 'color_acento', 'color_fondo', 'tipografia_display', 'descripcion', 'activo'];
+  const updates = {};
+  for (const campo of CAMPOS_MUN) {
+    if (req.body[campo] !== undefined) updates[campo] = req.body[campo];
+  }
+  if (!Object.keys(updates).length) return res.status(400).json({ error: 'Nada que actualizar.' });
+
+  const setClause = Object.keys(updates).map(k => `${k} = :${k}`).join(', ');
+  try {
+    db.prepare(`UPDATE mundos SET ${setClause} WHERE id = :id`).run(p({ ...updates, id }));
+    res.json({ ok: true });
+  } catch (err) {
+    if (String(err.message).includes('UNIQUE')) return res.status(409).json({ error: 'Slug ya existe.' });
+    throw err;
+  }
+});
+
 // --- Categorías ---
 
 router.get('/categorias', (req, res) => {

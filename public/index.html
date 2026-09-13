@@ -22,7 +22,7 @@
     <button class="navbar__toggle" aria-label="Menú">☰</button>
 
     <ul class="navbar__nav">
-      <li><a href="#rol">⚔️ Rol</a></li>
+      <li><a href="#mundos">🌍 Mundos</a></li>
       <li><a href="#catalogo">📦 Catálogo</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
@@ -44,11 +44,11 @@
       </p>
     </section>
 
-    <!-- JUEGOS DE ROL -->
-    <section class="landing__seccion" id="rol">
-      <h2 class="landing__seccion-titulo">⚔️ Juegos de Rol</h2>
-      <div class="landing__mundos" id="rol-grid">
-        <div id="rol-loading" style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,.4);">
+    <!-- MUNDOS -->
+    <section class="landing__seccion" id="mundos">
+      <h2 class="landing__seccion-titulo">🌍 Nuestros mundos</h2>
+      <div class="landing__mundos" id="mundos-grid">
+        <div id="mundos-loading" style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,.4);">
           <div class="spinner"></div>
         </div>
       </div>
@@ -108,34 +108,36 @@
   <script>
     initToggleTema();
 
-    function renderRol(mundo) {
-      const grid = document.getElementById('rol-grid');
-      document.getElementById('rol-loading')?.remove();
+    function renderMundos(mundos) {
+      const grid = document.getElementById('mundos-grid');
+      document.getElementById('mundos-loading')?.remove();
 
-      if (!mundo) {
-        grid.innerHTML = '<p class="landing__vacio">Sección de Rol no disponible.</p>';
+      if (!mundos.length) {
+        grid.innerHTML = '<p class="landing__vacio">No hay mundos disponibles.</p>';
         return;
       }
 
-      const card = document.createElement('a');
-      card.href = `mundo.html?mundo=${mundo.slug}`;
-      card.className = 'mundo-card';
-      card.style.setProperty('--mundo-card-fondo',  mundo.color_fondo  || '#1a2e1a');
-      card.style.setProperty('--mundo-card-acento', mundo.color_acento || '#c9a227');
-      card.innerHTML = `
-        <div class="mundo-card__img-wrapper">
-          <img class="mundo-card__img"
-               src="images/mundos/${mundo.slug}.webp"
-               alt="${mundo.nombre}"
-               onerror="this.src='images/logo.png'">
-          <div class="mundo-card__overlay"></div>
-        </div>
-        <div class="mundo-card__body">
-          <div class="mundo-card__nombre">⚔️ ${mundo.nombre}</div>
-          <p class="mundo-card__desc">${mundo.descripcion || ''}</p>
-          <div class="mundo-card__cta">Ver catálogo</div>
-        </div>`;
-      grid.appendChild(card);
+      mundos.forEach(mundo => {
+        const card = document.createElement('a');
+        card.href = `mundo.html?mundo=${mundo.slug}`;
+        card.className = 'mundo-card';
+        card.style.setProperty('--mundo-card-fondo',  mundo.color_fondo  || '#1a1a2e');
+        card.style.setProperty('--mundo-card-acento', mundo.color_acento || '#c9a227');
+        card.innerHTML = `
+          <div class="mundo-card__img-wrapper">
+            <img class="mundo-card__img"
+                 src="images/mundos/${mundo.slug}.webp"
+                 alt="${mundo.nombre}"
+                 onerror="this.src='images/logo.png'">
+            <div class="mundo-card__overlay"></div>
+          </div>
+          <div class="mundo-card__body">
+            <div class="mundo-card__nombre">${mundo.nombre}</div>
+            <p class="mundo-card__desc">${mundo.descripcion || ''}</p>
+            <div class="mundo-card__cta">Ver catálogo</div>
+          </div>`;
+        grid.appendChild(card);
+      });
     }
 
     function renderCategorias(cats) {
@@ -169,9 +171,9 @@
       const [mundosPromise, catsPromise] = [getMundos(), getCategorias()];
 
       mundosPromise
-        .then(mundos => renderRol(mundos.find(m => m.slug === 'rol')))
+        .then(renderMundos)
         .catch(() => {
-          document.getElementById('rol-loading').textContent = 'No se pudo cargar.';
+          document.getElementById('mundos-loading').textContent = 'No se pudo cargar.';
         });
 
       catsPromise
