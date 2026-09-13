@@ -112,6 +112,35 @@ function initSchema() {
 function runMigrations() {
   const cols = db.prepare('PRAGMA table_info(productos)').all().map(c => c.name);
 
+  // v3: consolidar mundos → crear "Impresiones 3D", migrar productos, eliminar mundos viejos
+  const mundosViejos = ['Oficina y Funcional', 'Regalos y Decoración'];
+  const hayViejos = db.prepare(
+    `SELECT COUNT(*) as n FROM mundos WHERE nombre IN (${mundosViejos.map(() => '?').join(',')})`
+  ).get(...mundosViejos).n;
+
+  if (hayViejos > 0) {
+    // Crear "Impresiones 3D" si todavía no existe
+    db.prepare(`
+      INSERT OR IGNORE INTO mundos (nombre, slug, color_acento, color_fondo, tipografia_display, descripcion)
+      VALUES ('Impresiones 3D', 'impresiones', '#00b4d8', '#0d1b2a', 'Plus Jakarta Sans',
+              'Piezas funcionales, regalos y accesorios impresos en 3D')
+    `).run();
+
+    const imp = db.prepare(`SELECT id FROM mundos WHERE slug = 'impresiones'`).get();
+
+    // Reasignar productos de los mundos viejos
+    db.prepare(`
+      UPDATE productos
+      SET mundo_id = ?
+      WHERE mundo_id IN (
+        SELECT id FROM mundos WHERE nombre IN (${mundosViejos.map(() => '?').join(',')})
+      )
+    `).run(imp.id, ...mundosViejos);
+
+    // Eliminar mundos viejos
+    db.prepare(`DELETE FROM mundos WHERE nombre IN (${mundosViejos.map(() => '?').join(',')})`).run(...mundosViejos);
+  }
+
   // v2: categorias + nullable mundo_id + categoria_id en productos
   if (!cols.includes('categoria_id')) {
     db.exec(`
