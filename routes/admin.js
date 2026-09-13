@@ -17,10 +17,13 @@ router.get('/productos', (req, res) => {
   const nivelPub   = db.prepare("SELECT * FROM niveles_precio WHERE nombre = 'publico'").get() || { margen_pct: 0 };
 
   const productos = db.prepare(`
-    SELECT p.*, m.nombre AS mundo_nombre
+    SELECT p.*,
+           m.nombre AS mundo_nombre,
+           c.nombre AS categoria_sistema_nombre
     FROM productos p
-    JOIN mundos m ON p.mundo_id = m.id
-    ORDER BY m.nombre, p.categoria, p.nombre
+    LEFT JOIN mundos m ON p.mundo_id = m.id
+    LEFT JOIN categorias c ON p.categoria_id = c.id
+    ORDER BY COALESCE(m.nombre, c.nombre, ''), p.categoria, p.nombre
   `).all();
 
   const resultado = productos.map(prod => ({
@@ -32,12 +35,15 @@ router.get('/productos', (req, res) => {
 });
 
 router.post('/productos', (req, res) => {
-  const { mundo_id, nombre, categoria, descripcion, gramos, horas, minutos, dificultad,
+  const { mundo_id, categoria_id, nombre, categoria, descripcion, gramos, horas, minutos, dificultad,
           precio_override, precio_ajuste_pct, promo_descuento_pct, promo_hasta,
           makerworld_url, imagen_url, notas } = req.body || {};
 
-  if (!mundo_id || !nombre || gramos == null || !dificultad) {
-    return res.status(400).json({ error: 'mundo_id, nombre, gramos y dificultad son requeridos.' });
+  if (!nombre || gramos == null || !dificultad) {
+    return res.status(400).json({ error: 'nombre, gramos y dificultad son requeridos.' });
+  }
+  if (!mundo_id && !categoria_id) {
+    return res.status(400).json({ error: 'Debe especificar mundo (Rol) o categoría.' });
   }
   if (!DIFICULTADES[String(dificultad)]) {
     return res.status(400).json({ error: `Dificultad inválida. Valores válidos: ${Object.keys(DIFICULTADES).join(', ')}` });
@@ -46,15 +52,16 @@ router.post('/productos', (req, res) => {
   const db = getDb();
   const result = db.prepare(`
     INSERT INTO productos
-      (mundo_id, nombre, categoria, descripcion, gramos, horas, minutos, dificultad,
+      (mundo_id, categoria_id, nombre, categoria, descripcion, gramos, horas, minutos, dificultad,
        precio_override, precio_ajuste_pct, promo_descuento_pct, promo_hasta,
        makerworld_url, imagen_url, notas)
     VALUES
-      (:mundo_id, :nombre, :categoria, :descripcion, :gramos, :horas, :minutos, :dificultad,
+      (:mundo_id, :categoria_id, :nombre, :categoria, :descripcion, :gramos, :horas, :minutos, :dificultad,
        :precio_override, :precio_ajuste_pct, :promo_descuento_pct, :promo_hasta,
        :makerworld_url, :imagen_url, :notas)
   `).run(p({
-    mundo_id:            Number(mundo_id),
+    mundo_id:            mundo_id    ? Number(mundo_id)    : null,
+    categoria_id:        categoria_id ? Number(categoria_id) : null,
     nombre,
     categoria:           categoria           || null,
     descripcion:         descripcion         || null,
@@ -87,7 +94,7 @@ router.put('/productos/:id', (req, res) => {
 
   const CAMPOS = ['nombre', 'categoria', 'descripcion', 'gramos', 'horas', 'minutos', 'dificultad',
     'precio_override', 'precio_ajuste_pct', 'promo_descuento_pct', 'promo_hasta',
-    'makerworld_url', 'imagen_url', 'notas', 'activo'];
+    'makerworld_url', 'imagen_url', 'notas', 'activo', 'mundo_id', 'categoria_id'];
 
   const updates = {};
   for (const campo of CAMPOS) {
@@ -142,6 +149,67 @@ router.put('/parametros', (req, res) => {
 
 router.get('/mundos', (req, res) => {
   res.json(getDb().prepare('SELECT * FROM mundos').all());
+});
+
+// --- Categorías ---
+
+router.get('/categorias', (req, res) => {
+  res.json(getDb().prepare('SELECT * FROM categorias ORDER BY orden, nombre').all());
+});
+
+router.post('/categorias', (req, res) => {
+  const { nombre, slug, descripcion, icono, orden } = req.body || {};
+  if (!nombre || !slug) return res.status(400).json({ error: 'nombre y slug son requeridos.' });
+
+  try {
+    const result = getDb().prepare(`
+      INSERT INTO categorias (nombre, slug, descripcion, icono, orden)
+      VALUES (:nombre, :slug, :descripcion, :icono, :orden)
+    `).run(p({
+      nombre,
+      slug:        slug.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+      descripcion: descripcion || null,
+      icono:       icono       || '📦',
+      orden:       Number(orden || 0),
+    }));
+    res.status(201).json({ ok: true, id: result.lastInsertRowid });
+  } catch (err) {
+    if (String(err.message).includes('UNIQUE')) return res.status(409).json({ error: 'Nombre o slug ya existe.' });
+    throw err;
+  }
+});
+
+router.put('/categorias/:id', (req, res) => {
+  const db = getDb();
+  const id = parseInt(req.params.id, 10);
+
+  if (!db.prepare('SELECT id FROM categorias WHERE id = ?').get(id)) {
+    return res.status(404).json({ error: 'Categoría no encontrada.' });
+  }
+
+  const CAMPOS_CAT = ['nombre', 'slug', 'descripcion', 'icono', 'orden', 'activo'];
+  const updates = {};
+  for (const campo of CAMPOS_CAT) {
+    if (req.body[campo] !== undefined) updates[campo] = req.body[campo];
+  }
+  if (!Object.keys(updates).length) return res.status(400).json({ error: 'Nada que actualizar.' });
+
+  const setClause = Object.keys(updates).map(k => `${k} = :${k}`).join(', ');
+  try {
+    db.prepare(`UPDATE categorias SET ${setClause} WHERE id = :id`).run(p({ ...updates, id }));
+    res.json({ ok: true });
+  } catch (err) {
+    if (String(err.message).includes('UNIQUE')) return res.status(409).json({ error: 'Nombre o slug ya existe.' });
+    throw err;
+  }
+});
+
+router.delete('/categorias/:id', (req, res) => {
+  const result = getDb()
+    .prepare('UPDATE categorias SET activo = 0 WHERE id = ?')
+    .run(parseInt(req.params.id, 10));
+  if (result.changes === 0) return res.status(404).json({ error: 'Categoría no encontrada.' });
+  res.json({ ok: true });
 });
 
 // --- Niveles de precio ---

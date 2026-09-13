@@ -50,6 +50,18 @@ async function getProductos(slug) {
   return r.json();
 }
 
+async function getCategorias() {
+  const r = await fetch(`${API}/api/categorias`);
+  if (!r.ok) throw new Error('No se pudo cargar las categorías');
+  return r.json();
+}
+
+async function getProductosByCategoria(slug) {
+  const r = await fetch(`${API}/api/categorias/${slug}/productos`, { credentials: 'include' });
+  if (!r.ok) throw new Error('No se pudo cargar el catálogo');
+  return r.json();
+}
+
 /* ------------------------------------------------------------------ */
 /* CSS variables de mundo                                               */
 /* ------------------------------------------------------------------ */

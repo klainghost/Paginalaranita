@@ -267,6 +267,7 @@
 <div class="layout">
   <nav>
     <a class="active" data-tab="productos" onclick="setTab('productos',this)"><span>📦 Productos</span></a>
+    <a data-tab="categorias" onclick="setTab('categorias',this)"><span>🏷️ Categorías</span></a>
     <a data-tab="parametros" onclick="setTab('parametros',this)"><span>⚙️ Parámetros</span></a>
     <a data-tab="niveles" onclick="setTab('niveles',this)"><span>💰 Niveles</span></a>
     <a data-tab="usuarios" onclick="setTab('usuarios',this)"><span>👤 Usuarios</span></a>
@@ -289,6 +290,24 @@
             <th>Estado</th><th>Acciones</th>
           </tr></thead>
           <tbody id="tbody-productos"><tr><td colspan="8" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Categorías ── -->
+    <section id="tab-categorias">
+      <div class="section-header">
+        <h2>Categorías</h2>
+        <button class="btn btn-primary" onclick="openCategoriaModal()">+ Nueva categoría</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Icono</th><th>Nombre</th><th>Slug</th><th>Descripción</th><th>Orden</th><th>Estado</th><th>Acciones</th>
+          </tr></thead>
+          <tbody id="tbody-categorias">
+            <tr><td colspan="7" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr>
+          </tbody>
         </table>
       </div>
     </section>
@@ -416,11 +435,19 @@
           <input type="text" id="prod-nombre" required>
         </div>
         <div class="field">
-          <label>Mundo *</label>
-          <select id="prod-mundo_id" required></select>
+          <label>Mundo (solo Rol)</label>
+          <select id="prod-mundo_id">
+            <option value="">— ninguno —</option>
+          </select>
         </div>
         <div class="field">
-          <label>Categoría</label>
+          <label>Categoría del catálogo</label>
+          <select id="prod-categoria_id">
+            <option value="">— ninguna —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Sub-categoría (etiqueta)</label>
           <input type="text" id="prod-categoria" placeholder="ej: Humanoides, Monstruos…">
         </div>
         <div class="field full">
@@ -481,6 +508,46 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" onclick="closeModal('modal-producto')">Cancelar</button>
         <button class="btn btn-primary" type="submit" id="btn-guardar-producto">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── Modal Categoría ── -->
+<div class="modal-overlay" id="modal-categoria">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h3 id="modal-categoria-title">Nueva categoría</h3>
+      <button class="modal-close" onclick="closeModal('modal-categoria')">×</button>
+    </div>
+    <form onsubmit="guardarCategoria(event)">
+      <div class="form-grid">
+        <div class="field">
+          <label>Nombre *</label>
+          <input type="text" id="cat-nombre" required oninput="autoSlug()">
+        </div>
+        <div class="field">
+          <label>Slug (URL) *</label>
+          <input type="text" id="cat-slug" required placeholder="ej: organizadores"
+                 pattern="[a-z0-9-]+" title="Solo letras minúsculas, números y guiones">
+        </div>
+        <div class="field">
+          <label>Icono (emoji)</label>
+          <input type="text" id="cat-icono" placeholder="📦" maxlength="4">
+        </div>
+        <div class="field">
+          <label>Orden (menor = primero)</label>
+          <input type="number" id="cat-orden" min="0" step="1" value="0">
+        </div>
+        <div class="field full">
+          <label>Descripción</label>
+          <textarea id="cat-descripcion"></textarea>
+        </div>
+      </div>
+      <input type="hidden" id="cat-id">
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-categoria')">Cancelar</button>
+        <button class="btn btn-primary" type="submit">Guardar</button>
       </div>
     </form>
   </div>
@@ -610,9 +677,10 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// ── Cache de mundos y niveles ────────────────────────────
-let mundos  = [];
-let niveles = [];
+// ── Cache de mundos, categorías y niveles ───────────────
+let mundos      = [];
+let categorias  = [];
+let niveles     = [];
 
 // ── Productos ────────────────────────────────────────────
 async function loadProductos() {
@@ -623,7 +691,7 @@ async function loadProductos() {
     : prods.map(p => `
       <tr>
         <td>${esc(p.nombre)}</td>
-        <td>${esc(p.mundo_nombre)}</td>
+        <td>${esc(p.mundo_nombre || p.categoria_sistema_nombre || '—')}</td>
         <td>${esc(p.categoria || '—')}</td>
         <td>${difLabel(p.dificultad)}</td>
         <td>${p.gramos} g</td>
@@ -652,12 +720,18 @@ function openProductoModal(prod = null) {
   document.getElementById('btn-guardar-producto').textContent  = prod ? 'Guardar cambios' : 'Crear producto';
 
   // Poblar select de mundos
-  const sel = document.getElementById('prod-mundo_id');
-  sel.innerHTML = mundos.map(m => `<option value="${m.id}">${esc(m.nombre)}</option>`).join('');
+  const selMundo = document.getElementById('prod-mundo_id');
+  selMundo.innerHTML = '<option value="">— ninguno —</option>' +
+    mundos.map(m => `<option value="${m.id}">${esc(m.nombre)}</option>`).join('');
+
+  // Poblar select de categorías del sistema
+  const selCat = document.getElementById('prod-categoria_id');
+  selCat.innerHTML = '<option value="">— ninguna —</option>' +
+    categorias.map(c => `<option value="${c.id}">${esc(c.nombre)}</option>`).join('');
 
   const fields = ['nombre','categoria','descripcion','gramos','horas','minutos','dificultad',
     'precio_override','precio_ajuste_pct','promo_descuento_pct','promo_hasta',
-    'makerworld_url','imagen_url','notas','mundo_id'];
+    'makerworld_url','imagen_url','notas'];
 
   if (prod) {
     fields.forEach(f => {
@@ -665,6 +739,8 @@ function openProductoModal(prod = null) {
       if (!el) return;
       el.value = prod[f] ?? '';
     });
+    selMundo.value = prod.mundo_id    ?? '';
+    selCat.value   = prod.categoria_id ?? '';
   } else {
     fields.forEach(f => {
       const el = document.getElementById('prod-' + f);
@@ -672,7 +748,8 @@ function openProductoModal(prod = null) {
       el.value = ['horas','minutos','precio_ajuste_pct','promo_descuento_pct'].includes(f) ? '0' : '';
     });
     document.getElementById('prod-dificultad').value = '2.5';
-    if (mundos.length) sel.value = mundos[0].id;
+    selMundo.value = '';
+    selCat.value   = '';
   }
 
   openModal('modal-producto');
@@ -690,10 +767,18 @@ async function editProducto(id) {
 
 async function guardarProducto(e) {
   e.preventDefault();
-  const id = document.getElementById('prod-id').value;
+  const id         = document.getElementById('prod-id').value;
+  const mundoVal   = document.getElementById('prod-mundo_id').value;
+  const catSysVal  = document.getElementById('prod-categoria_id').value;
+
+  if (!mundoVal && !catSysVal) {
+    toast('Debe seleccionar Mundo (Rol) o Categoría del catálogo.', 'err');
+    return;
+  }
 
   const body = {
-    mundo_id:            +document.getElementById('prod-mundo_id').value,
+    mundo_id:            mundoVal   ? +mundoVal   : null,
+    categoria_id:        catSysVal  ? +catSysVal  : null,
     nombre:               document.getElementById('prod-nombre').value,
     categoria:            document.getElementById('prod-categoria').value || null,
     descripcion:          document.getElementById('prod-descripcion').value || null,
@@ -876,6 +961,95 @@ async function eliminarUsuario(id, email) {
   }
 }
 
+// ── Categorías ───────────────────────────────────────────
+
+function autoSlug() {
+  const nombre = document.getElementById('cat-nombre').value;
+  const id     = document.getElementById('cat-id').value;
+  if (id) return; // edición: no sobrescribir slug existente
+  document.getElementById('cat-slug').value = nombre
+    .toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
+async function loadCategorias() {
+  try {
+    categorias = await api('GET', '/api/admin/categorias');
+    const tbody = document.getElementById('tbody-categorias');
+    tbody.innerHTML = categorias.length === 0
+      ? '<tr><td colspan="7" style="text-align:center;color:var(--text-dim)">Sin categorías</td></tr>'
+      : categorias.map(c => `
+          <tr>
+            <td style="font-size:1.2rem">${esc(c.icono || '📦')}</td>
+            <td>${esc(c.nombre)}</td>
+            <td style="font-family:monospace;font-size:.82rem;color:var(--text-dim)">${esc(c.slug)}</td>
+            <td style="font-size:.82rem;color:var(--text-dim)">${esc(c.descripcion || '—')}</td>
+            <td style="text-align:center">${c.orden}</td>
+            <td><span class="badge ${c.activo ? 'badge-ok' : 'badge-off'}">${c.activo ? 'Activa' : 'Inactiva'}</span></td>
+            <td class="actions">
+              <button class="btn btn-secondary btn-sm" onclick="editCategoria(${c.id})">Editar</button>
+              <button class="btn ${c.activo ? 'btn-danger' : 'btn-secondary'} btn-sm"
+                onclick="toggleCategoria(${c.id}, ${c.activo})">${c.activo ? 'Desactivar' : 'Activar'}</button>
+            </td>
+          </tr>`).join('');
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+function openCategoriaModal(cat = null) {
+  document.getElementById('cat-id').value            = cat?.id ?? '';
+  document.getElementById('modal-categoria-title').textContent = cat ? 'Editar categoría' : 'Nueva categoría';
+  document.getElementById('cat-nombre').value        = cat?.nombre      ?? '';
+  document.getElementById('cat-slug').value          = cat?.slug        ?? '';
+  document.getElementById('cat-icono').value         = cat?.icono       ?? '';
+  document.getElementById('cat-orden').value         = cat?.orden       ?? 0;
+  document.getElementById('cat-descripcion').value   = cat?.descripcion ?? '';
+  openModal('modal-categoria');
+}
+
+async function editCategoria(id) {
+  const cat = categorias.find(c => c.id === id);
+  if (cat) openCategoriaModal(cat);
+}
+
+async function guardarCategoria(e) {
+  e.preventDefault();
+  const id = document.getElementById('cat-id').value;
+  const body = {
+    nombre:      document.getElementById('cat-nombre').value,
+    slug:        document.getElementById('cat-slug').value,
+    icono:       document.getElementById('cat-icono').value || '📦',
+    orden:      +document.getElementById('cat-orden').value,
+    descripcion: document.getElementById('cat-descripcion').value || null,
+  };
+  try {
+    if (id) {
+      await api('PUT', `/api/admin/categorias/${id}`, body);
+      toast('Categoría actualizada');
+    } else {
+      await api('POST', '/api/admin/categorias', body);
+      toast('Categoría creada');
+    }
+    closeModal('modal-categoria');
+    loadCategorias();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+async function toggleCategoria(id, activo) {
+  try {
+    await api('PUT', `/api/admin/categorias/${id}`, { activo: activo ? 0 : 1 });
+    toast(activo ? 'Categoría desactivada' : 'Categoría activada');
+    loadCategorias();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
 // ── Pedidos ──────────────────────────────────────────────
 const ESTADO_LABELS = {
   pendiente:  '⏳ Pendiente',
@@ -968,9 +1142,12 @@ async function guardarEstadoPedido() {
 
 // ── Init ─────────────────────────────────────────────────
 async function loadAll() {
-  mundos  = await api('GET', '/api/admin/mundos');
-  niveles = await api('GET', '/api/admin/niveles');
-  await Promise.all([loadProductos(), loadParametros(), loadNiveles(), loadUsuarios(), loadPedidos()]);
+  [mundos, categorias, niveles] = await Promise.all([
+    api('GET', '/api/admin/mundos'),
+    api('GET', '/api/admin/categorias'),
+    api('GET', '/api/admin/niveles'),
+  ]);
+  await Promise.all([loadProductos(), loadParametros(), loadNiveles(), loadUsuarios(), loadPedidos(), loadCategorias()]);
 }
 
 (async () => {

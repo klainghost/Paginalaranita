@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La Ranita 3D — Elegí tu mundo</title>
-  <meta name="description" content="Impresión 3D a medida: miniaturas para rol, organizadores funcionales y regalos únicos.">
+  <title>La Ranita 3D — Impresión 3D a medida</title>
+  <meta name="description" content="Miniaturas para rol, organizadores funcionales y regalos únicos, todo impreso en 3D en Malargüe.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=6">
 </head>
 <body>
 
@@ -22,7 +22,8 @@
     <button class="navbar__toggle" aria-label="Menú">☰</button>
 
     <ul class="navbar__nav">
-      <li><a href="#mundos">Mundos</a></li>
+      <li><a href="#rol">⚔️ Rol</a></li>
+      <li><a href="#catalogo">📦 Catálogo</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
 
@@ -36,18 +37,30 @@
   <main class="landing">
     <section class="landing__hero">
       <span class="landing__emblema">🐸</span>
-      <h1 class="landing__titulo">Elegí tu mundo</h1>
+      <h1 class="landing__titulo">La Ranita 3D</h1>
       <p class="landing__subtitulo">
         Miniaturas de rol, piezas funcionales y regalos únicos, todo impreso en 3D.
-        ¿A dónde viajamos hoy?
+        Malargüe, Mendoza.
       </p>
     </section>
 
-    <!-- CARDS DE MUNDOS -->
-    <section class="landing__mundos" id="mundos">
-      <div id="mundos-loading" style="grid-column:1/-1;text-align:center;padding:48px;color:rgba(255,255,255,.4);">
-        <div class="spinner"></div>
-        <p style="margin-top:16px;">Cargando mundos…</p>
+    <!-- JUEGOS DE ROL -->
+    <section class="landing__seccion" id="rol">
+      <h2 class="landing__seccion-titulo">⚔️ Juegos de Rol</h2>
+      <div class="landing__mundos" id="rol-grid">
+        <div id="rol-loading" style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,.4);">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATÁLOGO POR CATEGORÍAS -->
+    <section class="landing__seccion" id="catalogo">
+      <h2 class="landing__seccion-titulo">📦 Catálogo</h2>
+      <div class="landing__categorias" id="categorias-grid">
+        <div id="cat-loading" style="text-align:center;padding:40px;color:rgba(255,255,255,.4);">
+          <div class="spinner"></div>
+        </div>
       </div>
     </section>
 
@@ -91,44 +104,59 @@
     </svg>
   </a>
 
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=3"></script>
   <script>
-    initToggleTema(); // restaura preferencia guardada antes de pintar
+    initToggleTema();
 
-    // Paleta por mundo-slug (define el color de la card antes de que cargue la API)
-    const PALETAS_CARD = {
-      rol:     { fondo: '#1a2e1a', acento: '#c9a227' },
-      oficina: { fondo: '#1e3a2f', acento: '#84cc16' },
-      regalos: { fondo: '#3b1a2e', acento: '#d97706' },
-    };
+    function renderRol(mundo) {
+      const grid = document.getElementById('rol-grid');
+      document.getElementById('rol-loading')?.remove();
 
-    const EMOJIS = { rol: '⚔️', oficina: '🖨️', regalos: '🎁' };
+      if (!mundo) {
+        grid.innerHTML = '<p class="landing__vacio">Sección de Rol no disponible.</p>';
+        return;
+      }
 
-    function renderMundos(mundos) {
-      const section = document.getElementById('mundos');
-      document.getElementById('mundos-loading').remove();
+      const card = document.createElement('a');
+      card.href = `mundo.html?mundo=${mundo.slug}`;
+      card.className = 'mundo-card';
+      card.style.setProperty('--mundo-card-fondo',  mundo.color_fondo  || '#1a2e1a');
+      card.style.setProperty('--mundo-card-acento', mundo.color_acento || '#c9a227');
+      card.innerHTML = `
+        <div class="mundo-card__img-wrapper">
+          <img class="mundo-card__img"
+               src="images/mundos/${mundo.slug}.webp"
+               alt="${mundo.nombre}"
+               onerror="this.src='images/logo.png'">
+          <div class="mundo-card__overlay"></div>
+        </div>
+        <div class="mundo-card__body">
+          <div class="mundo-card__nombre">⚔️ ${mundo.nombre}</div>
+          <p class="mundo-card__desc">${mundo.descripcion || ''}</p>
+          <div class="mundo-card__cta">Ver catálogo</div>
+        </div>`;
+      grid.appendChild(card);
+    }
 
-      mundos.forEach(m => {
-        const p = PALETAS_CARD[m.slug] || { fondo: '#1a1a2e', acento: '#c9a227' };
+    function renderCategorias(cats) {
+      const grid = document.getElementById('categorias-grid');
+      document.getElementById('cat-loading')?.remove();
+
+      if (!cats.length) {
+        grid.innerHTML = '<p class="landing__vacio">Todavía no hay categorías disponibles.</p>';
+        return;
+      }
+
+      cats.forEach(c => {
         const card = document.createElement('a');
-        card.href = `mundo.html?mundo=${m.slug}`;
-        card.className = 'mundo-card';
-        card.style.setProperty('--mundo-card-fondo',  p.fondo);
-        card.style.setProperty('--mundo-card-acento', p.acento);
+        card.href = `catalogo.html?categoria=${c.slug}`;
+        card.className = 'cat-card';
         card.innerHTML = `
-          <div class="mundo-card__img-wrapper">
-            <img class="mundo-card__img"
-                 src="images/mundos/${m.slug}.webp"
-                 alt="${m.nombre}"
-                 onerror="this.src='images/logo.png'">
-            <div class="mundo-card__overlay"></div>
-          </div>
-          <div class="mundo-card__body">
-            <div class="mundo-card__nombre">${EMOJIS[m.slug] || '🌍'} ${m.nombre}</div>
-            <p class="mundo-card__desc">${m.descripcion || ''}</p>
-            <div class="mundo-card__cta">Ver catálogo</div>
-          </div>`;
-        section.appendChild(card);
+          <div class="cat-card__icono">${c.icono || '📦'}</div>
+          <div class="cat-card__nombre">${c.nombre}</div>
+          <p class="cat-card__desc">${c.descripcion || ''}</p>
+          <div class="cat-card__cta">Ver productos</div>`;
+        grid.appendChild(card);
       });
     }
 
@@ -138,13 +166,19 @@
       initLoginModal();
       await initNavbarSesion();
 
-      try {
-        const mundos = await getMundos();
-        renderMundos(mundos);
-      } catch (e) {
-        document.getElementById('mundos-loading').innerHTML =
-          `<p style="color:rgba(255,255,255,.45)">No se pudo conectar con el servidor. Revisá que esté corriendo.</p>`;
-      }
+      const [mundosPromise, catsPromise] = [getMundos(), getCategorias()];
+
+      mundosPromise
+        .then(mundos => renderRol(mundos.find(m => m.slug === 'rol')))
+        .catch(() => {
+          document.getElementById('rol-loading').textContent = 'No se pudo cargar.';
+        });
+
+      catsPromise
+        .then(renderCategorias)
+        .catch(() => {
+          document.getElementById('cat-loading').textContent = 'No se pudo cargar.';
+        });
     })();
   </script>
 </body>

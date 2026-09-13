@@ -33,10 +33,10 @@
     </div>
   </header>
 
-  <!-- HERO DEL MUNDO -->
+  <!-- HERO DE CATEGORÍA -->
   <section class="catalogo-hero">
-    <h1 class="catalogo-hero__titulo" id="mundo-titulo">Cargando…</h1>
-    <p class="catalogo-hero__desc" id="mundo-desc"></p>
+    <h1 class="catalogo-hero__titulo" id="cat-titulo">Cargando…</h1>
+    <p class="catalogo-hero__desc" id="cat-desc"></p>
   </section>
 
   <!-- CATÁLOGO -->
@@ -44,8 +44,8 @@
 
     <!-- Filtros -->
     <div class="filtros" id="filtros" style="display:none">
-      <select class="filtros__select" id="filtro-categoria">
-        <option value="">Todas las categorías</option>
+      <select class="filtros__select" id="filtro-subcategoria">
+        <option value="">Todas</option>
       </select>
       <span class="filtros__count" id="filtros-count"></span>
     </div>
@@ -120,16 +120,15 @@
   <script src="js/app.js?v=3"></script>
   <script src="js/carrito.js?v=4"></script>
   <script>
-    initToggleTema(); // restaura preferencia guardada antes de pintar
+    initToggleTema();
 
     const params = new URLSearchParams(location.search);
-    const SLUG   = params.get('mundo') || 'rol';
+    const SLUG   = params.get('categoria') || '';
 
     let todosLosProductos = [];
-    let categoriaActual   = '';
-    const _prodMap        = new Map(); // id → producto, para el carrito
+    let subcatActual      = '';
+    const _prodMap        = new Map();
 
-    /* ---- Render de una card ---- */
     function crearCard(p) {
       _prodMap.set(p.id, p);
       const conPromo = p.promo_activa && p.precio_sin_promo;
@@ -161,7 +160,6 @@
       return card;
     }
 
-    /* ---- Agregar al carrito ---- */
     function agregarAlCarrito(id, btn) {
       const prod = _prodMap.get(id);
       if (!prod || btn.disabled) return;
@@ -172,7 +170,6 @@
       });
     }
 
-    /* ---- Renderiza el grid ---- */
     function renderGrid(productos) {
       const grid = document.getElementById('productos-grid');
       grid.innerHTML = '';
@@ -185,38 +182,34 @@
         `${productos.length} producto${productos.length !== 1 ? 's' : ''}`;
     }
 
-    /* ---- Filtro por categoría ---- */
     function filtrarYRenderizar() {
-      const filtrados = categoriaActual
-        ? todosLosProductos.filter(p => p.categoria === categoriaActual)
+      const filtrados = subcatActual
+        ? todosLosProductos.filter(p => p.categoria === subcatActual)
         : todosLosProductos;
       renderGrid(filtrados);
     }
 
-    /* ---- Poblar select de categorías ---- */
-    function poblarCategorias(productos) {
-      const cats = [...new Set(productos.map(p => p.categoria).filter(Boolean))].sort();
-      if (!cats.length) return;
-      const sel = document.getElementById('filtro-categoria');
-      cats.forEach(c => {
+    function poblarSubcategorias(productos) {
+      const subcats = [...new Set(productos.map(p => p.categoria).filter(Boolean))].sort();
+      if (!subcats.length) return;
+      const sel = document.getElementById('filtro-subcategoria');
+      subcats.forEach(c => {
         const opt = document.createElement('option');
         opt.value = c; opt.textContent = c;
         sel.appendChild(opt);
       });
       sel.addEventListener('change', () => {
-        categoriaActual = sel.value;
+        subcatActual = sel.value;
         filtrarYRenderizar();
       });
       document.getElementById('filtros').style.display = 'flex';
     }
 
-    /* ---- WhatsApp ---- */
     function pedirPorWA(nombre, precio) {
       const txt = encodeURIComponent(`Hola! Me interesa: *${nombre}* (${formatPrecio(precio)}). ¿Tienen disponibilidad?`);
       window.open(`https://wa.me/5492604581757?text=${txt}`, '_blank', 'noopener');
     }
 
-    /* ---- Arranque ---- */
     (async () => {
       initNavbarScroll();
       initNavToggle();
@@ -225,22 +218,28 @@
       const sesion = await initNavbarSesion();
       await Carrito.init(sesion);
 
+      if (!SLUG) {
+        document.getElementById('cat-titulo').textContent = 'Catálogo';
+        document.getElementById('productos-grid').innerHTML =
+          '<p class="estado-vacio">No se especificó una categoría.</p>';
+        return;
+      }
+
       try {
-        // Carga mundo y productos en paralelo
-        const [mundos, productos] = await Promise.all([
-          getMundos(),
-          getProductos(SLUG),
+        const [cats, productos] = await Promise.all([
+          getCategorias(),
+          getProductosByCategoria(SLUG),
         ]);
 
-        const mundo = mundos.find(m => m.slug === SLUG);
-        if (mundo) {
-          aplicarMundo(mundo);
-          document.getElementById('mundo-titulo').textContent = mundo.nombre;
-          document.getElementById('mundo-desc').textContent   = mundo.descripcion || '';
+        const cat = cats.find(c => c.slug === SLUG);
+        if (cat) {
+          document.getElementById('cat-titulo').textContent = `${cat.icono || ''} ${cat.nombre}`.trim();
+          document.getElementById('cat-desc').textContent   = cat.descripcion || '';
+          document.title = `${cat.nombre} — La Ranita 3D`;
         }
 
         todosLosProductos = productos;
-        poblarCategorias(productos);
+        poblarSubcategorias(productos);
         renderGrid(productos);
 
       } catch (e) {

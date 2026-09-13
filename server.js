@@ -10,12 +10,13 @@ const path          = require('path');
 const crypto        = require('crypto');
 const { exec }      = require('child_process');
 
-const authRoutes     = require('./routes/auth');
-const mundosRoutes   = require('./routes/mundos');
-const productosRoutes = require('./routes/productos');
-const adminRoutes    = require('./routes/admin');
-const carritoRoutes  = require('./routes/carrito');
-const pedidosRoutes  = require('./routes/pedidos');
+const authRoutes       = require('./routes/auth');
+const mundosRoutes     = require('./routes/mundos');
+const productosRoutes  = require('./routes/productos');
+const categoriasRoutes = require('./routes/categorias');
+const adminRoutes      = require('./routes/admin');
+const carritoRoutes    = require('./routes/carrito');
+const pedidosRoutes    = require('./routes/pedidos');
 
 const app  = express();
 const PORT = process.env.PORT || 3001;
@@ -88,12 +89,13 @@ app.use(session({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/auth',    authRoutes);
-app.use('/api/mundos',  mundosRoutes);
-app.use('/api/mundos',  productosRoutes);
-app.use('/api/admin',   adminRoutes);
-app.use('/api/carrito', carritoRoutes);
-app.use('/api/pedidos', pedidosRoutes);
+app.use('/api/auth',       authRoutes);
+app.use('/api/mundos',     mundosRoutes);
+app.use('/api/mundos',     productosRoutes);
+app.use('/api/categorias', categoriasRoutes);
+app.use('/api/admin',      adminRoutes);
+app.use('/api/carrito',    carritoRoutes);
+app.use('/api/pedidos',    pedidosRoutes);
 
 app.listen(PORT, () => {
   console.log(`La Ranita 3D backend corriendo en http://localhost:${PORT}`);

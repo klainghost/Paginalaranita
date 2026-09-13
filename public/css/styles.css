@@ -13,10 +13,10 @@
   --color-danger:  #d32f2f;
   --wa-green:      #25d366;
 
-  /* Mundo — valores por defecto (Rol). JS los sobreescribe. */
+  /* Mundo — valores neutros por defecto. JS los sobreescribe en páginas temáticas. */
   --mundo-acento: #c9a227;
-  --mundo-fondo:  #1a2e1a;
-  --mundo-fuente: 'Cinzel', serif;
+  --mundo-fondo:  #1a1a2e;
+  --mundo-fuente: 'Segoe UI', sans-serif;
 
   /* Espaciado */
   --sp-xs:  4px;
@@ -457,6 +457,87 @@ a   { text-decoration: none; color: inherit; }
 }
 .mundo-card__cta::after           { content: '→'; transition: transform var(--ease); }
 .mundo-card:hover .mundo-card__cta::after { transform: translateX(6px); }
+
+/* Sección dentro de la landing */
+.landing__seccion {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--sp-lg) var(--sp-2x);
+  width: 100%;
+}
+
+.landing__seccion-titulo {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,.55);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: var(--sp-xl);
+  padding-bottom: var(--sp-sm);
+  border-bottom: 1px solid rgba(255,255,255,.09);
+}
+
+/* Grid de categorías en la landing */
+.landing__categorias {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-lg);
+}
+
+/* Card de categoría — diseño limpio sin imagen */
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-card);
+  padding: var(--sp-xl);
+  text-decoration: none;
+  transition: transform var(--ease), box-shadow var(--ease), background var(--ease);
+  cursor: pointer;
+}
+.cat-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,.10);
+  box-shadow: 0 16px 40px rgba(0,0,0,.35);
+}
+.cat-card__icono {
+  font-size: 2.2rem;
+  margin-bottom: var(--sp-md);
+  line-height: 1;
+}
+.cat-card__nombre {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #c9a227;
+  margin-bottom: var(--sp-xs);
+}
+.cat-card__desc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,.5);
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: var(--sp-md);
+}
+.cat-card__cta {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.6);
+  letter-spacing: .5px;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+.cat-card__cta::after           { content: '→'; transition: transform var(--ease); }
+.cat-card:hover .cat-card__cta::after { transform: translateX(5px); }
+
+/* Mensaje vacío en landing */
+.landing__vacio {
+  color: rgba(255,255,255,.3);
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: var(--sp-lg) 0;
+}
 
 .landing__footer {
   text-align: center;

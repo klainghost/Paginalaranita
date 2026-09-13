@@ -15,6 +15,7 @@ function getDb() {
     db.exec('PRAGMA journal_mode = WAL');
     db.exec('PRAGMA foreign_keys = ON');
     initSchema();
+    runMigrations();
   }
   return db;
 }
@@ -30,6 +31,16 @@ function initSchema() {
       tipografia_display TEXT,
       descripcion        TEXT,
       activo             INTEGER NOT NULL DEFAULT 1
+    );
+
+    CREATE TABLE IF NOT EXISTS categorias (
+      id          INTEGER PRIMARY KEY,
+      nombre      TEXT    NOT NULL UNIQUE,
+      slug        TEXT    NOT NULL UNIQUE,
+      descripcion TEXT,
+      icono       TEXT    DEFAULT '📦',
+      orden       INTEGER NOT NULL DEFAULT 0,
+      activo      INTEGER NOT NULL DEFAULT 1
     );
 
     CREATE TABLE IF NOT EXISTS niveles_precio (
@@ -57,7 +68,8 @@ function initSchema() {
 
     CREATE TABLE IF NOT EXISTS productos (
       id                  INTEGER PRIMARY KEY,
-      mundo_id            INTEGER NOT NULL REFERENCES mundos(id),
+      mundo_id            INTEGER REFERENCES mundos(id),
+      categoria_id        INTEGER REFERENCES categorias(id),
       nombre              TEXT    NOT NULL,
       categoria           TEXT,
       descripcion         TEXT,
@@ -94,6 +106,60 @@ function initSchema() {
       creado_en   TEXT    DEFAULT CURRENT_TIMESTAMP
     );
   `);
+}
+
+// Migraciones para bases de datos existentes
+function runMigrations() {
+  const cols = db.prepare('PRAGMA table_info(productos)').all().map(c => c.name);
+
+  // v2: categorias + nullable mundo_id + categoria_id en productos
+  if (!cols.includes('categoria_id')) {
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS categorias (
+        id          INTEGER PRIMARY KEY,
+        nombre      TEXT    NOT NULL UNIQUE,
+        slug        TEXT    NOT NULL UNIQUE,
+        descripcion TEXT,
+        icono       TEXT    DEFAULT '📦',
+        orden       INTEGER NOT NULL DEFAULT 0,
+        activo      INTEGER NOT NULL DEFAULT 1
+      );
+    `);
+
+    db.exec('PRAGMA foreign_keys = OFF');
+    db.exec(`
+      BEGIN;
+      CREATE TABLE productos_new (
+        id                  INTEGER PRIMARY KEY,
+        mundo_id            INTEGER REFERENCES mundos(id),
+        categoria_id        INTEGER REFERENCES categorias(id),
+        nombre              TEXT    NOT NULL,
+        categoria           TEXT,
+        descripcion         TEXT,
+        gramos              REAL    NOT NULL,
+        horas               REAL    NOT NULL DEFAULT 0,
+        minutos             REAL    NOT NULL DEFAULT 0,
+        dificultad          TEXT    NOT NULL DEFAULT '2.5',
+        precio_override     REAL,
+        precio_ajuste_pct   REAL    NOT NULL DEFAULT 0,
+        promo_descuento_pct REAL    NOT NULL DEFAULT 0,
+        promo_hasta         TEXT,
+        makerworld_url      TEXT,
+        imagen_url          TEXT,
+        notas               TEXT,
+        activo              INTEGER NOT NULL DEFAULT 1
+      );
+      INSERT INTO productos_new
+        SELECT id, mundo_id, NULL AS categoria_id, nombre, categoria, descripcion,
+               gramos, horas, minutos, dificultad, precio_override, precio_ajuste_pct,
+               promo_descuento_pct, promo_hasta, makerworld_url, imagen_url, notas, activo
+        FROM productos;
+      DROP TABLE productos;
+      ALTER TABLE productos_new RENAME TO productos;
+      COMMIT;
+    `);
+    db.exec('PRAGMA foreign_keys = ON');
+  }
 }
 
 // node:sqlite exige que las claves del objeto de parámetros nombrados
