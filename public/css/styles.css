@@ -270,7 +270,7 @@ img { max-width: 100%; display: block; }
   border: 2px solid var(--text);
   overflow: hidden;
 }
-.blob img { width: 100%; height: 100%; object-fit: cover; }
+.blob img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .b1 { inset: 6% 30% 36% 4%;  background: var(--lila);   transform: rotate(-8deg); }
 .b2 { inset: 30% 4% 12% 40%; background: var(--lima);   transform: rotate(6deg); }
 .b3 { inset: 62% 52% 2% 12%; background: var(--naranja); transform: rotate(-4deg); font-size: 2.2rem; }
