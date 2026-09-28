@@ -2,9 +2,24 @@ const express                        = require('express');
 const bcrypt                         = require('bcrypt');
 const fs                             = require('fs');
 const path                           = require('path');
+const multer                         = require('multer');
 const { getDb, p }                   = require('../db/database');
 const { calcularPrecio, DIFICULTADES } = require('../lib/precio');
 const { requireAdmin }               = require('../middleware/auth');
+
+const _upload = multer({
+  storage: multer.diskStorage({
+    destination: path.join(__dirname, '..', 'public', 'uploads', 'productos'),
+    filename: (_req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
+      cb(null, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+    },
+  }),
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    cb(null, /^image\/(jpeg|png|webp|gif)$/.test(file.mimetype));
+  },
+});
 
 const router = express.Router();
 router.use(requireAdmin);
@@ -438,6 +453,13 @@ router.get('/backup/download', (req, res) => {
       res.status(500).json({ error: 'Error enviando backup.' });
     }
   });
+});
+
+// --- Upload imagen ---
+
+router.post('/upload-imagen', _upload.single('imagen'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'Archivo no válido (máx 8 MB, solo jpg/png/webp/gif)' });
+  res.json({ url: `/uploads/productos/${req.file.filename}` });
 });
 
 // --- Nav links ---

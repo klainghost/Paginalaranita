@@ -549,9 +549,21 @@
           <label>URL MakerWorld</label>
           <input type="url" id="prod-makerworld_url" placeholder="https://…">
         </div>
-        <div class="field">
-          <label>URL imagen principal</label>
-          <input type="url" id="prod-imagen_url" placeholder="https://…">
+        <div class="field full">
+          <label>Imagen del producto</label>
+          <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap">
+            <div style="flex:1;min-width:200px">
+              <input type="url" id="prod-imagen_url" placeholder="https://… o subí una abajo" oninput="actualizarPreviewImagen()">
+              <label style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;cursor:pointer;font-size:.82rem;color:var(--text-dim);border:1px dashed var(--border);border-radius:var(--radius);padding:6px 12px;width:100%">
+                <span>📎</span> Subir foto desde el dispositivo
+                <input type="file" id="prod-imagen-file" accept="image/*" style="display:none" onchange="subirImagenProducto(this)">
+              </label>
+              <div id="prod-imagen-progress" style="font-size:.78rem;color:var(--text-dim);margin-top:4px;display:none"></div>
+            </div>
+            <div id="prod-imagen-preview" style="width:80px;height:80px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);flex-shrink:0;display:none">
+              <img id="prod-imagen-preview-img" src="" alt="preview" style="width:100%;height:100%;object-fit:cover">
+            </div>
+          </div>
         </div>
         <div class="field">
           <label>Tipo de venta</label>
@@ -878,6 +890,7 @@ async function loadProductos() {
         <td><span class="badge ${p.activo ? 'badge-ok' : 'badge-off'}">${p.activo ? 'Activo' : 'Inactivo'}</span></td>
         <td class="actions">
           <button class="btn btn-secondary btn-sm" onclick="editProducto(${p.id})">Editar</button>
+          <button class="btn btn-secondary btn-sm" onclick="duplicarProducto(${p.id})">Duplicar</button>
           <button class="btn ${p.activo ? 'btn-danger' : 'btn-secondary'} btn-sm"
             onclick="toggleProducto(${p.id}, ${p.activo})">${p.activo ? 'Desactivar' : 'Activar'}</button>
         </td>
@@ -938,6 +951,7 @@ function openProductoModal(prod = null) {
   }
   _renderColoresEditor();
   _toggleCamposStock();
+  actualizarPreviewImagen();
 
   openModal('modal-producto');
 }
@@ -950,6 +964,48 @@ async function editProducto(id) {
   if (!prod) return;
   _editProdCache[id] = prod;
   openProductoModal(prod);
+}
+
+async function duplicarProducto(id) {
+  const prods = await api('GET', '/api/admin/productos');
+  const prod  = prods.find(p => p.id === id);
+  if (!prod) return;
+  // Abre el modal como nuevo, pero con los datos del original (sin id, nombre prefijado)
+  const copia = { ...prod, id: null, nombre: 'Copia de ' + prod.nombre };
+  openProductoModal(copia);
+  document.getElementById('modal-producto-title').textContent = 'Duplicar producto';
+  document.getElementById('btn-guardar-producto').textContent  = 'Crear copia';
+}
+
+// ── Upload imagen ────────────────────────────────────────
+function actualizarPreviewImagen() {
+  const url = document.getElementById('prod-imagen_url').value.trim();
+  const wrap = document.getElementById('prod-imagen-preview');
+  const img  = document.getElementById('prod-imagen-preview-img');
+  if (url) { img.src = url; wrap.style.display = 'block'; }
+  else     { wrap.style.display = 'none'; }
+}
+
+async function subirImagenProducto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const progress = document.getElementById('prod-imagen-progress');
+  progress.textContent = 'Subiendo…';
+  progress.style.display = 'block';
+  try {
+    const fd = new FormData();
+    fd.append('imagen', file);
+    const r    = await fetch(`${API}/api/admin/upload-imagen`, { method: 'POST', credentials: 'include', body: fd });
+    const json = await r.json();
+    if (!r.ok) throw new Error(json.error || `HTTP ${r.status}`);
+    document.getElementById('prod-imagen_url').value = json.url;
+    actualizarPreviewImagen();
+    progress.textContent = '✓ Subida correctamente';
+    setTimeout(() => { progress.style.display = 'none'; }, 2500);
+  } catch (err) {
+    progress.textContent = '✗ ' + err.message;
+  }
+  input.value = ''; // reset para poder subir el mismo archivo de nuevo
 }
 
 // ── Colores editor helpers ───────────────────────────────
