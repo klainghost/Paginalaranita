@@ -193,6 +193,14 @@ function _handleCardClick(e, productos) {
     mostrarToast('Agregado a la consulta 🐸');
     return;
   }
+
+  // Click en la card → modal de detalle
+  const card = e.target.closest('.card');
+  if (card) {
+    const pid = Number(card.querySelector('.card__add')?.dataset.pid);
+    const producto = productos.find(p => p.id === pid);
+    if (producto) abrirDetModal(producto, productos);
+  }
 }
 
 /* ── Formato de precio ───────────────────────────────────── */
@@ -220,6 +228,123 @@ function initHeroImages(productos) {
     blob.style.backgroundSize     = 'cover';
     blob.style.backgroundPosition = 'center';
   });
+}
+
+/* ── Modal de detalle de producto ───────────────────────── */
+let _detProductos = [];
+
+function _ensureDetModal() {
+  if (document.getElementById('det-overlay')) return;
+  const el = document.createElement('div');
+  el.id = 'det-overlay';
+  el.className = 'det-overlay';
+  el.innerHTML = `
+    <div class="det-modal" role="dialog" aria-modal="true">
+      <div class="det-galeria">
+        <button class="det-cerrar" id="det-cerrar" aria-label="Cerrar">✕</button>
+        <div id="det-main"></div>
+        <div class="det-thumbs" id="det-thumbs"></div>
+      </div>
+      <div class="det-info">
+        <div class="det-cat" id="det-cat"></div>
+        <h2 class="det-nombre" id="det-nombre"></h2>
+        <p class="det-desc" id="det-desc"></p>
+        <div id="det-badge"></div>
+        <div class="card__colors" id="det-colors"></div>
+        <div class="det-foot">
+          <div class="det-precio" id="det-precio"></div>
+          <button class="btn btn-dark" id="det-btn-add" style="width:100%">Agregar a consulta</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(el);
+
+  el.addEventListener('click', e => { if (e.target === el) cerrarDetModal(); });
+  document.getElementById('det-cerrar').addEventListener('click', cerrarDetModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarDetModal(); });
+}
+
+function cerrarDetModal() {
+  document.getElementById('det-overlay')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function abrirDetModal(producto, productosCtx) {
+  _ensureDetModal();
+  _detProductos = productosCtx || _detProductos;
+
+  const imgs = (() => {
+    const extra = (() => { try { return JSON.parse(producto.imagenes_json || '[]'); } catch { return []; } })();
+    const todas = producto.imagen_url ? [producto.imagen_url, ...extra] : extra;
+    return [...new Set(todas)];
+  })();
+
+  let imgActiva = 0;
+
+  const mainEl   = document.getElementById('det-main');
+  const thumbsEl = document.getElementById('det-thumbs');
+
+  function renderGaleria() {
+    mainEl.innerHTML = imgs.length
+      ? `<img class="det-main-img" src="${esc(imgs[imgActiva])}" alt="${esc(producto.nombre)}">`
+      : `<div class="det-main-placeholder">🐸</div>`;
+    thumbsEl.innerHTML = imgs.length > 1
+      ? imgs.map((url, i) =>
+          `<img class="det-thumb ${i === imgActiva ? 'activa' : ''}"
+               src="${esc(url)}" alt="foto ${i+1}"
+               data-idx="${i}">`
+        ).join('')
+      : '';
+    thumbsEl.querySelectorAll('.det-thumb').forEach(t =>
+      t.addEventListener('click', () => { imgActiva = +t.dataset.idx; renderGaleria(); })
+    );
+  }
+  renderGaleria();
+
+  document.getElementById('det-cat').textContent    = producto.categoria || '';
+  document.getElementById('det-nombre').textContent = producto.nombre;
+  document.getElementById('det-desc').textContent   = producto.descripcion || '';
+
+  const badge = (() => {
+    if (producto.tipo === 'pedido') return '<span class="badge badge--pedido">Por encargo</span>';
+    if (producto.stock <= 0)        return '';
+    if (producto.stock <= (producto.stock_minimo || 1)) return '<span class="badge badge--low">¡Últimos!</span>';
+    return '<span class="badge badge--stock">✓ Disponible</span>';
+  })();
+  document.getElementById('det-badge').innerHTML = badge;
+
+  const colores  = (() => { try { return JSON.parse(producto.colores_json || '[]'); } catch { return []; } })();
+  const colorsEl = document.getElementById('det-colors');
+  const selIdx   = _colorSeleccion[producto.id] ?? 0;
+  colorsEl.innerHTML = colores.map((c, i) =>
+    `<button class="color-dot ${i === selIdx ? 'sel' : ''}"
+             style="background:${c};width:28px;height:28px"
+             data-idx="${i}" aria-label="${colorNombre(c)}" title="${colorNombre(c)}"></button>`
+  ).join('');
+  colorsEl.querySelectorAll('.color-dot').forEach(d =>
+    d.addEventListener('click', () => {
+      _colorSeleccion[producto.id] = +d.dataset.idx;
+      colorsEl.querySelectorAll('.color-dot').forEach((x, i) => x.classList.toggle('sel', i === +d.dataset.idx));
+    })
+  );
+
+  const precioTachado = producto.promo_activa
+    ? `<span style="font-size:1rem;text-decoration:line-through;color:var(--muted)">${formatPrecio(producto.precio_sin_promo)}</span> `
+    : '';
+  document.getElementById('det-precio').innerHTML = precioTachado + formatPrecio(producto.precio);
+
+  const btnAdd = document.getElementById('det-btn-add');
+  btnAdd.onclick = () => {
+    const cols    = (() => { try { return JSON.parse(producto.colores_json || '[]'); } catch { return []; } })();
+    const idx     = _colorSeleccion[producto.id] ?? 0;
+    const colorHex = cols[idx] || null;
+    Carrito.agregar({ ...producto, color_elegido: colorHex ? colorNombre(colorHex) : null });
+    mostrarToast('Agregado a la consulta 🐸');
+    cerrarDetModal();
+  };
+
+  document.getElementById('det-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 /* ── Escape HTML ─────────────────────────────────────────── */
