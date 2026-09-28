@@ -707,22 +707,22 @@ footer a { color: var(--wa-green); font-weight: 700; }
 /* ── Pill flotante de carrito ────────────────────────────── */
 .carrito-pill {
   position: fixed;
-  bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%) translateY(160%);
+  bottom: 24px;
+  left: 24px;
+  transform: translateY(140%);
   opacity: 0;
   z-index: 28;
   background: var(--lila);
   color: #fff;
   border: none;
   border-radius: 99px;
-  padding: 13px 22px;
+  padding: 12px 20px;
   font-family: 'Nunito', sans-serif;
   font-weight: 700;
-  font-size: .95rem;
+  font-size: .9rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   cursor: pointer;
   box-shadow: 0 6px 24px rgba(139,124,246,.45);
   transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s;
@@ -730,7 +730,7 @@ footer a { color: var(--wa-green); font-weight: 700; }
   pointer-events: none;
 }
 .carrito-pill--visible {
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
