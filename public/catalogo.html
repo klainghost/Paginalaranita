@@ -1,83 +1,109 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catálogo — La Ranita 3D</title>
-  <meta name="description" content="Catálogo de productos La Ranita 3D">
+  <meta name="description" content="Catálogo completo de productos La Ranita 3D">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="css/styles.css?v=6">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=7">
 </head>
-<body class="catalogo-body">
+<body>
 
   <!-- NAVBAR -->
   <header class="navbar">
-    <div class="navbar__logo">
-      <img src="images/logo.png" alt="La Ranita 3D" onclick="location.href='/'">
-      <span class="navbar__logo-texto">La Ranita 3D</span>
-    </div>
+    <div class="wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;height:68px;gap:12px">
+        <a href="/" class="navbar__logo">
+          <div class="logo-icon">🐸</div>
+          <span>La Ranita <b>3D</b></span>
+        </a>
 
-    <button class="navbar__toggle" aria-label="Menú">☰</button>
+        <button class="navbar__toggle" aria-label="Menú">☰</button>
 
-    <ul class="navbar__nav">
-      <li><a href="/">← Inicio</a></li>
-    </ul>
+        <ul class="navbar__nav">
+          <li><a href="/">← Inicio</a></li>
+          <li><a href="catalogo.html?categoria=rol&tematico=1" class="nav-rol">⚔️ Rol</a></li>
+          <li><a href="/#a-medida">Proyectos especiales</a></li>
+          <li><a href="/#contacto">Contacto</a></li>
+        </ul>
 
-    <div class="navbar__actions" id="navbar-actions">
-      <button class="navbar__btn-tema" id="btn-tema" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
-      <button class="navbar__btn-carrito" id="btn-carrito" title="Ver carrito" aria-label="Carrito">
-        🛒<span class="carrito-badge" id="carrito-badge" hidden>0</span>
-      </button>
-      <button class="navbar__btn-login" id="btn-login">Iniciar sesión</button>
+        <div class="navbar__actions" id="navbar-actions">
+          <button class="icon-btn" id="btn-tema" aria-label="Cambiar tema">🌙</button>
+          <button class="icon-btn" id="btn-carrito" aria-label="Ver consulta">🛒<span class="count" id="carrito-badge" hidden>0</span></button>
+          <button class="icon-btn" id="btn-login" style="font-size:.8rem;width:auto;padding:0 14px;">Iniciar sesión</button>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- HERO DE CATEGORÍA -->
-  <section class="catalogo-hero">
-    <h1 class="catalogo-hero__titulo" id="cat-titulo">Cargando…</h1>
-    <p class="catalogo-hero__desc" id="cat-desc"></p>
-  </section>
+  <main class="wrap" style="padding-top:32px">
 
-  <!-- CATÁLOGO -->
-  <main class="catalogo-main">
-
-    <!-- Filtros -->
-    <div class="filtros" id="filtros" style="display:none">
-      <select class="filtros__select" id="filtro-subcategoria">
-        <option value="">Todas</option>
-      </select>
-      <span class="filtros__count" id="filtros-count"></span>
+    <!-- Chips de categoría + toggle Rol -->
+    <div class="sec-head" id="sec-head">
+      <h2 id="titulo-seccion">Catálogo</h2>
+      <!-- El botón Rol se inyecta por JS si ?tematico=1 -->
+    </div>
+    <div class="chips" id="chips">
+      <button class="chip active" data-cat="">Todo</button>
     </div>
 
-    <!-- Grid -->
     <div class="productos-grid" id="productos-grid">
       <div class="estado-vacio">
         <div class="spinner"></div>
-        <p style="margin-top:16px">Cargando catálogo…</p>
+        <p style="margin-top:16px">Cargando…</p>
       </div>
     </div>
+
+    <!-- PROYECTOS ESPECIALES mini -->
+    <section class="cta-especial" style="margin-top:16px">
+      <div>
+        <h2>Proyectos especiales</h2>
+        <p>Evaluamos cada caso. Si es viable, te pasamos cotización y plazo, y se trabaja con seña.</p>
+      </div>
+      <a class="btn" target="_blank" rel="noopener"
+         href="https://wa.me/5492604581757?text=Hola%20Ranita!%20Quiero%20consultar%20por%20un%20proyecto%20especial">
+        Consultar por WhatsApp
+      </a>
+    </section>
+
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    <p>
-      <strong>La Ranita 3D</strong> · @laranita3d ·
-      Malargüe, Mendoza, Argentina<br>
-      Todos los precios son en pesos argentinos e incluyen IVA.
-    </p>
+    <div class="wrap">
+      <div><strong>La Ranita 3D</strong> · Malargüe, Mendoza</div>
+      <div><a href="https://wa.me/5492604581757" target="_blank" rel="noopener">WhatsApp</a></div>
+    </div>
   </footer>
 
-  <!-- WA FLOTANTE -->
-  <a class="wa-float" href="https://wa.me/5492604581757?text=Hola%2C%20quiero%20consultar%20sobre%20La%20Ranita%203D"
-     target="_blank" rel="noopener" aria-label="WhatsApp">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-      <path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.76.463 3.413 1.268 4.847L2 22.001l5.301-1.259a9.953 9.953 0 004.703 1.186c5.514 0 9.997-4.483 9.997-9.997 0-5.515-4.483-9.928-9.997-9.928zm0 18.21a8.204 8.204 0 01-4.186-1.145l-.3-.178-3.146.747.783-2.988-.195-.307a8.186 8.186 0 01-1.268-4.339c0-4.535 3.688-8.224 8.22-8.224 4.533 0 8.22 3.689 8.22 8.224.001 4.535-3.687 8.21-8.128 8.21z"/>
-    </svg>
-  </a>
+  <!-- CARRITO DRAWER -->
+  <div class="carrito-overlay" id="carrito-overlay"></div>
+  <aside class="carrito-drawer" id="carrito-drawer" aria-label="Tu consulta">
+    <div class="dr-head">
+      <h3>Tu consulta</h3>
+      <button class="icon-btn" id="btn-cerrar-carrito" aria-label="Cerrar">✕</button>
+    </div>
+    <p class="dr-aviso">
+      Es una consulta: disponibilidad, color y plazo se confirman por WhatsApp antes de pagar.
+      El envío se cotiza aparte.
+    </p>
+    <div class="carrito-lista" id="carrito-lista">
+      <div class="carrito-vacio" id="carrito-vacio">Todavía no agregaste nada.</div>
+    </div>
+    <div class="carrito-footer" id="carrito-footer" style="display:none">
+      <div class="carrito-total">
+        <span>Total estimado</span>
+        <span id="carrito-total-monto"></span>
+      </div>
+      <button class="btn-wa-full" id="btn-finalizar">💬 Consultar por WhatsApp</button>
+    </div>
+  </aside>
 
   <!-- MODAL LOGIN -->
-  <div class="modal-overlay" id="modal-login" role="dialog" aria-modal="true" aria-label="Iniciar sesión">
+  <div class="modal-overlay" id="modal-login" role="dialog" aria-modal="true">
     <div class="modal">
       <h2 class="modal__titulo">Iniciar sesión</h2>
       <form id="form-login" autocomplete="on" novalidate>
@@ -96,156 +122,130 @@
     </div>
   </div>
 
-  <!-- Drawer del carrito -->
-  <div class="carrito-overlay" id="carrito-overlay"></div>
-  <aside class="carrito-drawer" id="carrito-drawer" aria-label="Carrito de compras">
-    <div class="carrito-drawer__header">
-      <h2>🛒 Tu carrito</h2>
-      <button class="carrito-cerrar" id="btn-cerrar-carrito" aria-label="Cerrar carrito">×</button>
-    </div>
-    <div class="carrito-lista" id="carrito-lista"></div>
-    <div class="carrito-vacio" id="carrito-vacio" hidden>
-      <span>🐸</span>
-      <p>Tu carrito está vacío</p>
-    </div>
-    <div class="carrito-footer" id="carrito-footer" hidden>
-      <div class="carrito-total">
-        <span>Total</span>
-        <strong id="carrito-total-monto"></strong>
-      </div>
-      <button class="carrito-btn-wa" id="btn-finalizar">💬 Pedir por WhatsApp</button>
-    </div>
-  </aside>
+  <!-- TOAST -->
+  <div class="toast" id="toast">Agregado a la consulta 🐸</div>
 
-  <script src="js/app.js?v=3"></script>
-  <script src="js/carrito.js?v=4"></script>
+  <!-- WA FLOTANTE -->
+  <a class="wa-float" href="https://wa.me/5492604581757?text=Hola%2C%20quiero%20consultar%20sobre%20La%20Ranita%203D"
+     target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.76.463 3.413 1.268 4.847L2 22.001l5.301-1.259a9.953 9.953 0 004.703 1.186c5.514 0 9.997-4.483 9.997-9.997 0-5.515-4.483-9.928-9.997-9.928zm0 18.21a8.204 8.204 0 01-4.186-1.145l-.3-.178-3.146.747.783-2.988-.195-.307a8.186 8.186 0 01-1.268-4.339c0-4.535 3.688-8.224 8.22-8.224 4.533 0 8.22 3.689 8.22 8.224.001 4.535-3.687 8.21-8.128 8.21z"/>
+    </svg>
+  </a>
+
+  <script src="js/app.js?v=7"></script>
+  <script src="js/carrito.js?v=7"></script>
   <script>
-    initToggleTema();
+    const params        = new URLSearchParams(location.search);
+    const categoriaParam = params.get('categoria') || '';
+    const tematico       = params.get('tematico') === '1';
 
-    const params = new URLSearchParams(location.search);
-    const SLUG   = params.get('categoria') || '';
+    // Toggle experiencia Rol: solo si llegaste por el link directo de Rol
+    let temaRolActivo = false;
+    const ROL_SLUG = 'rol'; // slug de la categoría Rol en la BD
 
-    let todosLosProductos = [];
-    let subcatActual      = '';
-    const _prodMap        = new Map();
-
-    function crearCard(p) {
-      _prodMap.set(p.id, p);
-      const conPromo = p.promo_activa && p.precio_sin_promo;
-      const card     = document.createElement('div');
-      card.className = 'prod-card' + (conPromo ? ' prod-card--promo' : '');
-      card.innerHTML = `
-        <div class="prod-card__img-wrap">
-          <span class="prod-card__promo">🔥 PROMO</span>
-          ${p.imagen_url
-            ? `<img class="prod-card__img" src="${p.imagen_url}" alt="${p.nombre}" loading="lazy"
-                    onerror="this.parentElement.innerHTML='<div class=prod-card__sin-imagen>🐸</div>'">`
-            : `<div class="prod-card__sin-imagen">🐸</div>`}
-        </div>
-        <div class="prod-card__body">
-          ${p.categoria ? `<div class="prod-card__cat">${p.categoria}</div>` : ''}
-          <div class="prod-card__nombre">${p.nombre}</div>
-          ${p.descripcion ? `<p class="prod-card__desc">${p.descripcion}</p>` : ''}
-        </div>
-        <div class="prod-card__footer">
-          <div>
-            <div class="prod-card__precio">${formatPrecio(p.precio)}</div>
-            ${conPromo ? `<div class="prod-card__precio-original">${formatPrecio(p.precio_sin_promo)}</div>` : ''}
-          </div>
-          <div class="prod-card__btns">
-            <button class="prod-card__btn-agregar" onclick="agregarAlCarrito(${p.id}, this)">+ Agregar</button>
-            <button class="prod-card__btn-ws" onclick="pedirPorWA(${JSON.stringify(p.nombre)}, ${p.precio})" title="Pedir por WhatsApp">💬</button>
-          </div>
-        </div>`;
-      return card;
-    }
-
-    function agregarAlCarrito(id, btn) {
-      const prod = _prodMap.get(id);
-      if (!prod || btn.disabled) return;
-      btn.disabled    = true;
-      btn.textContent = '✓';
-      Carrito.agregar(prod).finally(() => {
-        setTimeout(() => { btn.textContent = '+ Agregar'; btn.disabled = false; }, 1200);
-      });
-    }
-
-    function renderGrid(productos) {
-      const grid = document.getElementById('productos-grid');
-      grid.innerHTML = '';
-      if (!productos.length) {
-        grid.innerHTML = '<p class="estado-vacio">No hay productos en esta categoría.</p>';
-        return;
+    function aplicarTemaRol(activo) {
+      temaRolActivo = activo;
+      document.body.classList.toggle('tema-rol', activo);
+      try { sessionStorage.setItem('ranita-tema-rol', activo ? '1' : '0'); } catch {}
+      const btn = document.getElementById('btn-rol-toggle');
+      if (btn) {
+        btn.classList.toggle('activo', activo);
+        btn.textContent = activo ? '✨ Desactivar Experiencia Rolera' : '✨ Activar Experiencia Rolera';
       }
-      productos.forEach(p => grid.appendChild(crearCard(p)));
-      document.getElementById('filtros-count').textContent =
-        `${productos.length} producto${productos.length !== 1 ? 's' : ''}`;
-    }
-
-    function filtrarYRenderizar() {
-      const filtrados = subcatActual
-        ? todosLosProductos.filter(p => p.categoria === subcatActual)
-        : todosLosProductos;
-      renderGrid(filtrados);
-    }
-
-    function poblarSubcategorias(productos) {
-      const subcats = [...new Set(productos.map(p => p.categoria).filter(Boolean))].sort();
-      if (!subcats.length) return;
-      const sel = document.getElementById('filtro-subcategoria');
-      subcats.forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c; opt.textContent = c;
-        sel.appendChild(opt);
-      });
-      sel.addEventListener('change', () => {
-        subcatActual = sel.value;
-        filtrarYRenderizar();
-      });
-      document.getElementById('filtros').style.display = 'flex';
-    }
-
-    function pedirPorWA(nombre, precio) {
-      const txt = encodeURIComponent(`Hola! Me interesa: *${nombre}* (${formatPrecio(precio)}). ¿Tienen disponibilidad?`);
-      window.open(`https://wa.me/5492604581757?text=${txt}`, '_blank', 'noopener');
     }
 
     (async () => {
-      initNavbarScroll();
+      initToggleTema();
       initNavToggle();
       initLoginModal();
       initCarritoDrawer();
       const sesion = await initNavbarSesion();
       await Carrito.init(sesion);
 
-      if (!SLUG) {
-        document.getElementById('cat-titulo').textContent = 'Catálogo';
+      // Restaurar estado del tema Rol desde sessionStorage
+      if (tematico && categoriaParam === ROL_SLUG) {
+        let estadoGuardado = '0';
+        try { estadoGuardado = sessionStorage.getItem('ranita-tema-rol') || '0'; } catch {}
+        // Por defecto activado al entrar por el link directo de Rol
+        aplicarTemaRol(estadoGuardado !== '0');
+      }
+
+      // Inyectar botón toggle Rol en el header si corresponde
+      if (tematico && categoriaParam === ROL_SLUG) {
+        const secHead = document.getElementById('sec-head');
+        const btn = document.createElement('button');
+        btn.id = 'btn-rol-toggle';
+        btn.className = 'btn-rol-toggle';
+        btn.textContent = '✨ Activar Experiencia Rolera';
+        btn.addEventListener('click', () => aplicarTemaRol(!temaRolActivo));
+        secHead.appendChild(btn);
+        // Activar por defecto la primera vez que entrás
+        let visto = false;
+        try { visto = sessionStorage.getItem('ranita-tema-rol') !== null; } catch {}
+        if (!visto) aplicarTemaRol(true);
+      }
+
+      // Cargar datos en paralelo
+      let productos = [], categorias = [];
+      try {
+        [productos, categorias] = await Promise.all([
+          getTodosProductos(),
+          getCategorias(),
+        ]);
+      } catch {
         document.getElementById('productos-grid').innerHTML =
-          '<p class="estado-vacio">No se especificó una categoría.</p>';
+          '<div class="estado-vacio">No se pudo cargar el catálogo.</div>';
         return;
       }
 
-      try {
-        const [cats, productos] = await Promise.all([
-          getCategorias(),
-          getProductosByCategoria(SLUG),
-        ]);
+      // Chips
+      const chipsEl = document.getElementById('chips');
+      chipsEl.innerHTML = '<button class="chip" data-cat="">Todo</button>' +
+        categorias.map(c =>
+          `<button class="chip" data-cat="${c.slug}">${c.icono || ''} ${c.nombre}</button>`
+        ).join('');
 
-        const cat = cats.find(c => c.slug === SLUG);
-        if (cat) {
-          document.getElementById('cat-titulo').textContent = `${cat.icono || ''} ${cat.nombre}`.trim();
-          document.getElementById('cat-desc').textContent   = cat.descripcion || '';
-          document.title = `${cat.nombre} — La Ranita 3D`;
+      let filtroActivo = categoriaParam;
+
+      // Marcar chip activo inicial
+      chipsEl.querySelectorAll('.chip').forEach(c => {
+        c.classList.toggle('active', c.dataset.cat === filtroActivo);
+      });
+
+      // Si hay categoría pre-seleccionada, actualizar el título
+      if (filtroActivo) {
+        const catData = categorias.find(c => c.slug === filtroActivo);
+        if (catData) {
+          document.getElementById('titulo-seccion').textContent =
+            (catData.icono ? catData.icono + ' ' : '') + catData.nombre;
+          document.title = `${catData.nombre} — La Ranita 3D`;
         }
-
-        todosLosProductos = productos;
-        poblarSubcategorias(productos);
-        renderGrid(productos);
-
-      } catch (e) {
-        document.getElementById('productos-grid').innerHTML =
-          `<p class="estado-vacio">No se pudo cargar el catálogo. ¿El servidor está corriendo?</p>`;
       }
+
+      function renderFiltrado() {
+        const filtrados = filtroActivo
+          ? productos.filter(p => {
+              const cat = categorias.find(c => c.slug === filtroActivo);
+              return cat && p.categoria_id === cat.id;
+            })
+          : productos;
+        renderGridProductos(filtrados, document.getElementById('productos-grid'));
+      }
+
+      chipsEl.addEventListener('click', e => {
+        const chip = e.target.closest('.chip');
+        if (!chip) return;
+        chipsEl.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        filtroActivo = chip.dataset.cat;
+        // Si se sale del filtro Rol, desactivar tema
+        if (filtroActivo !== ROL_SLUG && temaRolActivo) aplicarTemaRol(false);
+        renderFiltrado();
+      });
+
+      renderFiltrado();
     })();
   </script>
 </body>

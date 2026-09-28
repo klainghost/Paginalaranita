@@ -35,18 +35,18 @@ router.get('/productos', (req, res) => {
 });
 
 router.post('/productos', (req, res) => {
-  const { mundo_id, categoria_id, nombre, categoria, descripcion, gramos, horas, minutos, dificultad,
-          precio_override, precio_ajuste_pct, promo_descuento_pct, promo_hasta,
-          makerworld_url, imagen_url, notas } = req.body || {};
+  const {
+    mundo_id, categoria_id, nombre, categoria, descripcion, gramos, horas, minutos, dificultad,
+    precio_override, precio_ajuste_pct, promo_descuento_pct, promo_hasta,
+    makerworld_url, imagen_url, imagenes_json, notas,
+    tipo, stock, stock_minimo, colores_json, licencia, extras_json, destacado,
+  } = req.body || {};
 
   if (!nombre || gramos == null || !dificultad) {
     return res.status(400).json({ error: 'nombre, gramos y dificultad son requeridos.' });
   }
-  if (!mundo_id && !categoria_id) {
-    return res.status(400).json({ error: 'Debe especificar mundo (Rol) o categoría.' });
-  }
   if (!DIFICULTADES[String(dificultad)]) {
-    return res.status(400).json({ error: `Dificultad inválida. Valores válidos: ${Object.keys(DIFICULTADES).join(', ')}` });
+    return res.status(400).json({ error: `Dificultad inválida. Válidos: ${Object.keys(DIFICULTADES).join(', ')}` });
   }
 
   const db = getDb();
@@ -54,13 +54,15 @@ router.post('/productos', (req, res) => {
     INSERT INTO productos
       (mundo_id, categoria_id, nombre, categoria, descripcion, gramos, horas, minutos, dificultad,
        precio_override, precio_ajuste_pct, promo_descuento_pct, promo_hasta,
-       makerworld_url, imagen_url, notas)
+       makerworld_url, imagen_url, imagenes_json, notas,
+       tipo, stock, stock_minimo, colores_json, licencia, extras_json, destacado)
     VALUES
       (:mundo_id, :categoria_id, :nombre, :categoria, :descripcion, :gramos, :horas, :minutos, :dificultad,
        :precio_override, :precio_ajuste_pct, :promo_descuento_pct, :promo_hasta,
-       :makerworld_url, :imagen_url, :notas)
+       :makerworld_url, :imagen_url, :imagenes_json, :notas,
+       :tipo, :stock, :stock_minimo, :colores_json, :licencia, :extras_json, :destacado)
   `).run(p({
-    mundo_id:            mundo_id    ? Number(mundo_id)    : null,
+    mundo_id:            mundo_id     ? Number(mundo_id)     : null,
     categoria_id:        categoria_id ? Number(categoria_id) : null,
     nombre,
     categoria:           categoria           || null,
@@ -69,13 +71,21 @@ router.post('/productos', (req, res) => {
     horas:               Number(horas        || 0),
     minutos:             Number(minutos      || 0),
     dificultad:          String(dificultad),
-    precio_override:     precio_override     != null ? Number(precio_override)     : null,
+    precio_override:     precio_override     != null ? Number(precio_override) : null,
     precio_ajuste_pct:   Number(precio_ajuste_pct   || 0),
     promo_descuento_pct: Number(promo_descuento_pct || 0),
     promo_hasta:         promo_hasta         || null,
     makerworld_url:      makerworld_url      || null,
     imagen_url:          imagen_url          || null,
+    imagenes_json:       imagenes_json       || '[]',
     notas:               notas               || null,
+    tipo:                tipo                || 'pedido',
+    stock:               Number(stock        || 0),
+    stock_minimo:        Number(stock_minimo || 1),
+    colores_json:        colores_json        || '[]',
+    licencia:            licencia            || null,
+    extras_json:         extras_json         || '[]',
+    destacado:           destacado ? 1 : 0,
   }));
 
   res.status(201).json({ ok: true, id: result.lastInsertRowid });
@@ -92,9 +102,12 @@ router.put('/productos/:id', (req, res) => {
     return res.status(400).json({ error: `Dificultad inválida. Válidos: ${Object.keys(DIFICULTADES).join(', ')}` });
   }
 
-  const CAMPOS = ['nombre', 'categoria', 'descripcion', 'gramos', 'horas', 'minutos', 'dificultad',
+  const CAMPOS = [
+    'nombre', 'categoria', 'descripcion', 'gramos', 'horas', 'minutos', 'dificultad',
     'precio_override', 'precio_ajuste_pct', 'promo_descuento_pct', 'promo_hasta',
-    'makerworld_url', 'imagen_url', 'notas', 'activo', 'mundo_id', 'categoria_id'];
+    'makerworld_url', 'imagen_url', 'imagenes_json', 'notas', 'activo', 'mundo_id', 'categoria_id',
+    'tipo', 'stock', 'stock_minimo', 'colores_json', 'licencia', 'extras_json', 'destacado',
+  ];
 
   const updates = {};
   for (const campo of CAMPOS) {

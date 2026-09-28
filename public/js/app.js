@@ -1,17 +1,13 @@
 'use strict';
 
-// En desarrollo: http://localhost:3001
-// En producción: el mismo origen (Express sirve frontend y API juntos)
 const API = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
 
-/* ------------------------------------------------------------------ */
-/* Sesión                                                               */
-/* ------------------------------------------------------------------ */
+/* ── Sesión ──────────────────────────────────────────────── */
 async function getSession() {
   try {
     const r = await fetch(`${API}/api/auth/me`, { credentials: 'include' });
     if (!r.ok) return null;
-    const data = await r.json(); // { usuario: {...} | null }
+    const data = await r.json();
     return data.usuario || null;
   } catch { return null; }
 }
@@ -34,25 +30,18 @@ async function logout() {
   await fetch(`${API}/api/auth/logout`, { method: 'POST', credentials: 'include' });
   location.reload();
 }
+window.logout = logout;
 
-/* ------------------------------------------------------------------ */
-/* Mundos                                                               */
-/* ------------------------------------------------------------------ */
-async function getMundos() {
-  const r = await fetch(`${API}/api/mundos`);
-  if (!r.ok) throw new Error('No se pudo cargar la lista de mundos');
-  return r.json();
-}
-
-async function getProductos(slug) {
-  const r = await fetch(`${API}/api/mundos/${slug}/productos`, { credentials: 'include' });
-  if (!r.ok) throw new Error('No se pudo cargar el catálogo');
-  return r.json();
-}
-
+/* ── API de datos ────────────────────────────────────────── */
 async function getCategorias() {
   const r = await fetch(`${API}/api/categorias`);
   if (!r.ok) throw new Error('No se pudo cargar las categorías');
+  return r.json();
+}
+
+async function getTodosProductos() {
+  const r = await fetch(`${API}/api/categorias/todos/productos`, { credentials: 'include' });
+  if (!r.ok) throw new Error('No se pudo cargar el catálogo');
   return r.json();
 }
 
@@ -62,90 +51,145 @@ async function getProductosByCategoria(slug) {
   return r.json();
 }
 
-/* ------------------------------------------------------------------ */
-/* CSS variables de mundo                                               */
-/* ------------------------------------------------------------------ */
-const FUENTES = {
-  'Cinzel':             'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap',
-  'Plus Jakarta Sans':  'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap',
-  'Playfair Display':   'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap',
+// Mantener compatibilidad con mundo.html
+async function getMundos() {
+  const r = await fetch(`${API}/api/mundos`);
+  if (!r.ok) throw new Error('No se pudo cargar');
+  return r.json();
+}
+async function getProductos(slug) {
+  const r = await fetch(`${API}/api/mundos/${slug}/productos`, { credentials: 'include' });
+  if (!r.ok) throw new Error('No se pudo cargar');
+  return r.json();
+}
+
+/* ── Mapa de colores hex → nombre ────────────────────────── */
+const COLOR_NOMBRES = {
+  '#8B7CF6': 'Violeta',
+  '#B6E35A': 'Lima',
+  '#FF9F43': 'Naranja',
+  '#1F1F24': 'Negro',
+  '#FAFAF7': 'Blanco',
+  '#D62828': 'Rojo',
+  '#F5D90A': 'Amarillo',
+  '#3A8DDE': 'Azul',
+  '#1F3A6B': 'Azul marino',
+  '#8A8A8A': 'Gris',
+  '#A8A8B3': 'Gris claro',
+  '#25D366': 'Verde',
+  '#FF6B6B': 'Coral',
+  '#C9A227': 'Dorado',
+  '#2EC4B6': 'Turquesa',
+  '#E76F51': 'Terracota',
+  '#FFFFFF': 'Blanco',
+  '#000000': 'Negro',
 };
 
-function aplicarMundo(mundo) {
-  const r = document.documentElement;
-  r.style.setProperty('--mundo-acento', mundo.color_acento);
-  r.style.setProperty('--mundo-fondo',  mundo.color_fondo);
-  r.style.setProperty('--mundo-fuente', `'${mundo.tipografia_display}', serif`);
+function colorNombre(hex) {
+  if (!hex) return '';
+  const key = hex.toUpperCase();
+  return COLOR_NOMBRES[key] || COLOR_NOMBRES[hex] || hex;
+}
 
-  // Clasifica el mundo como oscuro o claro → el CSS aplica los tokens correctos
-  const oscuro = esColorOscuro(mundo.color_fondo);
-  r.classList.toggle('mundo-oscuro',  oscuro);
-  r.classList.toggle('mundo-claro',  !oscuro);
+/* ── Render de cards de producto ─────────────────────────── */
+const _colorSeleccion = {};
+const _listenedGrids  = new WeakSet();
 
-  // Carga la fuente si no está ya
-  const url = FUENTES[mundo.tipografia_display];
-  if (url && !document.querySelector(`link[data-fuente="${mundo.tipografia_display}"]`)) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = url;
-    link.dataset.fuente = mundo.tipografia_display;
-    document.head.appendChild(link);
+function renderGridProductos(productos, container) {
+  if (!container) return;
+
+  if (!productos.length) {
+    container.innerHTML = '<div class="estado-vacio">No hay productos en esta categoría todavía.</div>';
+    return;
   }
 
-  document.title = `${mundo.nombre} — La Ranita 3D`;
-  actualizarIconoTema();
-}
+  container.innerHTML = productos.map(p => _cardHTML(p)).join('');
 
-function esColorOscuro(hex) {
-  const c = hex.replace('#', '');
-  const r = parseInt(c.substr(0,2),16);
-  const g = parseInt(c.substr(2,2),16);
-  const b = parseInt(c.substr(4,2),16);
-  // luminancia perceptual
-  return (0.299*r + 0.587*g + 0.114*b) < 128;
-}
-
-/* ------------------------------------------------------------------ */
-/* Toggle de tema claro / oscuro                                        */
-/* ------------------------------------------------------------------ */
-const TEMA_KEY = 'ranita-tema'; // valor en localStorage: 'dark' | 'light' | ausente
-
-function _esPantallaOscura() {
-  const tema = document.documentElement.getAttribute('data-theme');
-  if (tema === 'dark') return true;
-  if (tema === 'light') return false;
-  // sin preferencia manual → el mundo decide
-  return document.documentElement.classList.contains('mundo-oscuro');
-}
-
-function actualizarIconoTema() {
-  const btn = document.getElementById('btn-tema');
-  if (!btn) return;
-  const oscuro = _esPantallaOscura();
-  btn.textContent = oscuro ? '☀️' : '🌙';
-  btn.setAttribute('title', oscuro ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
-  btn.setAttribute('aria-label', oscuro ? 'Tema claro' : 'Tema oscuro');
-}
-
-function initToggleTema() {
-  // Restaurar preferencia guardada antes de pintar nada (evita flash)
-  const guardado = localStorage.getItem(TEMA_KEY);
-  if (guardado === 'dark' || guardado === 'light') {
-    document.documentElement.setAttribute('data-theme', guardado);
+  if (!_listenedGrids.has(container)) {
+    _listenedGrids.add(container);
+    container.addEventListener('click', e => _handleCardClick(e, productos));
   }
-  actualizarIconoTema();
-
-  document.getElementById('btn-tema')?.addEventListener('click', () => {
-    const nuevoTema = _esPantallaOscura() ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', nuevoTema);
-    localStorage.setItem(TEMA_KEY, nuevoTema);
-    actualizarIconoTema();
-  });
 }
 
-/* ------------------------------------------------------------------ */
-/* Formato                                                              */
-/* ------------------------------------------------------------------ */
+function _cardHTML(p) {
+  const colores = (() => { try { return JSON.parse(p.colores_json || '[]'); } catch { return []; } })();
+  const selIdx  = _colorSeleccion[p.id] ?? 0;
+
+  const badge = (() => {
+    if (p.tipo === 'pedido') return '<span class="badge badge--pedido">Por encargo</span>';
+    if (p.stock <= 0)        return '';
+    if (p.stock <= (p.stock_minimo || 1)) return '<span class="badge badge--low">¡Últimos!</span>';
+    return '<span class="badge badge--stock">✓ Disponible</span>';
+  })();
+
+  const colorDots = colores.length ? `
+    <div class="card__colors">
+      ${colores.map((c, i) =>
+        `<button class="color-dot ${i === selIdx ? 'sel' : ''}"
+                 style="background:${c}"
+                 data-pid="${p.id}" data-idx="${i}"
+                 aria-label="${colorNombre(c)}"
+                 title="${colorNombre(c)}"></button>`
+      ).join('')}
+    </div>` : '';
+
+  const precioTachado = p.promo_activa
+    ? `<span class="card__price-tachado">${formatPrecio(p.precio_sin_promo)}</span>` : '';
+
+  return `
+    <article class="card">
+      <div class="card__thumb">
+        ${badge}
+        ${p.imagen_url
+          ? `<img src="${esc(p.imagen_url)}" alt="${esc(p.nombre)}" loading="lazy">`
+          : `<span aria-hidden="true">🐸</span>`}
+      </div>
+      <div class="card__body">
+        <div class="card__cat">${esc(p.categoria || '')}</div>
+        <h3 class="card__nombre">${esc(p.nombre)}</h3>
+        ${colorDots}
+        <div class="card__foot">
+          <div>
+            ${precioTachado}
+            <div class="card__price">${formatPrecio(p.precio)}</div>
+          </div>
+          <button class="card__add" data-pid="${p.id}">Agregar</button>
+        </div>
+      </div>
+    </article>`;
+}
+
+function _handleCardClick(e, productos) {
+  // Color dot
+  const dot = e.target.closest('.color-dot');
+  if (dot) {
+    const pid = Number(dot.dataset.pid);
+    const idx = Number(dot.dataset.idx);
+    _colorSeleccion[pid] = idx;
+    // Actualizar visual dentro de la misma card
+    const card = dot.closest('.card');
+    card?.querySelectorAll('.color-dot').forEach((d, i) => d.classList.toggle('sel', i === idx));
+    return;
+  }
+
+  // Botón agregar
+  const btn = e.target.closest('.card__add');
+  if (btn) {
+    const pid = Number(btn.dataset.pid);
+    const producto = productos.find(p => p.id === pid);
+    if (!producto) return;
+
+    const colores  = (() => { try { return JSON.parse(producto.colores_json || '[]'); } catch { return []; } })();
+    const selIdx   = _colorSeleccion[pid] ?? 0;
+    const colorHex = colores[selIdx] || null;
+
+    Carrito.agregar({ ...producto, color_elegido: colorHex ? colorNombre(colorHex) : null });
+    mostrarToast('Agregado a la consulta 🐸');
+    return;
+  }
+}
+
+/* ── Formato de precio ───────────────────────────────────── */
 function formatPrecio(n) {
   return new Intl.NumberFormat('es-AR', {
     style: 'currency', currency: 'ARS',
@@ -153,16 +197,70 @@ function formatPrecio(n) {
   }).format(n);
 }
 
-/* ------------------------------------------------------------------ */
-/* Modal de login                                                       */
-/* ------------------------------------------------------------------ */
+/* ── Escape HTML ─────────────────────────────────────────── */
+function esc(str) {
+  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Toast ───────────────────────────────────────────────── */
+function mostrarToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ── Toggle tema ─────────────────────────────────────────── */
+const TEMA_KEY = 'ranita-tema';
+
+function _esTemaOscuro() {
+  const tema = document.documentElement.getAttribute('data-theme');
+  if (tema === 'dark')  return true;
+  if (tema === 'light') return false;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+function actualizarIconoTema() {
+  const btn = document.getElementById('btn-tema');
+  if (!btn) return;
+  const oscuro = _esTemaOscuro();
+  btn.textContent = oscuro ? '☀️' : '🌙';
+  btn.title = oscuro ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro';
+  btn.setAttribute('aria-label', oscuro ? 'Tema claro' : 'Tema oscuro');
+}
+
+function initToggleTema() {
+  try {
+    const guardado = localStorage.getItem(TEMA_KEY);
+    if (guardado === 'dark' || guardado === 'light') {
+      document.documentElement.setAttribute('data-theme', guardado);
+    }
+  } catch {}
+  actualizarIconoTema();
+
+  document.getElementById('btn-tema')?.addEventListener('click', () => {
+    const nuevo = _esTemaOscuro() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', nuevo);
+    try { localStorage.setItem(TEMA_KEY, nuevo); } catch {}
+    actualizarIconoTema();
+  });
+}
+
+/* ── Navbar mobile toggle ────────────────────────────────── */
+function initNavToggle() {
+  document.querySelector('.navbar__toggle')?.addEventListener('click', () => {
+    document.querySelector('.navbar__nav')?.classList.toggle('navbar__nav--abierto');
+  });
+}
+
+/* ── Modal login ─────────────────────────────────────────── */
 function initLoginModal() {
   const overlay  = document.getElementById('modal-login');
   const form     = document.getElementById('form-login');
   const errMsg   = document.getElementById('login-error');
   const btnLogin = document.getElementById('btn-login');
   const btnClose = document.getElementById('modal-cerrar');
-
   if (!overlay) return;
 
   btnLogin?.addEventListener('click', () => {
@@ -177,10 +275,8 @@ function initLoginModal() {
   form?.addEventListener('submit', async e => {
     e.preventDefault();
     errMsg.classList.remove('modal__error--visible');
-    const email    = form.email.value.trim();
-    const password = form.password.value;
     try {
-      await login(email, password);
+      await login(form.email.value.trim(), form.password.value);
       location.reload();
     } catch (err) {
       errMsg.textContent = err.message;
@@ -189,35 +285,12 @@ function initLoginModal() {
   });
 }
 
-/* ------------------------------------------------------------------ */
-/* Navbar compacta al hacer scroll                                      */
-/* ------------------------------------------------------------------ */
-function initNavbarScroll() {
-  const nav = document.querySelector('.navbar');
-  if (!nav) return;
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('navbar--compacta', window.scrollY > 40);
-  }, { passive: true });
-}
-
-/* ------------------------------------------------------------------ */
-/* Toggle menú mobile                                                   */
-/* ------------------------------------------------------------------ */
-function initNavToggle() {
-  document.querySelector('.navbar__toggle')?.addEventListener('click', () => {
-    document.querySelector('.navbar__nav')?.classList.toggle('navbar__nav--abierto');
-  });
-}
-
-/* ------------------------------------------------------------------ */
-/* Estado de sesión en la navbar                                        */
-/* ------------------------------------------------------------------ */
+/* ── Estado de sesión en navbar ──────────────────────────── */
 async function initNavbarSesion() {
   const sesion    = await getSession();
   const actionsEl = document.querySelector('.navbar__actions');
   if (!actionsEl) return sesion;
 
-  // Preservar botones fijos antes de reemplazar el contenido
   const btnTema    = actionsEl.querySelector('#btn-tema');
   const btnCarrito = actionsEl.querySelector('#btn-carrito');
 
@@ -228,10 +301,11 @@ async function initNavbarSesion() {
 
     const span = document.createElement('span');
     span.className = 'navbar__usuario';
-    span.textContent = `${sesion.nivel_nombre} — ${sesion.email}`;
+    span.textContent = sesion.email;
 
     const btnSalir = document.createElement('button');
-    btnSalir.className = 'navbar__btn-login';
+    btnSalir.className = 'icon-btn';
+    btnSalir.style = 'font-size:.8rem;width:auto;padding:0 14px;';
     btnSalir.textContent = 'Salir';
     btnSalir.addEventListener('click', logout);
 
@@ -250,5 +324,11 @@ async function initNavbarSesion() {
   return sesion;
 }
 
-/* Exponer logout globalmente para onclick inline */
-window.logout = logout;
+// Compatibilidad con mundo.html
+function aplicarMundo(mundo) {
+  document.documentElement.style.setProperty('--lila', mundo.color_acento || '#c9a227');
+}
+function esColorOscuro(hex) {
+  const c = hex.replace('#', '');
+  return (0.299*parseInt(c.substr(0,2),16) + 0.587*parseInt(c.substr(2,2),16) + 0.114*parseInt(c.substr(4,2),16)) < 128;
+}

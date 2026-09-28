@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel Admin — La Ranita 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -19,7 +22,7 @@
     --danger:    #e55;
     --success:   #4caf7d;
     --radius:    8px;
-    --font:      -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font:      'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
@@ -153,6 +156,16 @@
   /* ── Parámetros ── */
   .params-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 560px; }
   .params-grid .field input { font-size: 1rem; }
+
+  /* ── Colores editor ── */
+  .colores-editor { display: flex; flex-wrap: wrap; gap: 8px; }
+  .color-chip-admin {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 4px 10px; font-size: .85rem;
+  }
+  .color-chip-admin .swatch { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--border); flex-shrink: 0; }
+  .color-chip-admin button { color: var(--text-dim); cursor: pointer; background: none; border: none; }
 
   /* ── Modal ── */
   .modal-overlay {
@@ -454,20 +467,20 @@
           <input type="text" id="prod-nombre" required>
         </div>
         <div class="field">
-          <label>Mundo</label>
-          <select id="prod-mundo_id">
-            <option value="">— ninguno —</option>
-          </select>
-        </div>
-        <div class="field">
           <label>Categoría del catálogo</label>
           <select id="prod-categoria_id">
             <option value="">— ninguna —</option>
           </select>
         </div>
         <div class="field">
-          <label>Sub-categoría (etiqueta)</label>
+          <label>Sub-etiqueta (opcional)</label>
           <input type="text" id="prod-categoria" placeholder="ej: Humanoides, Monstruos…">
+        </div>
+        <div class="field" style="display:none">
+          <label>Mundo (Rol)</label>
+          <select id="prod-mundo_id">
+            <option value="">— ninguno —</option>
+          </select>
         </div>
         <div class="field full">
           <label>Descripción</label>
@@ -515,8 +528,44 @@
           <input type="url" id="prod-makerworld_url" placeholder="https://…">
         </div>
         <div class="field">
-          <label>URL imagen</label>
+          <label>URL imagen principal</label>
           <input type="url" id="prod-imagen_url" placeholder="https://…">
+        </div>
+        <div class="field">
+          <label>Tipo de venta</label>
+          <select id="prod-tipo">
+            <option value="pedido">Por encargo</option>
+            <option value="stock">Con stock</option>
+          </select>
+        </div>
+        <div class="field" id="campo-stock">
+          <label>Stock disponible</label>
+          <input type="number" id="prod-stock" min="0" step="1" value="0">
+        </div>
+        <div class="field" id="campo-stock-min">
+          <label>Stock mínimo (alerta)</label>
+          <input type="number" id="prod-stock_minimo" min="1" step="1" value="1">
+        </div>
+        <div class="field full">
+          <label>Colores disponibles</label>
+          <div class="colores-editor" id="colores-editor"></div>
+          <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+            <input type="color" id="new-color-picker" value="#8B7CF6" style="width:40px;height:32px;border:none;cursor:pointer;border-radius:6px">
+            <input type="text" id="new-color-hex" placeholder="#8B7CF6" style="width:100px" oninput="sincColorPicker()">
+            <button type="button" class="btn btn-secondary" onclick="agregarColor()">+ Agregar color</button>
+          </div>
+          <input type="hidden" id="prod-colores_json" value="[]">
+        </div>
+        <div class="field">
+          <label>Licencia / fuente</label>
+          <input type="text" id="prod-licencia" placeholder="ej: CC BY, Prusa Research, MakerWorld…">
+        </div>
+        <div class="field">
+          <label>Destacado</label>
+          <select id="prod-destacado">
+            <option value="0">No</option>
+            <option value="1">Sí (aparece primero)</option>
+          </select>
         </div>
         <div class="field full">
           <label>Notas internas</label>
@@ -797,7 +846,7 @@ function openProductoModal(prod = null) {
 
   const fields = ['nombre','categoria','descripcion','gramos','horas','minutos','dificultad',
     'precio_override','precio_ajuste_pct','promo_descuento_pct','promo_hasta',
-    'makerworld_url','imagen_url','notas'];
+    'makerworld_url','imagen_url','notas','tipo','stock','stock_minimo','licencia','destacado'];
 
   if (prod) {
     fields.forEach(f => {
@@ -807,16 +856,24 @@ function openProductoModal(prod = null) {
     });
     selMundo.value = prod.mundo_id    ?? '';
     selCat.value   = prod.categoria_id ?? '';
+    // Colores
+    _coloresActuales = (() => { try { return JSON.parse(prod.colores_json || '[]'); } catch { return []; } })();
   } else {
     fields.forEach(f => {
       const el = document.getElementById('prod-' + f);
       if (!el) return;
-      el.value = ['horas','minutos','precio_ajuste_pct','promo_descuento_pct'].includes(f) ? '0' : '';
+      el.value = ['horas','minutos','precio_ajuste_pct','promo_descuento_pct','stock'].includes(f) ? '0'
+               : f === 'stock_minimo' ? '1'
+               : f === 'tipo' ? 'pedido'
+               : f === 'destacado' ? '0' : '';
     });
     document.getElementById('prod-dificultad').value = '2.5';
     selMundo.value = '';
     selCat.value   = '';
+    _coloresActuales = [];
   }
+  _renderColoresEditor();
+  _toggleCamposStock();
 
   openModal('modal-producto');
 }
@@ -831,16 +888,54 @@ async function editProducto(id) {
   openProductoModal(prod);
 }
 
+// ── Colores editor helpers ───────────────────────────────
+let _coloresActuales = [];
+
+function _renderColoresEditor() {
+  const editor = document.getElementById('colores-editor');
+  if (!editor) return;
+  editor.innerHTML = _coloresActuales.map((hex, i) => `
+    <div class="color-chip-admin">
+      <div class="swatch" style="background:${hex}"></div>
+      <span>${hex}</span>
+      <button type="button" onclick="_quitarColor(${i})" title="Quitar">✕</button>
+    </div>`).join('');
+  document.getElementById('prod-colores_json').value = JSON.stringify(_coloresActuales);
+}
+
+function _quitarColor(idx) {
+  _coloresActuales.splice(idx, 1);
+  _renderColoresEditor();
+}
+
+function agregarColor() {
+  const hex = (document.getElementById('new-color-hex').value || document.getElementById('new-color-picker').value).trim();
+  if (!/^#[0-9A-Fa-f]{6}$/.test(hex)) { toast('Ingresá un hex válido ej: #FF9F43', 'err'); return; }
+  if (!_coloresActuales.includes(hex)) _coloresActuales.push(hex);
+  _renderColoresEditor();
+}
+
+function sincColorPicker() {
+  const hex = document.getElementById('new-color-hex').value.trim();
+  if (/^#[0-9A-Fa-f]{6}$/.test(hex)) document.getElementById('new-color-picker').value = hex;
+}
+
+function _toggleCamposStock() {
+  const tipo = document.getElementById('prod-tipo')?.value || 'pedido';
+  const show  = tipo === 'stock';
+  document.getElementById('campo-stock')?.style && (document.getElementById('campo-stock').style.display = show ? '' : 'none');
+  document.getElementById('campo-stock-min')?.style && (document.getElementById('campo-stock-min').style.display = show ? '' : 'none');
+}
+// Escuchar cambio de tipo
+document.addEventListener('change', e => {
+  if (e.target.id === 'prod-tipo') _toggleCamposStock();
+});
+
 async function guardarProducto(e) {
   e.preventDefault();
-  const id         = document.getElementById('prod-id').value;
-  const mundoVal   = document.getElementById('prod-mundo_id').value;
-  const catSysVal  = document.getElementById('prod-categoria_id').value;
-
-  if (!mundoVal && !catSysVal) {
-    toast('Debe seleccionar Mundo (Rol) o Categoría del catálogo.', 'err');
-    return;
-  }
+  const id        = document.getElementById('prod-id').value;
+  const mundoVal  = document.getElementById('prod-mundo_id').value;
+  const catSysVal = document.getElementById('prod-categoria_id').value;
 
   const body = {
     mundo_id:            mundoVal   ? +mundoVal   : null,
@@ -860,6 +955,12 @@ async function guardarProducto(e) {
     makerworld_url:       document.getElementById('prod-makerworld_url').value || null,
     imagen_url:           document.getElementById('prod-imagen_url').value || null,
     notas:                document.getElementById('prod-notas').value || null,
+    tipo:                 document.getElementById('prod-tipo').value || 'pedido',
+    stock:               +document.getElementById('prod-stock').value,
+    stock_minimo:        +document.getElementById('prod-stock_minimo').value,
+    colores_json:         document.getElementById('prod-colores_json').value || '[]',
+    licencia:             document.getElementById('prod-licencia').value || null,
+    destacado:           +document.getElementById('prod-destacado').value,
   };
 
   try {

@@ -83,7 +83,15 @@ function initSchema() {
       promo_hasta         TEXT,
       makerworld_url      TEXT,
       imagen_url          TEXT,
+      imagenes_json       TEXT    DEFAULT '[]',
       notas               TEXT,
+      tipo                TEXT    NOT NULL DEFAULT 'pedido',
+      stock               INTEGER NOT NULL DEFAULT 0,
+      stock_minimo        INTEGER NOT NULL DEFAULT 1,
+      colores_json        TEXT    NOT NULL DEFAULT '[]',
+      licencia            TEXT,
+      extras_json         TEXT    NOT NULL DEFAULT '[]',
+      destacado           INTEGER NOT NULL DEFAULT 0,
       activo              INTEGER NOT NULL DEFAULT 1
     );
 
@@ -139,6 +147,20 @@ function runMigrations() {
 
     // Eliminar mundos viejos
     db.prepare(`DELETE FROM mundos WHERE nombre IN (${mundosViejos.map(() => '?').join(',')})`).run(...mundosViejos);
+  }
+
+  // v4: nuevos campos de producto (tipo, stock, colores, imágenes, licencia, extras, destacado)
+  if (!cols.includes('tipo')) {
+    db.exec(`
+      ALTER TABLE productos ADD COLUMN tipo         TEXT    DEFAULT 'pedido';
+      ALTER TABLE productos ADD COLUMN stock        INTEGER DEFAULT 0;
+      ALTER TABLE productos ADD COLUMN stock_minimo INTEGER DEFAULT 1;
+      ALTER TABLE productos ADD COLUMN colores_json TEXT    DEFAULT '[]';
+      ALTER TABLE productos ADD COLUMN imagenes_json TEXT   DEFAULT '[]';
+      ALTER TABLE productos ADD COLUMN licencia     TEXT;
+      ALTER TABLE productos ADD COLUMN extras_json  TEXT    DEFAULT '[]';
+      ALTER TABLE productos ADD COLUMN destacado    INTEGER DEFAULT 0;
+    `);
   }
 
   // v2: categorias + nullable mundo_id + categoria_id en productos
