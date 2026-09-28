@@ -14,6 +14,7 @@ const authRoutes       = require('./routes/auth');
 const mundosRoutes     = require('./routes/mundos');
 const productosRoutes  = require('./routes/productos');
 const categoriasRoutes = require('./routes/categorias');
+const configRoutes     = require('./routes/config');
 const adminRoutes      = require('./routes/admin');
 const carritoRoutes    = require('./routes/carrito');
 const pedidosRoutes    = require('./routes/pedidos');
@@ -90,6 +91,7 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth',       authRoutes);
+app.use('/api/config',     configRoutes);
 app.use('/api/mundos',     mundosRoutes);
 app.use('/api/mundos',     productosRoutes);
 app.use('/api/categorias', categoriasRoutes);

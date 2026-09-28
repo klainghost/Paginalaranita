@@ -440,4 +440,40 @@ router.get('/backup/download', (req, res) => {
   });
 });
 
+// --- Nav links ---
+
+router.get('/nav-links', (req, res) => {
+  res.json(getDb().prepare('SELECT * FROM nav_links ORDER BY orden, id').all());
+});
+
+router.post('/nav-links', (req, res) => {
+  const { label, url, icono, orden } = req.body || {};
+  if (!label || !url) return res.status(400).json({ error: 'label y url son requeridos.' });
+  const result = getDb().prepare(
+    'INSERT INTO nav_links (label, url, icono, orden) VALUES (:label, :url, :icono, :orden)'
+  ).run(p({ label, url, icono: icono || null, orden: Number(orden || 0) }));
+  res.status(201).json({ ok: true, id: result.lastInsertRowid });
+});
+
+router.put('/nav-links/:id', (req, res) => {
+  const db = getDb();
+  const id = parseInt(req.params.id, 10);
+  if (!db.prepare('SELECT id FROM nav_links WHERE id = ?').get(id)) {
+    return res.status(404).json({ error: 'Link no encontrado.' });
+  }
+  const CAMPOS = ['label', 'url', 'icono', 'orden', 'activo'];
+  const updates = {};
+  for (const c of CAMPOS) if (req.body[c] !== undefined) updates[c] = req.body[c];
+  if (!Object.keys(updates).length) return res.status(400).json({ error: 'Nada que actualizar.' });
+  const set = Object.keys(updates).map(k => `${k} = :${k}`).join(', ');
+  db.prepare(`UPDATE nav_links SET ${set} WHERE id = :id`).run(p({ ...updates, id }));
+  res.json({ ok: true });
+});
+
+router.delete('/nav-links/:id', (req, res) => {
+  const r = getDb().prepare('DELETE FROM nav_links WHERE id = ?').run(parseInt(req.params.id, 10));
+  if (r.changes === 0) return res.status(404).json({ error: 'Link no encontrado.' });
+  res.json({ ok: true });
+});
+
 module.exports = router;

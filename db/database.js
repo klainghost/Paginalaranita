@@ -95,6 +95,15 @@ function initSchema() {
       activo              INTEGER NOT NULL DEFAULT 1
     );
 
+    CREATE TABLE IF NOT EXISTS nav_links (
+      id     INTEGER PRIMARY KEY,
+      label  TEXT    NOT NULL,
+      url    TEXT    NOT NULL,
+      icono  TEXT,
+      orden  INTEGER NOT NULL DEFAULT 0,
+      activo INTEGER NOT NULL DEFAULT 1
+    );
+
     CREATE TABLE IF NOT EXISTS carrito_items (
       usuario_id  INTEGER NOT NULL REFERENCES usuarios(id)  ON DELETE CASCADE,
       producto_id INTEGER NOT NULL REFERENCES productos(id) ON DELETE CASCADE,
@@ -147,6 +156,20 @@ function runMigrations() {
 
     // Eliminar mundos viejos
     db.prepare(`DELETE FROM mundos WHERE nombre IN (${mundosViejos.map(() => '?').join(',')})`).run(...mundosViejos);
+  }
+
+  // v5: nav_links — sembrar defaults si la tabla existe pero está vacía
+  const hayNavLinks = db.prepare('SELECT COUNT(*) as n FROM nav_links').get().n;
+  if (hayNavLinks === 0) {
+    const ins = db.prepare(
+      'INSERT INTO nav_links (label, url, icono, orden) VALUES (:label, :url, :icono, :orden)'
+    );
+    [
+      { label: 'Catálogo',            url: '#catalogo',                                  icono: null, orden: 1 },
+      { label: 'Rol',                 url: 'catalogo.html?categoria=rol&tematico=1',     icono: '⚔️',  orden: 2 },
+      { label: 'Proyectos especiales',url: '#a-medida',                                  icono: null, orden: 3 },
+      { label: 'Contacto',            url: '#contacto',                                  icono: null, orden: 4 },
+    ].forEach(row => ins.run(p(row)));
   }
 
   // v4: nuevos campos de producto (tipo, stock, colores, imágenes, licencia, extras, destacado)

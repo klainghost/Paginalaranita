@@ -23,11 +23,8 @@
 
         <button class="navbar__toggle" aria-label="Menú">☰</button>
 
-        <ul class="navbar__nav">
-          <li><a href="#catalogo">Catálogo</a></li>
-          <li><a href="catalogo.html?categoria=rol&tematico=1" class="nav-rol">⚔️ Rol</a></li>
-          <li><a href="#a-medida">Proyectos especiales</a></li>
-          <li><a href="#contacto">Contacto</a></li>
+        <ul class="navbar__nav" id="navbar-nav">
+          <!-- links cargados dinámicamente desde /api/config/nav-links -->
         </ul>
 
         <div class="navbar__actions" id="navbar-actions">
@@ -168,6 +165,7 @@
   <script>
     (async () => {
       initToggleTema();
+      initNavLinks();
       initNavToggle();
       initLoginModal();
       initCarritoDrawer();

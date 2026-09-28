@@ -285,7 +285,8 @@
     <a data-tab="parametros" onclick="setTab('parametros',this)"><span>⚙️ Parámetros</span></a>
     <a data-tab="niveles" onclick="setTab('niveles',this)"><span>💰 Niveles</span></a>
     <a data-tab="usuarios" onclick="setTab('usuarios',this)"><span>👤 Usuarios</span></a>
-    <a data-tab="pedidos"  onclick="setTab('pedidos',this)"><span>🛒 Pedidos</span></a>
+    <a data-tab="pedidos"    onclick="setTab('pedidos',this)"><span>🛒 Pedidos</span></a>
+    <a data-tab="navegacion" onclick="setTab('navegacion',this)"><span>🔗 Navegación</span></a>
   </nav>
 
   <main>
@@ -446,6 +447,27 @@
         <table>
           <thead><tr><th>Código</th><th>Fecha</th><th>Usuario</th><th>Total</th><th>Estado</th><th></th></tr></thead>
           <tbody id="tbody-pedidos"><tr><td colspan="6" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Navegación ── -->
+    <section id="tab-navegacion">
+      <div class="section-header">
+        <h2>Links del navbar</h2>
+        <button class="btn btn-primary" onclick="openNavLinkModal()">+ Nuevo link</button>
+      </div>
+      <p style="margin-bottom:16px;font-size:.85rem;color:var(--text-dim)">
+        Estos son los links que aparecen en el menú de navegación del sitio. Podés activarlos, desactivarlos o cambiar el orden.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Orden</th><th>Icono</th><th>Label</th><th>URL</th><th>Estado</th><th>Acciones</th>
+          </tr></thead>
+          <tbody id="tbody-navlinks">
+            <tr><td colspan="6" style="text-align:center;color:var(--text-dim)">Cargando…</td></tr>
+          </tbody>
         </table>
       </div>
     </section>
@@ -700,6 +722,48 @@
 </div>
 
 <div id="toast"></div>
+
+<!-- ── Modal Nav Link ── -->
+<div class="modal-overlay" id="modal-navlink">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-header">
+      <h3 id="modal-navlink-title">Nuevo link</h3>
+      <button class="modal-close" onclick="closeModal('modal-navlink')">×</button>
+    </div>
+    <form onsubmit="guardarNavLink(event)">
+      <div class="form-grid">
+        <div class="field full">
+          <label>Label (texto visible) *</label>
+          <input type="text" id="nl-label" required placeholder="ej: Catálogo">
+        </div>
+        <div class="field full">
+          <label>URL *</label>
+          <input type="text" id="nl-url" required placeholder="ej: #catalogo  o  catalogo.html?categoria=rol&amp;tematico=1">
+        </div>
+        <div class="field">
+          <label>Icono (emoji, opcional)</label>
+          <input type="text" id="nl-icono" placeholder="⚔️" maxlength="4">
+        </div>
+        <div class="field">
+          <label>Orden (menor = primero)</label>
+          <input type="number" id="nl-orden" min="1" step="1" value="10">
+        </div>
+        <div class="field">
+          <label>Estado</label>
+          <select id="nl-activo">
+            <option value="1">Activo (visible)</option>
+            <option value="0">Inactivo (oculto)</option>
+          </select>
+        </div>
+      </div>
+      <input type="hidden" id="nl-id">
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-navlink')">Cancelar</button>
+        <button class="btn btn-primary" type="submit" id="btn-guardar-navlink">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script>
 const API = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
@@ -1401,6 +1465,97 @@ async function guardarEstadoPedido() {
   }
 }
 
+// ── Nav Links ────────────────────────────────────────────
+let _navLinks = [];
+
+async function loadNavLinks() {
+  try {
+    _navLinks = await api('GET', '/api/admin/nav-links');
+    const tbody = document.getElementById('tbody-navlinks');
+    tbody.innerHTML = _navLinks.length === 0
+      ? '<tr><td colspan="6" style="text-align:center;color:var(--text-dim)">Sin links configurados</td></tr>'
+      : _navLinks.map(l => `
+          <tr>
+            <td style="text-align:center">${l.orden}</td>
+            <td style="font-size:1.2rem;text-align:center">${esc(l.icono || '—')}</td>
+            <td>${esc(l.label)}</td>
+            <td style="font-size:.8rem;color:var(--text-dim);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(l.url)}">${esc(l.url)}</td>
+            <td><span class="badge ${l.activo ? 'badge-ok' : 'badge-off'}">${l.activo ? 'Activo' : 'Inactivo'}</span></td>
+            <td class="actions">
+              <button class="btn btn-secondary btn-sm" onclick="editNavLink(${l.id})">Editar</button>
+              <button class="btn ${l.activo ? 'btn-danger' : 'btn-secondary'} btn-sm"
+                onclick="toggleNavLink(${l.id}, ${l.activo})">${l.activo ? 'Desactivar' : 'Activar'}</button>
+              <button class="btn btn-danger btn-sm" onclick="eliminarNavLink(${l.id}, '${esc(l.label)}')">Borrar</button>
+            </td>
+          </tr>`).join('');
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+function openNavLinkModal(nl = null) {
+  document.getElementById('nl-id').value    = nl?.id    ?? '';
+  document.getElementById('nl-label').value = nl?.label ?? '';
+  document.getElementById('nl-url').value   = nl?.url   ?? '';
+  document.getElementById('nl-icono').value = nl?.icono ?? '';
+  document.getElementById('nl-orden').value = nl?.orden ?? 10;
+  document.getElementById('nl-activo').value = nl != null ? String(nl.activo) : '1';
+  document.getElementById('modal-navlink-title').textContent = nl ? 'Editar link' : 'Nuevo link';
+  document.getElementById('btn-guardar-navlink').textContent  = nl ? 'Guardar cambios' : 'Crear link';
+  openModal('modal-navlink');
+}
+
+function editNavLink(id) {
+  const nl = _navLinks.find(l => l.id === id);
+  if (nl) openNavLinkModal(nl);
+}
+
+async function guardarNavLink(e) {
+  e.preventDefault();
+  const id = document.getElementById('nl-id').value;
+  const body = {
+    label:  document.getElementById('nl-label').value,
+    url:    document.getElementById('nl-url').value,
+    icono:  document.getElementById('nl-icono').value || null,
+    orden: +document.getElementById('nl-orden').value,
+    activo: +document.getElementById('nl-activo').value,
+  };
+  try {
+    if (id) {
+      await api('PUT', `/api/admin/nav-links/${id}`, body);
+      toast('Link actualizado');
+    } else {
+      await api('POST', '/api/admin/nav-links', body);
+      toast('Link creado');
+    }
+    closeModal('modal-navlink');
+    loadNavLinks();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+async function toggleNavLink(id, activo) {
+  try {
+    await api('PUT', `/api/admin/nav-links/${id}`, { activo: activo ? 0 : 1 });
+    toast(activo ? 'Link desactivado' : 'Link activado');
+    loadNavLinks();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
+async function eliminarNavLink(id, label) {
+  if (!confirm(`¿Eliminar el link "${label}"? Esta acción no se puede deshacer.`)) return;
+  try {
+    await api('DELETE', `/api/admin/nav-links/${id}`);
+    toast('Link eliminado');
+    loadNavLinks();
+  } catch (err) {
+    toast(err.message, 'err');
+  }
+}
+
 // ── Init ─────────────────────────────────────────────────
 async function loadAll() {
   [mundos, categorias, niveles] = await Promise.all([
@@ -1408,7 +1563,7 @@ async function loadAll() {
     api('GET', '/api/admin/categorias'),
     api('GET', '/api/admin/niveles'),
   ]);
-  await Promise.all([loadProductos(), loadParametros(), loadNiveles(), loadUsuarios(), loadPedidos(), loadCategorias(), loadMundosTab()]);
+  await Promise.all([loadProductos(), loadParametros(), loadNiveles(), loadUsuarios(), loadPedidos(), loadCategorias(), loadMundosTab(), loadNavLinks()]);
 }
 
 (async () => {

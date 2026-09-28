@@ -33,6 +33,12 @@ async function logout() {
 window.logout = logout;
 
 /* ── API de datos ────────────────────────────────────────── */
+async function getNavLinks() {
+  const r = await fetch(`${API}/api/config/nav-links`);
+  if (!r.ok) return [];
+  return r.json();
+}
+
 async function getCategorias() {
   const r = await fetch(`${API}/api/categorias`);
   if (!r.ok) throw new Error('No se pudo cargar las categorías');
@@ -260,6 +266,19 @@ function initToggleTema() {
     try { localStorage.setItem(TEMA_KEY, nuevo); } catch {}
     actualizarIconoTema();
   });
+}
+
+/* ── Nav links dinámicos ─────────────────────────────────── */
+async function initNavLinks() {
+  const nav = document.getElementById('navbar-nav');
+  if (!nav) return;
+  const links = await getNavLinks().catch(() => []);
+  if (!links.length) return;
+  nav.innerHTML = links.map(l => {
+    const icon  = l.icono ? `${l.icono} ` : '';
+    const clase = l.url.includes('tematico=1') ? ' class="nav-rol"' : '';
+    return `<li><a href="${esc(l.url)}"${clase}>${icon}${esc(l.label)}</a></li>`;
+  }).join('');
 }
 
 /* ── Navbar mobile toggle ────────────────────────────────── */
