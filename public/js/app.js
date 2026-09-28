@@ -101,11 +101,11 @@ function colorNombre(hex) {
 const _colorSeleccion = {};
 const _listenedGrids  = new WeakSet();
 
-function renderGridProductos(productos, container) {
+function renderGridProductos(productos, container, emptyMsg) {
   if (!container) return;
 
   if (!productos.length) {
-    container.innerHTML = '<div class="estado-vacio">No hay productos en esta categoría todavía.</div>';
+    container.innerHTML = `<div class="estado-vacio">${emptyMsg || 'No hay productos en esta categoría todavía.'}</div>`;
     return;
   }
 

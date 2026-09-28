@@ -803,6 +803,30 @@ footer a { color: var(--wa-green); font-weight: 700; }
 }
 .color-chip-admin button { color: var(--muted); font-size: .85rem; line-height: 1; }
 
+/* ── Buscador ────────────────────────────────────────────── */
+.buscador {
+  position: relative;
+  margin-bottom: 12px;
+}
+.buscador__icon {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: .9rem; pointer-events: none;
+}
+.buscador input {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: .9rem;
+  transition: border-color var(--ease);
+}
+.buscador input:focus { outline: none; border-color: var(--lila); }
+.buscador input::placeholder { color: var(--muted); }
+
 /* ── Modal detalle de producto ───────────────────────────── */
 .det-overlay {
   position: fixed; inset: 0;

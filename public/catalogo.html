@@ -43,6 +43,10 @@
       <h2 id="titulo-seccion">Catálogo</h2>
       <!-- El botón Rol se inyecta por JS si ?tematico=1 -->
     </div>
+    <div class="buscador">
+      <span class="buscador__icon">🔍</span>
+      <input type="search" id="input-buscar" placeholder="Buscar productos…" autocomplete="off">
+    </div>
     <div class="chips" id="chips">
       <button class="chip active" data-cat="">Todo</button>
     </div>
@@ -206,6 +210,7 @@
         ).join('');
 
       let filtroActivo = categoriaParam;
+      let busqueda = '';
 
       // Marcar chip activo inicial
       chipsEl.querySelectorAll('.chip').forEach(c => {
@@ -223,13 +228,21 @@
       }
 
       function renderFiltrado() {
-        const filtrados = filtroActivo
+        let res = filtroActivo
           ? productos.filter(p => {
               const cat = categorias.find(c => c.slug === filtroActivo);
               return cat && p.categoria_id === cat.id;
             })
           : productos;
-        renderGridProductos(filtrados, document.getElementById('productos-grid'));
+        const q = busqueda.toLowerCase().trim();
+        if (q) res = res.filter(p =>
+          p.nombre.toLowerCase().includes(q) ||
+          (p.categoria || '').toLowerCase().includes(q)
+        );
+        const emptyMsg = q
+          ? `No encontramos "<strong>${esc(q)}</strong>" en el catálogo.`
+          : 'No hay productos en esta categoría todavía.';
+        renderGridProductos(res, document.getElementById('productos-grid'), emptyMsg);
       }
 
       chipsEl.addEventListener('click', e => {
@@ -238,8 +251,12 @@
         chipsEl.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
         filtroActivo = chip.dataset.cat;
-        // Si se sale del filtro Rol, desactivar tema
         if (filtroActivo !== ROL_SLUG && temaRolActivo) aplicarTemaRol(false);
+        renderFiltrado();
+      });
+
+      document.getElementById('input-buscar')?.addEventListener('input', e => {
+        busqueda = e.target.value;
         renderFiltrado();
       });
 
