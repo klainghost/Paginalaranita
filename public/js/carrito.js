@@ -69,7 +69,6 @@ const Carrito = (() => {
         const nuevaCantidad = existing ? existing.cantidad + 1 : 1;
         await _call('POST', '/items', { producto_id: producto.id, cantidad: nuevaCantidad });
         _items = await _serverLoad();
-        // El color se guarda solo en LS como metadata visual (el server no lo necesita)
         _guardarColorMeta(producto.id, producto.color_elegido);
       } else {
         const existing = _items.find(i => i.producto_id === producto.id);
@@ -150,8 +149,44 @@ const Carrito = (() => {
 })();
 
 /* ──────────────────────────────────────────────────────────
-   Drawer UI — "Tu consulta"
+   Drawer UI — flujo en 2 pasos
+   Paso 1: revisión del carrito
+   Paso 2: datos del comprador + opción de entrega
    ────────────────────────────────────────────────────────── */
+
+let _pasoActual = 1;
+
+function _irAlPaso(n) {
+  _pasoActual = n;
+  const p1     = document.getElementById('dr-panel-1');
+  const p2     = document.getElementById('dr-panel-2');
+  const back   = document.getElementById('dr-back');
+  const titulo = document.getElementById('dr-titulo');
+  const s1     = document.getElementById('dr-step-1');
+  const s2     = document.getElementById('dr-step-2');
+  if (!p1 || !p2) return;
+
+  if (n === 1) {
+    p1.style.display = 'flex';
+    p2.style.display = 'none';
+    if (back)   back.style.display = 'none';
+    if (titulo) titulo.textContent = 'Tu consulta';
+    s1?.classList.add('dr-step--active');
+    s2?.classList.remove('dr-step--active');
+  } else {
+    p1.style.display = 'none';
+    p2.style.display = 'flex';
+    if (back)   back.style.display = '';
+    if (titulo) titulo.textContent = 'Tus datos';
+    s1?.classList.remove('dr-step--active');
+    s2?.classList.add('dr-step--active');
+    // Sincronizar total al footer del paso 2
+    const t1 = document.getElementById('carrito-total-monto');
+    const t2 = document.getElementById('carrito-total-monto-2');
+    if (t1 && t2) t2.textContent = t1.textContent;
+  }
+}
+
 function initCarritoDrawer() {
   const drawer  = document.getElementById('carrito-drawer');
   const overlay = document.getElementById('carrito-overlay');
@@ -166,6 +201,7 @@ function initCarritoDrawer() {
     drawer.classList.remove('carrito-drawer--abierto');
     overlay.classList.remove('carrito-overlay--visible');
     document.body.style.overflow = '';
+    _irAlPaso(1);
   };
 
   document.getElementById('btn-carrito')?.addEventListener('click', open);
@@ -173,7 +209,13 @@ function initCarritoDrawer() {
   overlay.addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
-  // Mostrar/ocultar CP según opción de entrega
+  document.getElementById('dr-back')?.addEventListener('click', () => _irAlPaso(1));
+  document.getElementById('btn-siguiente')?.addEventListener('click', () => {
+    if (!Carrito.getItems().length) return;
+    _irAlPaso(2);
+  });
+
+  // Mostrar/ocultar campo CP según opción de entrega
   document.addEventListener('change', e => {
     if (e.target.name !== 'entrega') return;
     const cpArea = document.getElementById('dr-cp-area');
@@ -188,7 +230,6 @@ function initCarritoDrawer() {
     btn.disabled = true;
     btn.textContent = 'Preparando consulta…';
 
-    // Intentar crear el pedido en el servidor (no falla si hay error)
     let codigo = null;
     try {
       const r = await fetch(`${API}/api/pedidos`, {
@@ -208,13 +249,11 @@ function initCarritoDrawer() {
     btn.disabled = false;
     btn.textContent = '💬 Consultar por WhatsApp';
 
-    // Datos del comprador
     const nombre   = (document.getElementById('dr-nombre')?.value   || '').trim();
     const apellido = (document.getElementById('dr-apellido')?.value  || '').trim();
     const telefono = (document.getElementById('dr-telefono')?.value  || '').trim();
     const cp       = (document.getElementById('dr-cp')?.value        || '').trim();
 
-    // Entrega elegida
     const entregaVal = document.querySelector('input[name="entrega"]:checked')?.value || 'envio';
     const entregaLabels = {
       'envio':             '📦 Envío a domicilio (cotizar aparte)',
@@ -225,7 +264,6 @@ function initCarritoDrawer() {
     const totalSuffix = entregaVal === 'envio' ? ' (+ envío a cotizar)' : '';
     const cpStr       = entregaVal === 'envio' && cp ? `\nCP destino: ${cp}` : '';
 
-    // Construir mensaje WA
     const lineas = items.map(i => {
       const color = i.color_elegido || Carrito.getColorMeta?.(i.producto_id);
       const colorStr = color ? ` (color: ${color})` : '';
@@ -248,31 +286,32 @@ function initCarritoDrawer() {
 }
 
 function _renderDrawer(items) {
-  const badge  = document.getElementById('carrito-badge');
-  const count  = items.reduce((s, i) => s + i.cantidad, 0);
+  const badge = document.getElementById('carrito-badge');
+  const count = items.reduce((s, i) => s + i.cantidad, 0);
   if (badge) {
     badge.textContent = count;
     badge.hidden = count === 0;
   }
 
-  const listaEl   = document.getElementById('carrito-lista');
-  const vacioEl   = document.getElementById('carrito-vacio');
-  const footerEl  = document.getElementById('carrito-footer');
-  const formEl    = document.getElementById('dr-form-area');
-  const totalEl   = document.getElementById('carrito-total-monto');
+  const listaEl  = document.getElementById('carrito-lista');
+  const vacioEl  = document.getElementById('carrito-vacio');
+  const footerEl = document.getElementById('carrito-footer');
+  const stepsEl  = document.getElementById('dr-steps');
+  const totalEl  = document.getElementById('carrito-total-monto');
   if (!listaEl) return;
 
   if (!items.length) {
     listaEl.innerHTML = '';
     if (vacioEl)  vacioEl.style.display  = 'block';
     if (footerEl) footerEl.style.display = 'none';
-    if (formEl)   formEl.style.display   = 'none';
+    if (stepsEl)  stepsEl.style.display  = 'none';
+    _irAlPaso(1);
     return;
   }
 
   if (vacioEl)  vacioEl.style.display  = 'none';
   if (footerEl) footerEl.style.display = 'flex';
-  if (formEl)   formEl.style.display   = 'flex';
+  if (stepsEl)  stepsEl.style.display  = 'flex';
 
   listaEl.innerHTML = items.map(item => {
     const color = item.color_elegido || Carrito.getColorMeta?.(item.producto_id);
@@ -300,7 +339,10 @@ function _renderDrawer(items) {
     </div>`;
   }).join('');
 
-  if (totalEl) totalEl.textContent = formatPrecio(items.reduce((s, i) => s + i.precio_unitario * i.cantidad, 0));
+  const totalAmt = items.reduce((s, i) => s + i.precio_unitario * i.cantidad, 0);
+  if (totalEl) totalEl.textContent = formatPrecio(totalAmt);
+  const total2El = document.getElementById('carrito-total-monto-2');
+  if (total2El) total2El.textContent = formatPrecio(totalAmt);
 }
 
 window.Carrito = Carrito;

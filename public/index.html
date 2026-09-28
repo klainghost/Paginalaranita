@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=9">
+  <link rel="stylesheet" href="css/styles.css?v=10">
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -162,50 +162,68 @@
   <div class="carrito-overlay" id="carrito-overlay"></div>
   <aside class="carrito-drawer" id="carrito-drawer" aria-label="Tu consulta">
     <div class="dr-head">
-      <h3>Tu consulta</h3>
+      <div class="dr-head-left">
+        <button class="dr-back icon-btn" id="dr-back" aria-label="Volver" style="display:none">←</button>
+        <h3 id="dr-titulo">Tu consulta</h3>
+      </div>
       <button class="icon-btn" id="btn-cerrar-carrito" aria-label="Cerrar">✕</button>
     </div>
-    <p class="dr-aviso">
-      Disponibilidad, color y plazo se confirman por WhatsApp antes de pagar.
-    </p>
-    <div class="carrito-lista" id="carrito-lista">
-      <div class="carrito-vacio" id="carrito-vacio">Todavía no agregaste nada.</div>
+    <p class="dr-aviso">Disponibilidad, color y plazo se confirman por WhatsApp antes de pagar.</p>
+    <div class="dr-steps" id="dr-steps" style="display:none">
+      <span class="dr-step dr-step--active" id="dr-step-1">1 · Productos</span>
+      <span class="dr-step-sep">›</span>
+      <span class="dr-step" id="dr-step-2">2 · Tus datos</span>
     </div>
 
-    <!-- Formulario + entrega (visible solo con items) -->
-    <div class="dr-form-area" id="dr-form-area" style="display:none">
-      <div class="dr-form">
-        <input type="text" id="dr-nombre"   placeholder="Nombre"   autocomplete="given-name">
-        <input type="text" id="dr-apellido" placeholder="Apellido" autocomplete="family-name">
-        <input type="tel"  id="dr-telefono" placeholder="Teléfono" autocomplete="tel" class="dr-full">
+    <!-- Panel 1: lista de items -->
+    <div class="dr-panel" id="dr-panel-1">
+      <div class="carrito-lista" id="carrito-lista">
+        <div class="carrito-vacio" id="carrito-vacio">Todavía no agregaste nada.</div>
       </div>
-      <div class="dr-entrega">
-        <div class="dr-entrega__titulo">¿Cómo querés recibirlo?</div>
-        <label class="dr-entrega__opt">
-          <input type="radio" name="entrega" value="envio" checked>
-          <span>📦 Envío a domicilio <small>(se cotiza aparte)</small></span>
-        </label>
-        <label class="dr-entrega__opt">
-          <input type="radio" name="entrega" value="retiro-malargue">
-          <span>📍 Retiro en Malargüe <span class="sin-cargo">sin cargo</span></span>
-        </label>
-        <label class="dr-entrega__opt">
-          <input type="radio" name="entrega" value="retiro-san-rafael">
-          <span>📍 Retiro en San Rafael <span class="sin-cargo">sin cargo</span></span>
-        </label>
-      </div>
-      <div class="dr-cp-area" id="dr-cp-area">
-        <input type="text" id="dr-cp" placeholder="Código postal de destino" maxlength="8" autocomplete="postal-code">
+      <div class="carrito-footer" id="carrito-footer" style="display:none">
+        <div class="carrito-total">
+          <span>Total estimado</span>
+          <span id="carrito-total-monto"></span>
+        </div>
+        <button class="btn-siguiente" id="btn-siguiente">Continuar →</button>
       </div>
     </div>
 
-    <!-- Footer fijo: total + botón -->
-    <div class="carrito-footer" id="carrito-footer" style="display:none">
-      <div class="carrito-total">
-        <span>Total estimado</span>
-        <span id="carrito-total-monto"></span>
+    <!-- Panel 2: datos + entrega -->
+    <div class="dr-panel" id="dr-panel-2" style="display:none">
+      <div class="dr-panel-scroll">
+        <p class="dr-section-label">Tus datos <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.85rem">(opcional)</span></p>
+        <div class="dr-form">
+          <input type="text" id="dr-nombre"   placeholder="Nombre"   autocomplete="given-name">
+          <input type="text" id="dr-apellido" placeholder="Apellido" autocomplete="family-name">
+          <input type="tel"  id="dr-telefono" placeholder="Teléfono" autocomplete="tel" class="dr-full">
+        </div>
+        <p class="dr-section-label">¿Cómo querés recibirlo?</p>
+        <div class="dr-entrega">
+          <label class="dr-entrega__opt">
+            <input type="radio" name="entrega" value="envio" checked>
+            <span>📦 Envío a domicilio <small>(se cotiza aparte)</small></span>
+          </label>
+          <label class="dr-entrega__opt">
+            <input type="radio" name="entrega" value="retiro-malargue">
+            <span>📍 Retiro en Malargüe <span class="sin-cargo">sin cargo</span></span>
+          </label>
+          <label class="dr-entrega__opt">
+            <input type="radio" name="entrega" value="retiro-san-rafael">
+            <span>📍 Retiro en San Rafael <span class="sin-cargo">sin cargo</span></span>
+          </label>
+        </div>
+        <div id="dr-cp-area">
+          <input type="text" id="dr-cp" placeholder="Código postal de destino" maxlength="8" autocomplete="postal-code">
+        </div>
       </div>
-      <button class="btn-wa-full" id="btn-finalizar">💬 Consultar por WhatsApp</button>
+      <div class="carrito-footer">
+        <div class="carrito-total">
+          <span>Total estimado</span>
+          <span id="carrito-total-monto-2"></span>
+        </div>
+        <button class="btn-wa-full" id="btn-finalizar">💬 Consultar por WhatsApp</button>
+      </div>
     </div>
   </aside>
 
@@ -241,8 +259,8 @@
     </svg>
   </a>
 
-  <script src="js/app.js?v=9"></script>
-  <script src="js/carrito.js?v=9"></script>
+  <script src="js/app.js?v=10"></script>
+  <script src="js/carrito.js?v=10"></script>
   <script>
     (async () => {
       initToggleTema();
