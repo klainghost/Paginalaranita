@@ -193,6 +193,27 @@ img { max-width: 100%; display: block; }
     z-index: 19;
   }
 }
+/* Total del carrito en navbar (solo mobile) */
+.carrito-nav-total {
+  display: none;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--lila);
+  background: var(--lila-soft);
+  border-radius: 99px;
+  padding: 4px 11px;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+}
+.carrito-nav-total:empty { display: none !important; }
+
+/* En mobile: pill flotante se oculta, label en navbar aparece */
+@media (max-width: 720px) {
+  .carrito-pill { display: none !important; }
+  .carrito-nav-total:not(:empty) { display: block; }
+}
+
 /* En móvil muy chico ocultar login y texto del logo para que no overflow */
 @media (max-width: 480px) {
   #btn-login { display: none; }

@@ -213,6 +213,7 @@ function initCarritoDrawer() {
 
   document.getElementById('btn-carrito')?.addEventListener('click', open);
   document.getElementById('carrito-pill')?.addEventListener('click', open);
+  document.getElementById('carrito-nav-total')?.addEventListener('click', open);
   document.getElementById('btn-cerrar-carrito')?.addEventListener('click', close);
   overlay.addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
@@ -363,7 +364,7 @@ function _renderDrawer(items) {
   const total2El = document.getElementById('carrito-total-monto-2');
   if (total2El) total2El.textContent = formatPrecio(totalAmt);
 
-  // Pill flotante
+  // Pill flotante (desktop)
   const pillEl      = document.getElementById('carrito-pill');
   const pillCountEl = document.getElementById('pill-count');
   const pillTotalEl = document.getElementById('pill-total');
@@ -376,6 +377,10 @@ function _renderDrawer(items) {
       pillEl.classList.remove('carrito-pill--visible');
     }
   }
+
+  // Total en navbar (mobile)
+  const navTotalEl = document.getElementById('carrito-nav-total');
+  if (navTotalEl) navTotalEl.textContent = items.length ? formatPrecio(totalAmt) : '';
 }
 
 window.Carrito = Carrito;
