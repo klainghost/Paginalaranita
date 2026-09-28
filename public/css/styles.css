@@ -896,6 +896,14 @@ footer a { color: var(--wa-green); font-weight: 700; }
 .det-desc { font-size: .88rem; color: var(--muted); line-height: 1.6; white-space: pre-wrap; }
 .det-precio { font-family: 'Fredoka', sans-serif; font-size: 1.6rem; color: var(--lila); }
 .det-foot { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+.btn-compartir {
+  background: none; border: 1.5px solid var(--line);
+  border-radius: 10px; padding: 8px 16px;
+  color: var(--muted); font-size: .85rem; cursor: pointer;
+  transition: border-color var(--ease), color var(--ease);
+  font-family: 'Nunito', sans-serif;
+}
+.btn-compartir:hover { border-color: var(--lila); color: var(--lila); }
 
 @media (max-width: 640px) {
   .det-modal { grid-template-columns: 1fr; }

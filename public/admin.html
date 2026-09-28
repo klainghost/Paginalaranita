@@ -661,9 +661,12 @@
         </div>
       </div>
       <input type="hidden" id="prod-id">
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-producto')">Cancelar</button>
-        <button class="btn btn-primary" type="submit" id="btn-guardar-producto">Guardar</button>
+      <div class="modal-footer" style="justify-content:space-between;align-items:center">
+        <div id="precio-preview" style="font-size:.9rem;color:var(--text-dim)"></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary" type="button" onclick="closeModal('modal-producto')">Cancelar</button>
+          <button class="btn btn-primary" type="submit" id="btn-guardar-producto">Guardar</button>
+        </div>
       </div>
     </form>
   </div>
@@ -1025,6 +1028,7 @@ function openProductoModal(prod = null) {
   _renderImagenesEditor();
   _toggleCamposStock();
   actualizarPreviewImagen();
+  recalcularPrecio();
 
   openModal('modal-producto');
 }
@@ -1080,6 +1084,77 @@ async function subirImagenProducto(input) {
   }
   input.value = ''; // reset para poder subir el mismo archivo de nuevo
 }
+
+// ── Precio en tiempo real ────────────────────────────────
+const DIFICULTADES_ADMIN = {
+  '2.0': { factor: 2.0, minimo: 600  },
+  '2.5': { factor: 2.5, minimo: 1000 },
+  '3.5': { factor: 3.5, minimo: 1500 },
+  '4.5': { factor: 4.5, minimo: 2500 },
+};
+
+let _params = null; // cache de parámetros cargados
+
+async function _getParams() {
+  if (_params) return _params;
+  try { _params = await api('GET', '/api/admin/parametros'); } catch { _params = null; }
+  return _params;
+}
+
+async function recalcularPrecio() {
+  const el = document.getElementById('precio-preview');
+  if (!el) return;
+  const params = await _getParams();
+  if (!params) return;
+
+  const gramos      = parseFloat(document.getElementById('prod-gramos')?.value)  || 0;
+  const horas       = parseFloat(document.getElementById('prod-horas')?.value)   || 0;
+  const minutos     = parseFloat(document.getElementById('prod-minutos')?.value) || 0;
+  const dif         = document.getElementById('prod-dificultad')?.value || '2.5';
+  const override    = document.getElementById('prod-precio_override')?.value;
+  const ajustePct   = parseFloat(document.getElementById('prod-precio_ajuste_pct')?.value) || 0;
+  const promoPct    = parseFloat(document.getElementById('prod-promo_descuento_pct')?.value) || 0;
+  const promoHasta  = document.getElementById('prod-promo_hasta')?.value || '';
+
+  const totalHoras      = horas + minutos / 60;
+  const costoFilamento  = gramos * (params.precio_kg / 1000);
+  const costoElec       = totalHoras * params.consumo_impresora_kw * params.precio_kwh;
+  const subtotal        = costoFilamento + costoElec;
+  const tier            = DIFICULTADES_ADMIN[dif] || DIFICULTADES_ADMIN['2.5'];
+  const costoProduccion = Math.max(subtotal * tier.factor, tier.minimo);
+  const costoMaquina    = totalHoras * params.costo_hora_maquina;
+  const nivelPublico    = niveles.length ? [...niveles].sort((a,b) => b.margen_pct - a.margen_pct)[0] : { margen_pct: 100 };
+  const margenMonto     = costoProduccion * (nivelPublico.margen_pct / 100);
+  const precioBase      = costoProduccion + margenMonto + costoMaquina;
+
+  let precioAjustado;
+  if (override !== '') {
+    precioAjustado = parseFloat(override) || 0;
+  } else if (ajustePct !== 0) {
+    precioAjustado = precioBase * (1 + ajustePct / 100);
+  } else {
+    precioAjustado = precioBase;
+  }
+
+  let precioFinal = precioAjustado;
+  if (promoPct > 0 && promoHasta && new Date(promoHasta) > new Date()) {
+    precioFinal = precioAjustado * (1 - promoPct / 100);
+  }
+
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-AR');
+  el.innerHTML = `Precio público estimado: <strong style="color:var(--accent)">${fmt(Math.round(precioFinal))}</strong>` +
+    (precioFinal !== precioAjustado ? ` <span style="text-decoration:line-through;opacity:.5">${fmt(Math.round(precioAjustado))}</span>` : '');
+}
+
+// Escuchar cambios en los campos que afectan el precio
+document.addEventListener('input', e => {
+  const ids = ['prod-gramos','prod-horas','prod-minutos','prod-precio_override',
+                'prod-precio_ajuste_pct','prod-promo_descuento_pct','prod-promo_hasta'];
+  if (ids.includes(e.target.id)) recalcularPrecio();
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'prod-dificultad') recalcularPrecio();
+});
 
 // ── Galería de imágenes helpers ──────────────────────────
 let _imagenesActuales = [];

@@ -211,6 +211,14 @@ function formatPrecio(n) {
   }).format(n);
 }
 
+/* ── Deep link ?pid= ─────────────────────────────────────── */
+function initDeepLink(productos) {
+  const pid = new URLSearchParams(location.search).get('pid');
+  if (!pid) return;
+  const producto = productos.find(p => p.id === +pid);
+  if (producto) abrirDetModal(producto, productos);
+}
+
 /* ── Hero blobs con imágenes de productos al azar ────────── */
 function initHeroImages(productos) {
   const blobs = document.querySelectorAll('.blob');
@@ -254,6 +262,7 @@ function _ensureDetModal() {
         <div class="det-foot">
           <div class="det-precio" id="det-precio"></div>
           <button class="btn btn-dark" id="det-btn-add" style="width:100%">Agregar a consulta</button>
+          <button class="btn-compartir" id="det-btn-compartir" title="Compartir producto">🔗 Compartir</button>
         </div>
       </div>
     </div>`;
@@ -267,6 +276,7 @@ function _ensureDetModal() {
 function cerrarDetModal() {
   document.getElementById('det-overlay')?.classList.remove('open');
   document.body.style.overflow = '';
+  history.replaceState(null, '', location.pathname);
 }
 
 function abrirDetModal(producto, productosCtx) {
@@ -342,6 +352,23 @@ function abrirDetModal(producto, productosCtx) {
     mostrarToast('Agregado a la consulta 🐸');
     cerrarDetModal();
   };
+
+  // Botón compartir
+  const btnComp = document.getElementById('det-btn-compartir');
+  if (btnComp) {
+    btnComp.onclick = () => {
+      const url = `${location.origin}${location.pathname}?pid=${producto.id}`;
+      if (navigator.share) {
+        navigator.share({ title: producto.nombre, url }).catch(() => {});
+      } else {
+        navigator.clipboard?.writeText(url).then(() => mostrarToast('Link copiado 🔗')).catch(() => {});
+      }
+    };
+  }
+
+  // Actualizar URL sin recargar
+  const urlConPid = `${location.pathname}?pid=${producto.id}`;
+  history.replaceState(null, '', urlConPid);
 
   document.getElementById('det-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
