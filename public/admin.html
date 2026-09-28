@@ -7,22 +7,41 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  (function(){
+    var t='light';try{t=localStorage.getItem('ranita-admin-tema')||'light';}catch(e){}
+    document.documentElement.setAttribute('data-theme',t);
+  })();
+</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
+    --bg:        #FAFAF7;
+    --surface:   #FFFFFF;
+    --surface2:  #F2F2EE;
+    --border:    #E0E0DA;
+    --accent:    #8B7CF6;
+    --accent-dim:#7A6BE0;
+    --text:      #1F1F24;
+    --text-dim:  #6B6B78;
+    --danger:    #DC3545;
+    --success:   #198754;
+    --radius:    8px;
+    --font:      'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  [data-theme="dark"] {
     --bg:        #0f1117;
     --surface:   #1a1d27;
     --surface2:  #23273a;
     --border:    #2e3347;
-    --accent:    #c9a227;
-    --accent-dim:#a07e17;
+    --accent:    #8B7CF6;
+    --accent-dim:#7A6BE0;
     --text:      #e8eaf0;
     --text-dim:  #8b90a8;
     --danger:    #e55;
     --success:   #4caf7d;
-    --radius:    8px;
-    --font:      'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
@@ -107,7 +126,7 @@
   }
   .btn:hover { opacity: .85; }
   .btn:disabled { opacity: .4; cursor: default; }
-  .btn-primary { background: var(--accent); color: #111; }
+  .btn-primary { background: var(--accent); color: #fff; }
   .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
   .btn-danger { background: var(--danger); color: #fff; }
   .btn-sm { padding: 4px 10px; font-size: .78rem; }
@@ -126,9 +145,11 @@
     font-size: .75rem;
     font-weight: 600;
   }
-  .badge-ok { background: #1a3a2a; color: var(--success); }
-  .badge-off { background: #2a1a1a; color: var(--danger); }
+  .badge-ok  { background: #d4edda; color: #155724; }
+  .badge-off { background: #f8d7da; color: #721c24; }
   .badge-nivel { background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border); }
+  [data-theme="dark"] .badge-ok  { background: #1a3a2a; color: var(--success); }
+  [data-theme="dark"] .badge-off { background: #2a1a1a; color: var(--danger); }
   .actions { display: flex; gap: 6px; }
 
   /* ── Forms ── */
@@ -273,6 +294,9 @@
   <h1>La <span>Ranita</span> 3D — Panel Admin</h1>
   <div id="user-info">
     <span id="user-email"></span>
+    <button id="btn-tema-admin" onclick="toggleTemaAdmin()"
+      style="background:none;border:1px solid var(--border);color:var(--text-dim);padding:4px 10px;border-radius:var(--radius);cursor:pointer;font-size:.85rem"
+      title="Cambiar tema">🌙</button>
     <button id="btn-logout" onclick="doLogout()">Salir</button>
   </div>
 </header>
@@ -806,6 +830,21 @@ async function api(method, path, body) {
   if (!r.ok) throw new Error(json.error || `HTTP ${r.status}`);
   return json;
 }
+
+// ── Tema admin ───────────────────────────────────────────
+function toggleTemaAdmin() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const nuevo  = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', nuevo);
+  try { localStorage.setItem('ranita-admin-tema', nuevo); } catch {}
+  document.getElementById('btn-tema-admin').textContent = nuevo === 'dark' ? '☀️' : '🌙';
+}
+// Sincronizar ícono al cargar
+document.addEventListener('DOMContentLoaded', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const btn = document.getElementById('btn-tema-admin');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+});
 
 // ── Auth ─────────────────────────────────────────────────
 async function checkAuth() {
