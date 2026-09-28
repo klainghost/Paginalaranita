@@ -7,9 +7,12 @@ const { getDb, p }                   = require('../db/database');
 const { calcularPrecio, DIFICULTADES } = require('../lib/precio');
 const { requireAdmin }               = require('../middleware/auth');
 
+const _uploadsDir = path.join(__dirname, '..', 'public', 'uploads', 'productos');
+fs.mkdirSync(_uploadsDir, { recursive: true });
+
 const _upload = multer({
   storage: multer.diskStorage({
-    destination: path.join(__dirname, '..', 'public', 'uploads', 'productos'),
+    destination: _uploadsDir,
     filename: (_req, file, cb) => {
       const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
       cb(null, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
