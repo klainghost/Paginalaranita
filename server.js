@@ -10,6 +10,7 @@ const path          = require('path');
 const crypto        = require('crypto');
 const { exec }      = require('child_process');
 
+const { getDb }        = require('./db/database');
 const authRoutes       = require('./routes/auth');
 const mundosRoutes     = require('./routes/mundos');
 const productosRoutes  = require('./routes/productos');
@@ -98,6 +99,50 @@ app.use('/api/categorias', categoriasRoutes);
 app.use('/api/admin',      adminRoutes);
 app.use('/api/carrito',    carritoRoutes);
 app.use('/api/pedidos',    pedidosRoutes);
+
+// Página de producto con OG tags para preview en WhatsApp/redes
+app.get('/p/:id', (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) return res.redirect('/');
+
+  const producto = getDb()
+    .prepare('SELECT nombre, descripcion, imagen_url FROM productos WHERE id = ? AND activo = 1')
+    .get(id);
+
+  if (!producto) return res.redirect('/');
+
+  const origin = process.env.ALLOWED_ORIGIN || `http://localhost:${PORT}`;
+  const _e = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+  const imgUrl   = producto.imagen_url
+    ? (producto.imagen_url.startsWith('http') ? producto.imagen_url : `${origin}${producto.imagen_url}`)
+    : null;
+  const title    = `${producto.nombre} — La Ranita 3D`;
+  const desc     = (producto.descripcion || 'Impreso en 3D en Malargüe, Mendoza.').slice(0, 160);
+  const canonical = `${origin}/p/${id}`;
+
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(`<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<title>${_e(title)}</title>
+<meta name="description" content="${_e(desc)}">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="La Ranita 3D">
+<meta property="og:title" content="${_e(title)}">
+<meta property="og:description" content="${_e(desc)}">
+${imgUrl ? `<meta property="og:image" content="${_e(imgUrl)}">` : ''}
+<meta property="og:url" content="${_e(canonical)}">
+<meta property="og:locale" content="es_AR">
+<meta name="twitter:card" content="summary_large_image">
+${imgUrl ? `<meta name="twitter:image" content="${_e(imgUrl)}">` : ''}
+<link rel="canonical" href="${_e(canonical)}">
+<script>location.replace('/?pid=${id}');</script>
+</head>
+<body></body>
+</html>`);
+});
 
 app.listen(PORT, () => {
   console.log(`La Ranita 3D backend corriendo en http://localhost:${PORT}`);

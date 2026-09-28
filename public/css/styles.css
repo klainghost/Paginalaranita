@@ -1004,3 +1004,28 @@ footer a { color: var(--wa-green); font-weight: 700; }
   font-family: 'Nunito', sans-serif;
 }
 .btn-siguiente:hover { opacity: .9; }
+
+/* ── Paso 3: confirmación post-WA ───────────────────────── */
+.dr-confirm {
+  align-items: center; text-align: center;
+  justify-content: center; padding-top: 32px; gap: 12px;
+}
+.dr-confirm__icon { font-size: 3.5rem; line-height: 1; }
+.dr-confirm__titulo { font-family: 'Fredoka', sans-serif; font-size: 1.45rem; margin: 0; }
+.dr-confirm__texto { color: var(--muted); font-size: .88rem; margin: 0; line-height: 1.5; }
+.dr-confirm__sep { color: var(--muted); font-size: .82rem; }
+.btn-vaciar {
+  width: 100%; background: none;
+  border: 1.5px solid var(--line); color: var(--muted);
+  padding: 11px; border-radius: 12px;
+  font-size: .9rem; cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: border-color var(--ease), color var(--ease);
+}
+.btn-vaciar:hover { border-color: var(--naranja); color: var(--naranja); }
+.btn-seguir {
+  width: 100%; background: none; border: none;
+  color: var(--lila); font-size: .9rem; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-weight: 600;
+  padding: 6px; text-decoration: underline;
+}

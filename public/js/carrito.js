@@ -155,35 +155,42 @@ const Carrito = (() => {
    ────────────────────────────────────────────────────────── */
 
 let _pasoActual = 1;
+let _waUrl      = '';
 
 function _irAlPaso(n) {
   _pasoActual = n;
-  const p1     = document.getElementById('dr-panel-1');
-  const p2     = document.getElementById('dr-panel-2');
-  const back   = document.getElementById('dr-back');
-  const titulo = document.getElementById('dr-titulo');
-  const s1     = document.getElementById('dr-step-1');
-  const s2     = document.getElementById('dr-step-2');
+  const p1      = document.getElementById('dr-panel-1');
+  const p2      = document.getElementById('dr-panel-2');
+  const p3      = document.getElementById('dr-panel-3');
+  const back    = document.getElementById('dr-back');
+  const titulo  = document.getElementById('dr-titulo');
+  const stepsEl = document.getElementById('dr-steps');
+  const s1      = document.getElementById('dr-step-1');
+  const s2      = document.getElementById('dr-step-2');
   if (!p1 || !p2) return;
 
+  p1.style.display = n === 1 ? 'flex' : 'none';
+  p2.style.display = n === 2 ? 'flex' : 'none';
+  if (p3) p3.style.display = n === 3 ? 'flex' : 'none';
+
   if (n === 1) {
-    p1.style.display = 'flex';
-    p2.style.display = 'none';
-    if (back)   back.style.display = 'none';
-    if (titulo) titulo.textContent = 'Tu consulta';
+    if (back)    back.style.display    = 'none';
+    if (titulo)  titulo.textContent    = 'Tu consulta';
     s1?.classList.add('dr-step--active');
     s2?.classList.remove('dr-step--active');
-  } else {
-    p1.style.display = 'none';
-    p2.style.display = 'flex';
-    if (back)   back.style.display = '';
-    if (titulo) titulo.textContent = 'Tus datos';
+  } else if (n === 2) {
+    if (back)    back.style.display    = '';
+    if (titulo)  titulo.textContent    = 'Tus datos';
+    if (stepsEl) stepsEl.style.display = 'flex';
     s1?.classList.remove('dr-step--active');
     s2?.classList.add('dr-step--active');
-    // Sincronizar total al footer del paso 2
     const t1 = document.getElementById('carrito-total-monto');
     const t2 = document.getElementById('carrito-total-monto-2');
     if (t1 && t2) t2.textContent = t1.textContent;
+  } else if (n === 3) {
+    if (back)    back.style.display    = 'none';
+    if (titulo)  titulo.textContent    = '¡Todo listo!';
+    if (stepsEl) stepsEl.style.display = 'none';
   }
 }
 
@@ -214,6 +221,15 @@ function initCarritoDrawer() {
     if (!Carrito.getItems().length) return;
     _irAlPaso(2);
   });
+
+  document.getElementById('btn-wa-reabrir')?.addEventListener('click', () => {
+    if (_waUrl) window.open(_waUrl, '_blank', 'noopener');
+  });
+  document.getElementById('btn-vaciar-carrito')?.addEventListener('click', async () => {
+    await Carrito.vaciar();
+    close(); // cierra el drawer; _irAlPaso(1) se dispara desde _renderDrawer
+  });
+  document.getElementById('btn-seguir-comprando')?.addEventListener('click', close);
 
   // Mostrar/ocultar campo CP según opción de entrega
   document.addEventListener('change', e => {
@@ -279,7 +295,9 @@ function initCarritoDrawer() {
 
     const msg = `Hola Ranita! 🐸 Quiero consultar por estos productos:\n\n${lineas.join('\n')}\n\nTotal estimado: *${total}${totalSuffix}*\nEntrega: ${entregaStr}${cpStr}${datosStr}\n\n¿Están disponibles?${codStr}`;
 
-    window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+    _waUrl = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`;
+    window.open(_waUrl, '_blank', 'noopener');
+    _irAlPaso(3);
   });
 
   document.addEventListener('carrito:actualizado', e => _renderDrawer(e.detail));
@@ -311,7 +329,7 @@ function _renderDrawer(items) {
 
   if (vacioEl)  vacioEl.style.display  = 'none';
   if (footerEl) footerEl.style.display = 'flex';
-  if (stepsEl)  stepsEl.style.display  = 'flex';
+  if (stepsEl)  stepsEl.style.display  = _pasoActual !== 3 ? 'flex' : 'none';
 
   listaEl.innerHTML = items.map(item => {
     const color = item.color_elegido || Carrito.getColorMeta?.(item.producto_id);

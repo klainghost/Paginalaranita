@@ -239,7 +239,8 @@ function initHeroImages(productos) {
 }
 
 /* ── Modal de detalle de producto ───────────────────────── */
-let _detProductos = [];
+let _detProductos  = [];
+let _detOriginPath = '/';
 
 function _ensureDetModal() {
   if (document.getElementById('det-overlay')) return;
@@ -276,7 +277,7 @@ function _ensureDetModal() {
 function cerrarDetModal() {
   document.getElementById('det-overlay')?.classList.remove('open');
   document.body.style.overflow = '';
-  history.replaceState(null, '', location.pathname);
+  history.replaceState(null, '', _detOriginPath);
 }
 
 function abrirDetModal(producto, productosCtx) {
@@ -357,7 +358,7 @@ function abrirDetModal(producto, productosCtx) {
   const btnComp = document.getElementById('det-btn-compartir');
   if (btnComp) {
     btnComp.onclick = () => {
-      const url = `${location.origin}${location.pathname}?pid=${producto.id}`;
+      const url = `${location.origin}/p/${producto.id}`;
       if (navigator.share) {
         navigator.share({ title: producto.nombre, url }).catch(() => {});
       } else {
@@ -366,9 +367,9 @@ function abrirDetModal(producto, productosCtx) {
     };
   }
 
-  // Actualizar URL sin recargar
-  const urlConPid = `${location.pathname}?pid=${producto.id}`;
-  history.replaceState(null, '', urlConPid);
+  // Actualizar URL — /p/:id para que compartir tenga preview rica en WA/redes
+  _detOriginPath = location.pathname;
+  history.replaceState(null, '', `/p/${producto.id}`);
 
   document.getElementById('det-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';

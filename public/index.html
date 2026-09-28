@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=10">
+  <link rel="stylesheet" href="css/styles.css?v=11">
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -189,6 +189,19 @@
       </div>
     </div>
 
+    <!-- Panel 3: confirmación post-WhatsApp -->
+    <div class="dr-panel" id="dr-panel-3" style="display:none">
+      <div class="dr-panel-scroll dr-confirm">
+        <div class="dr-confirm__icon">🐸</div>
+        <h3 class="dr-confirm__titulo">¡Consulta lista!</h3>
+        <p class="dr-confirm__texto">Si WhatsApp no se abrió solo, tocá el botón.</p>
+        <button class="btn-wa-full" id="btn-wa-reabrir">💬 Abrir WhatsApp</button>
+        <span class="dr-confirm__sep">— o —</span>
+        <button class="btn-vaciar" id="btn-vaciar-carrito">🗑 Vaciar carrito</button>
+        <button class="btn-seguir" id="btn-seguir-comprando">Seguir comprando →</button>
+      </div>
+    </div>
+
     <!-- Panel 2: datos + entrega -->
     <div class="dr-panel" id="dr-panel-2" style="display:none">
       <div class="dr-panel-scroll">
@@ -259,8 +272,8 @@
     </svg>
   </a>
 
-  <script src="js/app.js?v=10"></script>
-  <script src="js/carrito.js?v=10"></script>
+  <script src="js/app.js?v=11"></script>
+  <script src="js/carrito.js?v=11"></script>
   <script>
     (async () => {
       initToggleTema();
