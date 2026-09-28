@@ -64,7 +64,7 @@ app.post('/webhook/deploy', express.raw({ type: 'application/json' }), (req, res
 
   res.status(200).json({ ok: true });
 
-  const cmd = 'git pull origin main && pm2 restart ranita3d && pm2 save';
+  const cmd = 'git pull origin main && npm install --omit=dev && pm2 restart ranita3d && pm2 save';
   exec(cmd, { cwd: '/home/usuario/Escritorio/laranita3d' }, (err, stdout) => {
     if (err) console.error('[webhook] deploy error:', err.message);
     else     console.log('[webhook] deploy OK:', stdout.trim());
