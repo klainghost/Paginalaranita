@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=8">
+  <link rel="stylesheet" href="css/styles.css?v=9">
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -166,12 +166,19 @@
       <button class="icon-btn" id="btn-cerrar-carrito" aria-label="Cerrar">✕</button>
     </div>
     <p class="dr-aviso">
-      Es una consulta: disponibilidad, color y plazo se confirman por WhatsApp antes de pagar.
+      Disponibilidad, color y plazo se confirman por WhatsApp antes de pagar.
     </p>
     <div class="carrito-lista" id="carrito-lista">
       <div class="carrito-vacio" id="carrito-vacio">Todavía no agregaste nada.</div>
     </div>
-    <div class="carrito-footer" id="carrito-footer" style="display:none">
+
+    <!-- Formulario + entrega (visible solo con items) -->
+    <div class="dr-form-area" id="dr-form-area" style="display:none">
+      <div class="dr-form">
+        <input type="text" id="dr-nombre"   placeholder="Nombre"   autocomplete="given-name">
+        <input type="text" id="dr-apellido" placeholder="Apellido" autocomplete="family-name">
+        <input type="tel"  id="dr-telefono" placeholder="Teléfono" autocomplete="tel" class="dr-full">
+      </div>
       <div class="dr-entrega">
         <div class="dr-entrega__titulo">¿Cómo querés recibirlo?</div>
         <label class="dr-entrega__opt">
@@ -187,6 +194,13 @@
           <span>📍 Retiro en San Rafael <span class="sin-cargo">sin cargo</span></span>
         </label>
       </div>
+      <div class="dr-cp-area" id="dr-cp-area">
+        <input type="text" id="dr-cp" placeholder="Código postal de destino" maxlength="8" autocomplete="postal-code">
+      </div>
+    </div>
+
+    <!-- Footer fijo: total + botón -->
+    <div class="carrito-footer" id="carrito-footer" style="display:none">
       <div class="carrito-total">
         <span>Total estimado</span>
         <span id="carrito-total-monto"></span>
@@ -227,8 +241,8 @@
     </svg>
   </a>
 
-  <script src="js/app.js?v=8"></script>
-  <script src="js/carrito.js?v=8"></script>
+  <script src="js/app.js?v=9"></script>
+  <script src="js/carrito.js?v=9"></script>
   <script>
     (async () => {
       initToggleTema();

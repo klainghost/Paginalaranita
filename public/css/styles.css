@@ -926,23 +926,48 @@ footer a { color: var(--wa-green); font-weight: 700; }
   .det-galeria { border-radius: 20px 20px 0 0; min-height: 220px; }
 }
 
-/* ── Selector de entrega en el carrito ──────────────────── */
+/* ── Formulario + entrega en el carrito ─────────────────── */
+.dr-form-area {
+  padding: 12px 20px 14px;
+  border-top: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 10px;
+  flex-shrink: 0;
+}
+.dr-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+.dr-form input, .dr-cp-area input {
+  padding: 9px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: .88rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.dr-form input:focus, .dr-cp-area input:focus {
+  outline: none; border-color: var(--lila);
+}
+.dr-form input::placeholder, .dr-cp-area input::placeholder { color: var(--muted); }
+.dr-full { grid-column: 1 / -1; }
 .dr-entrega {
   background: var(--surface-2);
   border-radius: 12px;
-  padding: 12px 14px;
-  display: flex; flex-direction: column; gap: 6px;
-  margin-bottom: 2px;
+  padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 5px;
 }
 .dr-entrega__titulo {
   font-size: .75rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .06em;
-  color: var(--muted); margin-bottom: 2px;
+  color: var(--muted); margin-bottom: 1px;
 }
 .dr-entrega__opt {
   display: flex; align-items: center; gap: 8px;
   font-size: .88rem; cursor: pointer; padding: 3px 2px;
-  border-radius: 6px;
 }
 .dr-entrega__opt input[type="radio"] { accent-color: var(--lila); flex-shrink: 0; }
 .dr-entrega__opt span { line-height: 1.3; }

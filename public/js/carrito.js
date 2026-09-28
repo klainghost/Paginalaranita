@@ -173,6 +173,13 @@ function initCarritoDrawer() {
   overlay.addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
+  // Mostrar/ocultar CP según opción de entrega
+  document.addEventListener('change', e => {
+    if (e.target.name !== 'entrega') return;
+    const cpArea = document.getElementById('dr-cp-area');
+    if (cpArea) cpArea.style.display = e.target.value === 'envio' ? '' : 'none';
+  });
+
   document.getElementById('btn-finalizar')?.addEventListener('click', async () => {
     const items = Carrito.getItems();
     if (!items.length) return;
@@ -201,6 +208,23 @@ function initCarritoDrawer() {
     btn.disabled = false;
     btn.textContent = '💬 Consultar por WhatsApp';
 
+    // Datos del comprador
+    const nombre   = (document.getElementById('dr-nombre')?.value   || '').trim();
+    const apellido = (document.getElementById('dr-apellido')?.value  || '').trim();
+    const telefono = (document.getElementById('dr-telefono')?.value  || '').trim();
+    const cp       = (document.getElementById('dr-cp')?.value        || '').trim();
+
+    // Entrega elegida
+    const entregaVal = document.querySelector('input[name="entrega"]:checked')?.value || 'envio';
+    const entregaLabels = {
+      'envio':             '📦 Envío a domicilio (cotizar aparte)',
+      'retiro-malargue':   '📍 Retiro en persona — Malargüe (sin cargo)',
+      'retiro-san-rafael': '📍 Retiro en persona — San Rafael (sin cargo)',
+    };
+    const entregaStr  = entregaLabels[entregaVal] || entregaLabels.envio;
+    const totalSuffix = entregaVal === 'envio' ? ' (+ envío a cotizar)' : '';
+    const cpStr       = entregaVal === 'envio' && cp ? `\nCP destino: ${cp}` : '';
+
     // Construir mensaje WA
     const lineas = items.map(i => {
       const color = i.color_elegido || Carrito.getColorMeta?.(i.producto_id);
@@ -210,15 +234,12 @@ function initCarritoDrawer() {
     const total  = formatPrecio(Carrito.getTotal());
     const codStr = codigo ? `\n\n🔖 Referencia: *${codigo}*` : '';
 
-    const entregaVal = document.querySelector('input[name="entrega"]:checked')?.value || 'envio';
-    const entregaLabels = {
-      'envio':             '📦 Envío a domicilio (cotizar aparte)',
-      'retiro-malargue':   '📍 Retiro en persona — Malargüe (sin cargo)',
-      'retiro-san-rafael': '📍 Retiro en persona — San Rafael (sin cargo)',
-    };
-    const entregaStr  = entregaLabels[entregaVal] || entregaLabels.envio;
-    const totalSuffix = entregaVal === 'envio' ? ' (más envío a cotizar)' : '';
-    const msg = `Hola Ranita! 🐸 Quiero consultar por estos productos:\n\n${lineas.join('\n')}\n\nTotal estimado: *${total}${totalSuffix}*\nEntrega: ${entregaStr}\n\n¿Están disponibles?${codStr}`;
+    const nombreCompleto = [nombre, apellido].filter(Boolean).join(' ');
+    const datosStr = nombreCompleto || telefono
+      ? `\n\n👤 ${[nombreCompleto, telefono ? 'Tel: ' + telefono : ''].filter(Boolean).join(' | ')}`
+      : '';
+
+    const msg = `Hola Ranita! 🐸 Quiero consultar por estos productos:\n\n${lineas.join('\n')}\n\nTotal estimado: *${total}${totalSuffix}*\nEntrega: ${entregaStr}${cpStr}${datosStr}\n\n¿Están disponibles?${codStr}`;
 
     window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
   });
@@ -234,21 +255,24 @@ function _renderDrawer(items) {
     badge.hidden = count === 0;
   }
 
-  const listaEl  = document.getElementById('carrito-lista');
-  const vacioEl  = document.getElementById('carrito-vacio');
-  const footerEl = document.getElementById('carrito-footer');
-  const totalEl  = document.getElementById('carrito-total-monto');
+  const listaEl   = document.getElementById('carrito-lista');
+  const vacioEl   = document.getElementById('carrito-vacio');
+  const footerEl  = document.getElementById('carrito-footer');
+  const formEl    = document.getElementById('dr-form-area');
+  const totalEl   = document.getElementById('carrito-total-monto');
   if (!listaEl) return;
 
   if (!items.length) {
     listaEl.innerHTML = '';
     if (vacioEl)  vacioEl.style.display  = 'block';
     if (footerEl) footerEl.style.display = 'none';
+    if (formEl)   formEl.style.display   = 'none';
     return;
   }
 
   if (vacioEl)  vacioEl.style.display  = 'none';
   if (footerEl) footerEl.style.display = 'flex';
+  if (formEl)   formEl.style.display   = 'flex';
 
   listaEl.innerHTML = items.map(item => {
     const color = item.color_elegido || Carrito.getColorMeta?.(item.producto_id);
