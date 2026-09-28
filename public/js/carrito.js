@@ -209,7 +209,16 @@ function initCarritoDrawer() {
     });
     const total  = formatPrecio(Carrito.getTotal());
     const codStr = codigo ? `\n\n🔖 Referencia: *${codigo}*` : '';
-    const msg    = `Hola Ranita! 🐸 Quiero consultar por estos productos:\n\n${lineas.join('\n')}\n\nTotal estimado: ${total} (sin envío)\n¿Están disponibles?${codStr}`;
+
+    const entregaVal = document.querySelector('input[name="entrega"]:checked')?.value || 'envio';
+    const entregaLabels = {
+      'envio':             '📦 Envío a domicilio (cotizar aparte)',
+      'retiro-malargue':   '📍 Retiro en persona — Malargüe (sin cargo)',
+      'retiro-san-rafael': '📍 Retiro en persona — San Rafael (sin cargo)',
+    };
+    const entregaStr  = entregaLabels[entregaVal] || entregaLabels.envio;
+    const totalSuffix = entregaVal === 'envio' ? ' (más envío a cotizar)' : '';
+    const msg = `Hola Ranita! 🐸 Quiero consultar por estos productos:\n\n${lineas.join('\n')}\n\nTotal estimado: *${total}${totalSuffix}*\nEntrega: ${entregaStr}\n\n¿Están disponibles?${codStr}`;
 
     window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
   });

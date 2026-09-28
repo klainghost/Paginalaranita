@@ -3,12 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catálogo — La Ranita 3D</title>
-  <meta name="description" content="Catálogo completo de productos La Ranita 3D">
+  <title>Catálogo — La Ranita 3D | Impresión 3D en Malargüe</title>
+  <meta name="description" content="Catálogo completo de La Ranita 3D: fidgets, miniaturas de rol, organizadores, Dummy 13 y más, impresos en 3D en Malargüe, Mendoza. Retiro en Malargüe y San Rafael.">
+  <meta name="keywords" content="impresion 3d malargue, fidgets malargue, miniaturas rol mendoza, impresion 3d san rafael, catalogo 3d mendoza, laranita3d">
+  <meta name="geo.region" content="AR-M">
+  <meta name="geo.placename" content="Malargüe, Mendoza, Argentina">
+  <meta name="geo.position" content="-35.4753;-69.5869">
+  <meta name="ICBM" content="-35.4753, -69.5869">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="La Ranita 3D">
+  <meta property="og:title" content="Catálogo — La Ranita 3D | Impresión 3D Malargüe">
+  <meta property="og:description" content="Fidgets, miniaturas de rol, organizadores y apoyacelulares impresos en 3D en Malargüe. Retiro en Malargüe y San Rafael · Envíos a todo el país.">
+  <meta property="og:url" content="https://laranita3d.netlify.app/catalogo.html">
+  <meta property="og:locale" content="es_AR">
+  <link rel="canonical" href="https://laranita3d.netlify.app/catalogo.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=7">
+  <link rel="stylesheet" href="css/styles.css?v=8">
 </head>
 <body>
 
@@ -89,12 +101,26 @@
     </div>
     <p class="dr-aviso">
       Es una consulta: disponibilidad, color y plazo se confirman por WhatsApp antes de pagar.
-      El envío se cotiza aparte.
     </p>
     <div class="carrito-lista" id="carrito-lista">
       <div class="carrito-vacio" id="carrito-vacio">Todavía no agregaste nada.</div>
     </div>
     <div class="carrito-footer" id="carrito-footer" style="display:none">
+      <div class="dr-entrega">
+        <div class="dr-entrega__titulo">¿Cómo querés recibirlo?</div>
+        <label class="dr-entrega__opt">
+          <input type="radio" name="entrega" value="envio" checked>
+          <span>📦 Envío a domicilio <small>(se cotiza aparte)</small></span>
+        </label>
+        <label class="dr-entrega__opt">
+          <input type="radio" name="entrega" value="retiro-malargue">
+          <span>📍 Retiro en Malargüe <span class="sin-cargo">sin cargo</span></span>
+        </label>
+        <label class="dr-entrega__opt">
+          <input type="radio" name="entrega" value="retiro-san-rafael">
+          <span>📍 Retiro en San Rafael <span class="sin-cargo">sin cargo</span></span>
+        </label>
+      </div>
       <div class="carrito-total">
         <span>Total estimado</span>
         <span id="carrito-total-monto"></span>
@@ -135,8 +161,8 @@
     </svg>
   </a>
 
-  <script src="js/app.js?v=7"></script>
-  <script src="js/carrito.js?v=7"></script>
+  <script src="js/app.js?v=8"></script>
+  <script src="js/carrito.js?v=8"></script>
   <script>
     const params        = new URLSearchParams(location.search);
     const categoriaParam = params.get('categoria') || '';
