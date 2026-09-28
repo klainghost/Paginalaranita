@@ -205,17 +205,14 @@ function initHeroImages(productos) {
   const conImg = productos.filter(p => p.imagen_url);
   if (!conImg.length) return;
 
-  // Mezcla aleatoria (Fisher-Yates)
   const pool = [...conImg].sort(() => Math.random() - 0.5);
 
   blobs.forEach((blob, i) => {
     const prod = pool[i % pool.length];
-    blob.textContent = '';
-    const img = document.createElement('img');
-    img.src   = prod.imagen_url;
-    img.alt   = prod.nombre;
-    img.loading = 'lazy';
-    blob.appendChild(img);
+    blob.textContent = '';                            // quita el emoji
+    blob.style.backgroundImage    = `url('${prod.imagen_url}')`;
+    blob.style.backgroundSize     = 'cover';
+    blob.style.backgroundPosition = 'center';
   });
 }
 
