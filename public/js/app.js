@@ -197,6 +197,28 @@ function formatPrecio(n) {
   }).format(n);
 }
 
+/* ── Hero blobs con imágenes de productos al azar ────────── */
+function initHeroImages(productos) {
+  const blobs = document.querySelectorAll('.blob');
+  if (!blobs.length) return;
+
+  const conImg = productos.filter(p => p.imagen_url);
+  if (!conImg.length) return;
+
+  // Mezcla aleatoria (Fisher-Yates)
+  const pool = [...conImg].sort(() => Math.random() - 0.5);
+
+  blobs.forEach((blob, i) => {
+    const prod = pool[i % pool.length];
+    blob.textContent = '';
+    const img = document.createElement('img');
+    img.src   = prod.imagen_url;
+    img.alt   = prod.nombre;
+    img.loading = 'lazy';
+    blob.appendChild(img);
+  });
+}
+
 /* ── Escape HTML ─────────────────────────────────────────── */
 function esc(str) {
   return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -215,10 +237,8 @@ function mostrarToast(msg) {
 const TEMA_KEY = 'ranita-tema';
 
 function _esTemaOscuro() {
-  const tema = document.documentElement.getAttribute('data-theme');
-  if (tema === 'dark')  return true;
-  if (tema === 'light') return false;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // Solo responde al atributo manual — nunca al sistema operativo
+  return document.documentElement.getAttribute('data-theme') === 'dark';
 }
 
 function actualizarIconoTema() {
@@ -231,12 +251,10 @@ function actualizarIconoTema() {
 }
 
 function initToggleTema() {
-  try {
-    const guardado = localStorage.getItem(TEMA_KEY);
-    if (guardado === 'dark' || guardado === 'light') {
-      document.documentElement.setAttribute('data-theme', guardado);
-    }
-  } catch {}
+  // Por defecto siempre light; solo cambia si el usuario lo guardó manualmente
+  let guardado = 'light';
+  try { guardado = localStorage.getItem(TEMA_KEY) || 'light'; } catch {}
+  document.documentElement.setAttribute('data-theme', guardado === 'dark' ? 'dark' : 'light');
   actualizarIconoTema();
 
   document.getElementById('btn-tema')?.addEventListener('click', () => {

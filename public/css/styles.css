@@ -37,20 +37,7 @@
   --sp-xl: 32px;
 }
 
-/* ── Tema oscuro (sistema o manual) ─────────────────────── */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg:          #16161A;
-    --surface:     #1F1F24;
-    --surface-2:   #2A2A31;
-    --text:        #FAFAF7;
-    --muted:       #A5A5AE;
-    --line:        #34343C;
-    --lila-soft:   #2D2946;
-    --lima-soft:   #2A3320;
-    --naranja-soft:#3A2A1C;
-  }
-}
+/* ── Tema oscuro (solo manual, nunca automático por OS) ──── */
 :root[data-theme="dark"] {
   --bg:          #16161A;
   --surface:     #1F1F24;
