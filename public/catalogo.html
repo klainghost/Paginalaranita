@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=11">
+  <link rel="stylesheet" href="css/styles.css?v=12">
 </head>
 <body>
 
@@ -197,6 +197,15 @@
   <!-- TOAST -->
   <div class="toast" id="toast">Agregado a la consulta 🐸</div>
 
+  <!-- PILL FLOTANTE CARRITO -->
+  <button class="carrito-pill" id="carrito-pill" aria-label="Ver tu consulta">
+    <span>🛒</span>
+    <span id="pill-count"></span>
+    <span class="pill-sep">·</span>
+    <span id="pill-total"></span>
+    <span>→</span>
+  </button>
+
   <!-- WA FLOTANTE -->
   <a class="wa-float" href="https://wa.me/5492604581757?text=Hola%2C%20quiero%20consultar%20sobre%20La%20Ranita%203D"
      target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -206,8 +215,8 @@
     </svg>
   </a>
 
-  <script src="js/app.js?v=11"></script>
-  <script src="js/carrito.js?v=11"></script>
+  <script src="js/app.js?v=12"></script>
+  <script src="js/carrito.js?v=12"></script>
   <script>
     const params        = new URLSearchParams(location.search);
     const categoriaParam = params.get('categoria') || '';

@@ -212,6 +212,7 @@ function initCarritoDrawer() {
   };
 
   document.getElementById('btn-carrito')?.addEventListener('click', open);
+  document.getElementById('carrito-pill')?.addEventListener('click', open);
   document.getElementById('btn-cerrar-carrito')?.addEventListener('click', close);
   overlay.addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
@@ -361,6 +362,20 @@ function _renderDrawer(items) {
   if (totalEl) totalEl.textContent = formatPrecio(totalAmt);
   const total2El = document.getElementById('carrito-total-monto-2');
   if (total2El) total2El.textContent = formatPrecio(totalAmt);
+
+  // Pill flotante
+  const pillEl      = document.getElementById('carrito-pill');
+  const pillCountEl = document.getElementById('pill-count');
+  const pillTotalEl = document.getElementById('pill-total');
+  if (pillEl) {
+    if (items.length) {
+      if (pillCountEl) pillCountEl.textContent = count === 1 ? '1 item' : `${count} items`;
+      if (pillTotalEl) pillTotalEl.textContent = formatPrecio(totalAmt);
+      pillEl.classList.add('carrito-pill--visible');
+    } else {
+      pillEl.classList.remove('carrito-pill--visible');
+    }
+  }
 }
 
 window.Carrito = Carrito;

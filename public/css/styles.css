@@ -193,6 +193,11 @@ img { max-width: 100%; display: block; }
     z-index: 19;
   }
 }
+/* En móvil muy chico ocultar login y texto del logo para que no overflow */
+@media (max-width: 480px) {
+  #btn-login { display: none; }
+  .navbar__logo span { display: none; }
+}
 
 /* ── Botones ─────────────────────────────────────────────── */
 .btn {
@@ -697,6 +702,98 @@ footer a { color: var(--wa-green); font-weight: 700; }
   text-align: center;
   padding: 60px 0;
   color: var(--muted);
+}
+
+/* ── Pill flotante de carrito ────────────────────────────── */
+.carrito-pill {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(160%);
+  opacity: 0;
+  z-index: 28;
+  background: var(--lila);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 13px 22px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: .95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(139,124,246,.45);
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.carrito-pill--visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.pill-sep { opacity: .45; }
+
+/* ── ¿Cómo funciona? ────────────────────────────────────── */
+.como-funciona {
+  margin-bottom: 44px;
+  text-align: center;
+}
+.como-funciona__titulo {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.45rem;
+  margin-bottom: 22px;
+  color: var(--text);
+}
+.como-funciona__pasos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.como-paso {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.como-paso__num {
+  background: var(--lila-soft);
+  color: var(--lila);
+  font-weight: 700;
+  font-size: .75rem;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.como-paso__icono { font-size: 2rem; line-height: 1; }
+.como-paso__texto {
+  font-size: .83rem;
+  color: var(--muted);
+  line-height: 1.4;
+  margin: 0;
+}
+.como-paso__flecha {
+  font-size: 1.4rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+@media (max-width: 620px) {
+  .como-funciona__pasos { flex-direction: column; align-items: center; gap: 4px; }
+  .como-paso { width: 100%; max-width: 300px; flex-direction: row; text-align: left; padding: 14px 16px; }
+  .como-paso__icono { font-size: 1.6rem; flex-shrink: 0; }
+  .como-paso__flecha { transform: rotate(90deg); }
 }
 
 /* ── WA flotante ─────────────────────────────────────────── */

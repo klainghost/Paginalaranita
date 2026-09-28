@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=11">
+  <link rel="stylesheet" href="css/styles.css?v=12">
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -102,6 +102,30 @@
       <div class="perk"><i>🎨</i> Colores según disponibilidad</div>
       <div class="perk"><i>📦</i> Envíos a todo el país por Correo Argentino (costo aparte)</div>
       <div class="perk"><i>📍</i> Retiro en Malargüe o San Rafael sin cargo</div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section class="como-funciona">
+      <h2 class="como-funciona__titulo">¿Cómo funciona?</h2>
+      <div class="como-funciona__pasos">
+        <div class="como-paso">
+          <div class="como-paso__num">1</div>
+          <div class="como-paso__icono">🛒</div>
+          <p class="como-paso__texto">Elegís lo que te gusta del catálogo</p>
+        </div>
+        <span class="como-paso__flecha" aria-hidden="true">→</span>
+        <div class="como-paso">
+          <div class="como-paso__num">2</div>
+          <div class="como-paso__icono">💬</div>
+          <p class="como-paso__texto">Consultás por WhatsApp — acordamos disponibilidad y plazo</p>
+        </div>
+        <span class="como-paso__flecha" aria-hidden="true">→</span>
+        <div class="como-paso">
+          <div class="como-paso__num">3</div>
+          <div class="como-paso__icono">🖨️</div>
+          <p class="como-paso__texto">Imprimimos y lo retirás en persona o te lo enviamos</p>
+        </div>
+      </div>
     </section>
 
     <!-- DESTACADOS -->
@@ -263,6 +287,15 @@
   <!-- TOAST -->
   <div class="toast" id="toast">Agregado a la consulta 🐸</div>
 
+  <!-- PILL FLOTANTE CARRITO -->
+  <button class="carrito-pill" id="carrito-pill" aria-label="Ver tu consulta">
+    <span>🛒</span>
+    <span id="pill-count"></span>
+    <span class="pill-sep">·</span>
+    <span id="pill-total"></span>
+    <span>→</span>
+  </button>
+
   <!-- WA FLOTANTE -->
   <a class="wa-float" href="https://wa.me/5492604581757?text=Hola%2C%20quiero%20consultar%20sobre%20La%20Ranita%203D"
      target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -272,8 +305,8 @@
     </svg>
   </a>
 
-  <script src="js/app.js?v=11"></script>
-  <script src="js/carrito.js?v=11"></script>
+  <script src="js/app.js?v=12"></script>
+  <script src="js/carrito.js?v=12"></script>
   <script>
     (async () => {
       initToggleTema();
