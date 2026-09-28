@@ -63,6 +63,14 @@
       <div class="perk"><i>📦</i> Envíos a todo el país por Correo Argentino (costo aparte)</div>
     </section>
 
+    <!-- DESTACADOS -->
+    <section class="sec-destacados" id="sec-destacados" style="display:none">
+      <div class="sec-head">
+        <h2>✨ Destacados</h2>
+      </div>
+      <div class="destacados-grid" id="grid-destacados"></div>
+    </section>
+
     <!-- CATÁLOGO -->
     <section id="catalogo">
       <div class="sec-head">
@@ -230,6 +238,13 @@
         busqueda = e.target.value;
         renderProductos();
       });
+
+      // Destacados
+      const destacados = productos.filter(p => p.destacado);
+      if (destacados.length) {
+        document.getElementById('sec-destacados').style.display = '';
+        renderGridProductos(destacados, document.getElementById('grid-destacados'));
+      }
 
       renderProductos();
       initHeroImages(productos);

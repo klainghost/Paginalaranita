@@ -803,6 +803,22 @@ footer a { color: var(--wa-green); font-weight: 700; }
 }
 .color-chip-admin button { color: var(--muted); font-size: .85rem; line-height: 1; }
 
+/* ── Sección Destacados ──────────────────────────────────── */
+.sec-destacados { margin-bottom: var(--sp-xl); }
+.sec-destacados .sec-head { margin-bottom: 12px; }
+.sec-destacados .sec-head h2 { font-size: 1.2rem; }
+
+.destacados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.card--destacada {
+  border-color: var(--lila);
+  box-shadow: 0 0 0 1px var(--lila);
+}
+
 /* ── Buscador ────────────────────────────────────────────── */
 .buscador {
   position: relative;

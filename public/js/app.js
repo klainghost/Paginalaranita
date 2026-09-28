@@ -143,7 +143,7 @@ function _cardHTML(p) {
     ? `<span class="card__price-tachado">${formatPrecio(p.precio_sin_promo)}</span>` : '';
 
   return `
-    <article class="card">
+    <article class="card${p.destacado ? ' card--destacada' : ''}">
       <div class="card__thumb">
         ${badge}
         ${p.imagen_url
