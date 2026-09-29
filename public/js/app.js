@@ -532,6 +532,20 @@ async function initNavbarSesion() {
     if (btnCarrito && btnLogin) {
       actionsEl.insertBefore(btnCarrito, btnLogin);
     }
+
+    // Agregar "Iniciar sesión" al menú mobile (hamburguesa)
+    const navEl = document.getElementById('navbar-nav');
+    if (navEl && !navEl.querySelector('.nav-login-mobile')) {
+      const li = document.createElement('li');
+      li.className = 'nav-login-mobile';
+      li.innerHTML = '<a href="#" style="color:var(--lila);font-weight:700">🔐 Iniciar sesión</a>';
+      navEl.appendChild(li);
+      li.querySelector('a').addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector('.navbar__nav')?.classList.remove('navbar__nav--abierto');
+        document.getElementById('modal-login')?.classList.add('modal-overlay--visible');
+      });
+    }
   }
 
   return sesion;

@@ -215,9 +215,9 @@ img { max-width: 100%; display: block; }
 }
 
 /* En móvil muy chico: compactar logo y botón login para que no overflow */
-@media (max-width: 480px) {
-  .navbar__logo span { display: none; }
-  #btn-login { font-size: .72rem; padding: 0 8px; }
+/* En mobile ocultar btn-login de la barra (va en el menú hamburguesa) */
+@media (max-width: 720px) {
+  #btn-login { display: none; }
 }
 
 /* ── Botones ─────────────────────────────────────────────── */
