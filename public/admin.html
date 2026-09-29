@@ -637,7 +637,7 @@
           <label>Imagen del producto</label>
           <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap">
             <div style="flex:1;min-width:200px">
-              <input type="url" id="prod-imagen_url" placeholder="https://… o subí una abajo" oninput="actualizarPreviewImagen()">
+              <input type="text" id="prod-imagen_url" placeholder="https://… o subí una abajo" oninput="actualizarPreviewImagen()">
               <label style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;cursor:pointer;font-size:.82rem;color:var(--text-dim);border:1px dashed var(--border);border-radius:var(--radius);padding:6px 12px;width:100%">
                 <span>📎</span> Subir foto desde el dispositivo
                 <input type="file" id="prod-imagen-file" accept="image/*" style="display:none" onchange="subirImagenProducto(this)">
@@ -653,7 +653,7 @@
           <label>Galería de imágenes adicionales</label>
           <div class="imagenes-editor" id="imagenes-editor"></div>
           <div style="display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap">
-            <input type="url" id="nueva-imagen-url" placeholder="https://… pegar URL" style="flex:1;min-width:160px">
+            <input type="text" id="nueva-imagen-url" placeholder="https://… pegar URL" style="flex:1;min-width:160px">
             <button type="button" class="btn btn-secondary" onclick="agregarImagenUrl()">+ URL</button>
             <label style="cursor:pointer;display:inline-flex;align-items:center;gap:5px" class="btn btn-secondary">
               📎 Subir
