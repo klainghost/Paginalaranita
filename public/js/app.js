@@ -241,6 +241,7 @@ function initHeroImages(productos) {
 /* ── Modal de detalle de producto ───────────────────────── */
 let _detProductos  = [];
 let _detOriginPath = '/';
+let _detGoTo       = null; // fn(delta) para flechas de teclado
 
 function _ensureDetModal() {
   if (document.getElementById('det-overlay')) return;
@@ -251,7 +252,11 @@ function _ensureDetModal() {
     <div class="det-modal" role="dialog" aria-modal="true">
       <div class="det-galeria">
         <button class="det-cerrar" id="det-cerrar" aria-label="Cerrar">✕</button>
-        <div id="det-main"></div>
+        <div class="det-main-wrap">
+          <button class="det-nav det-prev" id="det-prev" aria-label="Anterior" hidden>‹</button>
+          <div id="det-main"></div>
+          <button class="det-nav det-next" id="det-next" aria-label="Siguiente" hidden>›</button>
+        </div>
         <div class="det-thumbs" id="det-thumbs"></div>
       </div>
       <div class="det-info">
@@ -271,7 +276,12 @@ function _ensureDetModal() {
 
   el.addEventListener('click', e => { if (e.target === el) cerrarDetModal(); });
   document.getElementById('det-cerrar').addEventListener('click', cerrarDetModal);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarDetModal(); });
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('det-overlay')?.classList.contains('open')) return;
+    if (e.key === 'Escape')     cerrarDetModal();
+    if (e.key === 'ArrowLeft')  _detGoTo?.(-1);
+    if (e.key === 'ArrowRight') _detGoTo?.(+1);
+  });
 }
 
 function cerrarDetModal() {
@@ -295,11 +305,27 @@ function abrirDetModal(producto, productosCtx) {
   const mainEl   = document.getElementById('det-main');
   const thumbsEl = document.getElementById('det-thumbs');
 
+  function goTo(delta) {
+    if (imgs.length < 2) return;
+    imgActiva = (imgActiva + delta + imgs.length) % imgs.length;
+    renderGaleria();
+  }
+  _detGoTo = goTo;
+
   function renderGaleria() {
     mainEl.innerHTML = imgs.length
       ? `<img class="det-main-img" src="${esc(imgs[imgActiva])}" alt="${esc(producto.nombre)}">`
       : `<div class="det-main-placeholder">🐸</div>`;
-    thumbsEl.innerHTML = imgs.length > 1
+
+    const multi = imgs.length > 1;
+    const prevBtn = document.getElementById('det-prev');
+    const nextBtn = document.getElementById('det-next');
+    if (prevBtn) prevBtn.hidden = !multi;
+    if (nextBtn) nextBtn.hidden = !multi;
+    if (prevBtn) { prevBtn.onclick = null; prevBtn.onclick = () => goTo(-1); }
+    if (nextBtn) { nextBtn.onclick = null; nextBtn.onclick = () => goTo(+1); }
+
+    thumbsEl.innerHTML = multi
       ? imgs.map((url, i) =>
           `<img class="det-thumb ${i === imgActiva ? 'activa' : ''}"
                src="${esc(url)}" alt="foto ${i+1}"
