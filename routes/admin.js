@@ -323,7 +323,7 @@ router.get('/usuarios', (req, res) => {
 });
 
 router.post('/usuarios', (req, res) => {
-  const { email, password, nivel_precio_id } = req.body || {};
+  const { email, password, nivel_precio_id, es_admin } = req.body || {};
   if (!email || !password || !nivel_precio_id) {
     return res.status(400).json({ error: 'email, password y nivel_precio_id son requeridos.' });
   }
@@ -335,8 +335,8 @@ router.post('/usuarios', (req, res) => {
 
   try {
     const result = db.prepare(
-      'INSERT INTO usuarios (email, password_hash, nivel_precio_id) VALUES (?, ?, ?)'
-    ).run(email, bcrypt.hashSync(String(password), 10), Number(nivel_precio_id));
+      'INSERT INTO usuarios (email, password_hash, nivel_precio_id, es_admin) VALUES (?, ?, ?, ?)'
+    ).run(email, bcrypt.hashSync(String(password), 10), Number(nivel_precio_id), es_admin ? 1 : 0);
     res.status(201).json({ ok: true, id: result.lastInsertRowid });
   } catch (err) {
     if (String(err.message).includes('UNIQUE')) {
@@ -349,7 +349,7 @@ router.post('/usuarios', (req, res) => {
 router.put('/usuarios/:id', (req, res) => {
   const db    = getDb();
   const id    = parseInt(req.params.id, 10);
-  const { email, password, nivel_precio_id } = req.body || {};
+  const { email, password, nivel_precio_id, es_admin } = req.body || {};
 
   if (!db.prepare('SELECT id FROM usuarios WHERE id = ?').get(id)) {
     return res.status(404).json({ error: 'Usuario no encontrado.' });
@@ -359,6 +359,9 @@ router.put('/usuarios/:id', (req, res) => {
       return res.status(400).json({ error: 'Nivel de precio inválido.' });
     }
     db.prepare('UPDATE usuarios SET nivel_precio_id = ? WHERE id = ?').run(Number(nivel_precio_id), id);
+  }
+  if (es_admin != null) {
+    db.prepare('UPDATE usuarios SET es_admin = ? WHERE id = ?').run(es_admin ? 1 : 0, id);
   }
   if (email) {
     try {

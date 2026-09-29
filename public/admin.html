@@ -824,6 +824,10 @@
           <label>Nivel de precio *</label>
           <select id="usu-nivel_precio_id" required></select>
         </div>
+        <div class="field full" style="flex-direction:row;align-items:center;gap:10px">
+          <input type="checkbox" id="usu-es_admin" style="width:18px;height:18px;cursor:pointer">
+          <label for="usu-es_admin" style="cursor:pointer;margin:0">Acceso de administrador (panel admin + precios especiales)</label>
+        </div>
       </div>
       <input type="hidden" id="usu-id">
       <div class="modal-footer">
@@ -1475,7 +1479,8 @@ function openUsuarioModal(usu = null) {
   const sel = document.getElementById('usu-nivel_precio_id');
   sel.innerHTML = niveles.map(n => `<option value="${n.id}">${esc(n.nombre)} (${n.margen_pct}%)</option>`).join('');
 
-  document.getElementById('usu-email').value = usu?.email ?? '';
+  document.getElementById('usu-email').value          = usu?.email    ?? '';
+  document.getElementById('usu-es_admin').checked     = !!usu?.es_admin;
   passInput.value = '';
   if (usu) sel.value = usu.nivel_precio_id;
 
@@ -1493,9 +1498,10 @@ async function guardarUsuario(e) {
   const id       = document.getElementById('usu-id').value;
   const email    = document.getElementById('usu-email').value;
   const password = document.getElementById('usu-password').value;
-  const nivel    = document.getElementById('usu-nivel_precio_id').value;
+  const nivel   = document.getElementById('usu-nivel_precio_id').value;
+  const esAdmin = document.getElementById('usu-es_admin').checked;
 
-  const body = { email, nivel_precio_id: +nivel };
+  const body = { email, nivel_precio_id: +nivel, es_admin: esAdmin ? 1 : 0 };
   if (password) body.password = password;
 
   try {

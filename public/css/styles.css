@@ -214,10 +214,10 @@ img { max-width: 100%; display: block; }
   .carrito-nav-total:not(:empty) { display: block; }
 }
 
-/* En móvil muy chico ocultar login y texto del logo para que no overflow */
+/* En móvil muy chico: compactar logo y botón login para que no overflow */
 @media (max-width: 480px) {
-  #btn-login { display: none; }
   .navbar__logo span { display: none; }
+  #btn-login { font-size: .72rem; padding: 0 8px; }
 }
 
 /* ── Botones ─────────────────────────────────────────────── */
