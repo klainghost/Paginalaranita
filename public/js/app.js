@@ -267,7 +267,7 @@ function _ensureDetModal() {
         <div class="card__colors" id="det-colors"></div>
         <div class="det-foot">
           <div class="det-precio" id="det-precio"></div>
-          <button class="btn btn-dark" id="det-btn-add" style="width:100%">Agregar a consulta</button>
+          <button class="btn btn-dark" id="det-btn-add" style="width:100%">Agregar al carrito</button>
           <button class="btn-compartir" id="det-btn-compartir" title="Compartir producto">🔗 Compartir</button>
         </div>
       </div>
