@@ -333,6 +333,23 @@
         chip.classList.add('active');
         filtroActivo = chip.dataset.cat;
         if (filtroActivo !== ROL_SLUG && temaRolActivo) aplicarTemaRol(false);
+
+        // Actualizar URL y título al cambiar de categoría
+        if (filtroActivo) {
+          const catData = categorias.find(c => c.slug === filtroActivo);
+          const nuevoTitulo = catData
+            ? `${catData.nombre} — La Ranita 3D`
+            : 'Catálogo — La Ranita 3D';
+          document.title = nuevoTitulo;
+          document.getElementById('titulo-seccion').textContent =
+            catData ? (catData.icono ? catData.icono + ' ' : '') + catData.nombre : 'Catálogo';
+          history.replaceState(null, '', `?categoria=${encodeURIComponent(filtroActivo)}`);
+        } else {
+          document.title = 'Catálogo — La Ranita 3D';
+          document.getElementById('titulo-seccion').textContent = 'Catálogo';
+          history.replaceState(null, '', location.pathname);
+        }
+
         renderFiltrado();
       });
 

@@ -1649,10 +1649,23 @@ async function loadCategorias() {
               <button class="btn btn-secondary btn-sm" onclick="editCategoria(${c.id})">Editar</button>
               <button class="btn ${c.activo ? 'btn-danger' : 'btn-secondary'} btn-sm"
                 onclick="toggleCategoria(${c.id}, ${c.activo})">${c.activo ? 'Desactivar' : 'Activar'}</button>
+              <button class="btn btn-secondary btn-sm" id="btn-copiar-${c.id}"
+                onclick="copiarEnlaceCat('${esc(c.slug)}', ${c.id})">🔗 Copiar enlace</button>
             </td>
           </tr>`).join('');
   } catch (err) {
     toast(err.message, 'err');
+  }
+}
+
+async function copiarEnlaceCat(slug, id) {
+  const url = `${location.origin}/catalogo.html?categoria=${encodeURIComponent(slug)}`;
+  try {
+    await navigator.clipboard.writeText(url);
+    const btn = document.getElementById(`btn-copiar-${id}`);
+    if (btn) { btn.textContent = '✓ Copiado'; setTimeout(() => btn.textContent = '🔗 Copiar enlace', 2000); }
+  } catch {
+    toast('No se pudo copiar: ' + url, 'err');
   }
 }
 
