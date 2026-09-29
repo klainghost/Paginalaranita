@@ -999,15 +999,12 @@ let _todosProductos = [];
 async function loadProductos() {
   _todosProductos = await api('GET', '/api/admin/productos');
 
-  // Poblar select de categorías con los valores únicos existentes
+  // Poblar select de categorías con las categorías reales del sistema
   const selCat = document.getElementById('prod-filtro-cat');
   if (selCat) {
-    const cats = [...new Set(
-      _todosProductos.map(p => p.categoria || '').filter(Boolean).sort()
-    )];
     const valAnterior = selCat.value;
     selCat.innerHTML = '<option value="">Categoría: todas</option>' +
-      cats.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+      categorias.map(c => `<option value="${c.id}">${esc(c.nombre)}</option>`).join('');
     if (valAnterior) selCat.value = valAnterior;
   }
 
@@ -1022,7 +1019,7 @@ function _filtrarProductos() {
   const filtrados = _todosProductos.filter(p => {
     if (buscar && !p.nombre.toLowerCase().includes(buscar)) return false;
     if (estado !== '' && String(p.activo ? '1' : '0') !== estado) return false;
-    if (cat && (p.categoria || '') !== cat) return false;
+    if (cat && String(p.categoria_id || '') !== cat) return false;
     return true;
   });
 
