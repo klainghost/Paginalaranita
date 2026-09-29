@@ -174,6 +174,38 @@
   .field textarea { resize: vertical; min-height: 72px; }
   .field select option { background: var(--surface2); }
 
+  /* ── Filtros de productos ── */
+  .prod-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .prod-filters input[type="search"] {
+    flex: 1;
+    min-width: 160px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    padding: 7px 12px;
+    font-size: .85rem;
+    font-family: var(--font);
+  }
+  .prod-filters input[type="search"]:focus { outline: none; border-color: var(--accent); }
+  .prod-filters select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    padding: 7px 12px;
+    font-size: .85rem;
+    font-family: var(--font);
+    cursor: pointer;
+  }
+  .prod-filters select:focus { outline: none; border-color: var(--accent); }
+  #prod-filtros-count { font-size: .8rem; color: var(--text-dim); align-self: center; white-space: nowrap; }
+
   /* ── Parámetros ── */
   .params-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 560px; }
   .params-grid .field input { font-size: 1rem; }
@@ -336,6 +368,18 @@
       <div class="section-header">
         <h2>Productos</h2>
         <button class="btn btn-primary" onclick="openProductoModal()">+ Nuevo producto</button>
+      </div>
+      <div class="prod-filters">
+        <input type="search" id="prod-buscar" placeholder="🔍 Buscar por nombre…" oninput="_filtrarProductos()" autocomplete="off">
+        <select id="prod-filtro-estado" onchange="_filtrarProductos()">
+          <option value="">Estado: todos</option>
+          <option value="1">Solo activos</option>
+          <option value="0">Solo inactivos</option>
+        </select>
+        <select id="prod-filtro-cat" onchange="_filtrarProductos()">
+          <option value="">Categoría: todas</option>
+        </select>
+        <span id="prod-filtros-count"></span>
       </div>
       <div class="table-wrap">
         <table id="tabla-productos">
@@ -946,12 +990,50 @@ let categorias  = [];
 let niveles     = [];
 
 // ── Productos ────────────────────────────────────────────
+let _todosProductos = [];
+
 async function loadProductos() {
-  const prods = await api('GET', '/api/admin/productos');
+  _todosProductos = await api('GET', '/api/admin/productos');
+
+  // Poblar select de categorías con los valores únicos existentes
+  const selCat = document.getElementById('prod-filtro-cat');
+  if (selCat) {
+    const cats = [...new Set(
+      _todosProductos.map(p => p.categoria || '').filter(Boolean).sort()
+    )];
+    const valAnterior = selCat.value;
+    selCat.innerHTML = '<option value="">Categoría: todas</option>' +
+      cats.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    if (valAnterior) selCat.value = valAnterior;
+  }
+
+  _filtrarProductos();
+}
+
+function _filtrarProductos() {
+  const buscar = (document.getElementById('prod-buscar')?.value || '').toLowerCase().trim();
+  const estado = document.getElementById('prod-filtro-estado')?.value ?? '';
+  const cat    = document.getElementById('prod-filtro-cat')?.value    ?? '';
+
+  const filtrados = _todosProductos.filter(p => {
+    if (buscar && !p.nombre.toLowerCase().includes(buscar)) return false;
+    if (estado !== '' && String(p.activo ? '1' : '0') !== estado) return false;
+    if (cat && (p.categoria || '') !== cat) return false;
+    return true;
+  });
+
+  const countEl = document.getElementById('prod-filtros-count');
+  if (countEl) {
+    const total = _todosProductos.length;
+    countEl.textContent = filtrados.length < total
+      ? `${filtrados.length} de ${total}`
+      : `${total} productos`;
+  }
+
   const tbody = document.getElementById('tbody-productos');
-  tbody.innerHTML = prods.length === 0
-    ? '<tr><td colspan="8" style="text-align:center;color:var(--text-dim)">Sin productos</td></tr>'
-    : prods.map(p => `
+  tbody.innerHTML = filtrados.length === 0
+    ? '<tr><td colspan="8" style="text-align:center;color:var(--text-dim)">Sin resultados</td></tr>'
+    : filtrados.map(p => `
       <tr>
         <td>${esc(p.nombre)}</td>
         <td>${esc(p.mundo_nombre || p.categoria_sistema_nombre || '—')}</td>
