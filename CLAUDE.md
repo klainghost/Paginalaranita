@@ -84,32 +84,45 @@ Parámetros editables desde admin → Parámetros: `precio_kg`, `precio_kwh`,
 - Límite: 8 MB, formatos: jpg/png/webp/gif
 - La URL resultante (`/uploads/productos/archivo.jpg`) se guarda en `imagen_url`
 
-## Estado actual (sesión 2026-09-28)
+## Estado actual (sesión 2026-09-30)
 
 ### Completado ✅
 - Servidor Express + SQLite funcional en producción (`laranita3d.com.ar`)
 - Auto-deploy via webhook GitHub → pm2
 - Admin panel completo:
   - Productos (CRUD + activar/desactivar + **duplicar** + **subir imagen**)
-  - Categorías (CRUD)
+  - **Filtros de productos**: buscador por nombre + select Estado + select Categoría
+    (filtra por `categoria_id`, no por la sub-etiqueta libre `categoria`)
+  - Categorías (CRUD + botón **"Copiar enlace"** para obtener la URL de la página pública)
   - Mundos (CRUD, legacy — no visible en el sitio público)
   - Parámetros de costo
   - Niveles de precio
-  - Usuarios (CRUD)
+  - Usuarios (CRUD + campo **`es_admin`** para crear otros administradores)
   - Pedidos (listado + detalle + cambio de estado)
-  - **Navegación** (CRUD de nav_links — controla el navbar del sitio)
-- Sitio público rediseñado (v4):
+  - Navegación (CRUD de nav_links — controla el navbar del sitio)
+- Sitio público (v12):
   - Navbar dinámico desde BD
   - Hero con fotos de productos al azar
-  - Catálogo con chips de categoría
+  - Sección **"¿Cómo funciona?"** en home (3 pasos con íconos y flechas)
+  - Catálogo con chips de categoría; al hacer clic actualiza URL y título de página
+    (`history.replaceState`) — cada categoría tiene su URL `catalogo.html?categoria=:slug`
+  - Tarjetas de producto: `object-fit: contain` (imagen completa, sin recorte)
+  - Modal de producto:
+    - Galería con flechas **prev/next** y soporte de teclado (←/→/Esc)
+    - Descripción scrollable (`max-height: 140px`) — footer siempre visible sin scroll
+    - Footer: precio + colores + **"Agregar al carrito"** + Compartir siempre a la vista
   - Carrito "Tu consulta" con selección de color por ítem → mensaje WA
+    - **Pill flotante** en desktop (esquina inferior izquierda) con conteo y total
+    - **Total en navbar** en mobile cuando el carrito tiene ítems
+  - Login:
+    - Desktop: botón en navbar
+    - Mobile (≤720px): "🔐 Iniciar sesión" al final del menú hamburguesa
   - Tema claro por defecto (nunca automático desde OS)
-  - Experiencia Rolera: toggle solo en `?categoria=rol&tematico=1`
+  - Experiencia Rolera: solo en `?categoria=rol&tematico=1`
+- Campo `imagen_url` en admin: `type="text"` (acepta rutas relativas `/uploads/...`)
 
 ### Pendiente ⏳
 - **Carga de productos** — trabajo manual en curso (Gaby agrega desde el admin)
-- **Multer en servidor**: la primera vez después de agregar la dependencia hay que SSH
-  y correr `npm install --omit=dev && pm2 restart ranita3d` (una sola vez)
 - Integración Mercado Pago (Checkout Pro + webhook de pago)
 - Integración Correo Argentino:
   - MiCorreo (cotización `/rates`) — requiere registro con CUIT + customerId
